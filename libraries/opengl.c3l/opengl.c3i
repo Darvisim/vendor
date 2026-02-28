@@ -59,7 +59,7 @@ alias Ext_GLVULKANPROCNV = fn void();
 
 
 /* Internal loading */
-alias GLLoadFn = fn void*(char*);
+alias GLLoadFn = fn void*(ZString);
 
 module opengl;
 import opengl::internal, opengl::gl;
