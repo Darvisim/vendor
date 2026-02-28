@@ -287,7 +287,7 @@ fn TSTree* parser_parse(
 fn TSTree* parser_parse_string(
 	TSParser* self,
 	TSTree* old_tree,
-	char* string,
+	ZString string,
 	uint length
 ) @cname("ts_parser_parse_string");
 
@@ -300,7 +300,7 @@ fn TSTree* parser_parse_string(
 fn TSTree* parser_parse_string_encoding(
 	TSParser* self,
 	TSTree* old_tree,
-	char* string,
+	ZString string,
 	uint length,
 	TSInputEncoding encoding
 ) @cname("ts_parser_parse_string_encoding");
@@ -821,7 +821,7 @@ fn TSTreeCursor tree_cursor_copy(TSTreeCursor* cursor) @cname("ts_tree_cursor_co
 *>
 fn TSQuery* query_new(
 	TSLanguage* language,
-	char* source,
+	ZString source,
 	uint source_len,
 	uint* error_offset,
 	TSQueryError* error_type
@@ -1088,7 +1088,7 @@ fn ZString language_field_name_for_id(TSLanguage* self, TSFieldId id) @cname("ts
 <*
  Get the numerical id for the given field name string.
 *>
-fn TSFieldId language_field_id_for_name(TSLanguage* self, char* name, uint name_length) @cname("ts_language_field_id_for_name");
+fn TSFieldId language_field_id_for_name(TSLanguage* self, ZString name, uint name_length) @cname("ts_language_field_id_for_name");
 
 <*
  Check whether the given node type id belongs to named nodes, anonymous nodes,
