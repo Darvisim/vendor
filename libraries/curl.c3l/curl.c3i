@@ -988,16 +988,16 @@ const MIME_RAND_BOUNDARY_CHARS = 16;
 const MIME_BOUNDARY_LEN = (MIME_BOUNDARY_DASHES + MIME_RAND_BOUNDARY_CHARS);
 const ENCODING_BUFFER_SIZE = 256;
 
-alias Curl_formget_callback = fn usz(void* arg, char* buf, usz len);
+alias Curl_formget_callback = fn usz(void* arg, ZString buf, usz len);
 alias CurlProgressCallback = fn int(void* clientp, double dltotal, double dlnow, double ultotal, double ulnow);
 alias CurlXferinfoCallback = fn int(void* clientp, CurlOff dltotal, CurlOff dlnow, CurlOff ultotal, CurlOff ulnow);
-alias CurlWriteCallback = fn usz(char* buffer, usz size, usz nitems, void* outstream);
+alias CurlWriteCallback = fn usz(ZString buffer, usz size, usz nitems, void* outstream);
 alias CurlResolverStartCallback = fn int(void* resolver_state, void* reserved, void* userdata);
 alias CurlChunkBgnCallback = fn long(void* transfer_info,void* ptr, int remains);
 alias CurlChunkEndCallback = fn long(void* ptr);
-alias CurlFnMatchCallback = fn int(void* ptr, char* pattern, char* string);
+alias CurlFnMatchCallback = fn int(void* ptr, ZString pattern, ZString string);
 alias CurlSeekCallback = fn int(void* instream, CurlOff offset, int origin);
-alias CurlReadCallback = fn usz(char* buffer, usz size, usz nitems, void* instream);
+alias CurlReadCallback = fn usz(ZString buffer, usz size, usz nitems, void* instream);
 alias CurlTrailerCallback = fn int(CurlSlist** list, void* userdata);
 alias CurlSockoptCallback = fn int(void* clientp, CurlSocket curlfd, CurlSockType purpose);
 alias CurlOpenSocketCallback = fn CurlSocket(void* clientp, CurlSockType purpose, CurlSockaddr* address);
@@ -1005,22 +1005,22 @@ alias CurlCloseSocketCallback = fn int(void* clientp, CurlSocket item);
 alias CurlMallocCallback = fn void*(usz size);
 alias CurlFreeCallback = fn void(void* ptr);
 alias CurlReallocCallback = fn void*(void* ptr, usz size);
-alias CurlStrdupCallback = fn char*(char* str);
+alias CurlStrdupCallback = fn ZString(ZString str);
 alias CurlCallocCallback = fn void*(usz nmemb, usz size);
 alias CurlIoctlCallback = fn CurlIoResult(Curl* handle, int cmd, void* clientp);
-alias CurlDebugCallback = fn int(Curl* handle, CurlDebugInfoType type, char* data, usz size, void* userptr);
-alias CurlPrereqCallback = fn int(void* clientp, char* conn_primary_ip, char* conn_local_ip, int conn_primary_port, int conn_local_port);
-alias CurlConvCallback = fn CurlResult(char* buffer, usz length);
+alias CurlDebugCallback = fn int(Curl* handle, CurlDebugInfoType type, ZString data, usz size, void* userptr);
+alias CurlPrereqCallback = fn int(void* clientp, ZString conn_primary_ip, ZString conn_local_ip, int conn_primary_port, int conn_local_port);
+alias CurlConvCallback = fn CurlResult(ZString buffer, usz length);
 alias CurlSslCtxCallback = fn CurlResult(Curl* curl, void* ssl_ctx, void* userptr);
 alias CurlSshKeyCallback = fn int(Curl* easy, CurlKhKey* knownkey, CurlKhKey* foundkey, CurlKhMatchType, void* clientp);
-alias CurlSshHostKeyCallback = fn int(void* clientp, int keytype, char* key, usz keylen);
+alias CurlSshHostKeyCallback = fn int(void* clientp, int keytype, ZString key, usz keylen);
 alias CurlHstsReadCallback = fn CurlStsResult(Curl* easy, CurlHstsEntry* e, void* userp);
 alias CurlHstsWriteCallback = fn CurlStsResult(Curl* easy, CurlHstsEntry* e, CurlIndex* i, void* userp);
 alias CurlLockFunction = fn void(Curl* handle, CurlLockDataType data, CurlLockAccessType locktype, void* userptr);
 alias CurlUnlockFunction = fn void(Curl* handle, CurlLockDataType data, void* userptr);
 alias CurlSocketCallback = fn int(Curl* easy, CurlSocket s, int what, void* userp, void* socketp);
 alias CurlMultiTimerCallback = fn int(CurlM* multi, long timeout_ms, void* userp);
-alias CurlEncodeFunc = fn usz(char* buffer, usz size, bool ateof, CurlMimePart* part);
+alias CurlEncodeFunc = fn usz(ZString buffer, usz size, bool ateof, CurlMimePart* part);
 alias CurlSizeFunc = fn CurlOff(CurlMimePart* part);
 
 alias Curl = void;
@@ -1043,25 +1043,25 @@ alias CurlSocket = int;
 
 struct CurlSlist
 {
-	char* data;
+	ZString data;
 	CurlSlist* next;
 }
 
 struct CurlHttpPost
 {
 	CurlHttpPost* next;
-	char* name;
+	ZString name;
 	long namelength;
-	char* contents;
+	ZString contents;
 	long contentslength;
 
-	char* buffer;
+	ZString buffer;
 	long bufferlength;
-	char* contenttype;
+	ZString contenttype;
 	CurlSlist* contentheader;
 	CurlHttpPost* more;
 	CurlHttpPostFlag flags;
-	char* showfilename;
+	ZString showfilename;
 	void* userp;
 	CurlOff contentlen;
 }
@@ -1088,7 +1088,7 @@ struct CurlFileInfo
 
 	uint flags;
 
-	char* b_data;
+	ZString b_data;
 	usz b_size;
 	usz b_used;
 }
@@ -1105,14 +1105,14 @@ struct CurlSockaddr
 
 struct CurlKhKey
 {
-	char* key;
+	ZString key;
 	usz len;
 	CurlKhType keytype;
 }
 
 struct CurlHstsEntry
 {
-	char* name;
+	ZString name;
 	usz namelen;
 	uint include_sub_domains;
 	char[18] expire;
@@ -1155,31 +1155,31 @@ struct CurlTlsSessionInfo
 struct CurlVersionInfoData
 {
 	CurlVersionType age;
-	char* version;
+	ZString version;
 	uint version_num;
-	char* host;
+	ZString host;
 	int features;
-	char* ssl_version;
+	ZString ssl_version;
 	long ssl_version_num;
-	char* libz_version;
-	char* protocols;
-	char* ares;
+	ZString libz_version;
+	ZString protocols;
+	ZString ares;
 	int ares_num;
-	char* libidn;
+	ZString libidn;
 	int iconv_ver_num;
-	char* libssh_version;
+	ZString libssh_version;
 	uint brotli_ver_num;
-	char* brotli_version;
+	ZString brotli_version;
 	uint nghttp2_ver_num;
-	char* nghttp2_version;
-	char* quic_version;
-	char* cainfo;
-	char* capath;
+	ZString nghttp2_version;
+	ZString quic_version;
+	ZString cainfo;
+	ZString capath;
 	uint zstd_ver_num;
-	char* zstd_version;
-	char* hyper_version;
-	char* gsasl_version;
-	char* feature_names;
+	ZString zstd_version;
+	ZString hyper_version;
+	ZString gsasl_version;
+	ZString feature_names;
 }
 
 struct CurlBlob
@@ -1228,7 +1228,7 @@ alias CurlU = CurlUrl;
 
 struct CurlEasyOption
 {
-	char* name;
+	ZString name;
 	CurlOption id;
 	CurlEasyType type;
 	uint flags;
@@ -1280,7 +1280,7 @@ struct CurlMimeEncoderState
 
 struct CurlMimeEncoder
 {
-	char* name;
+	ZString name;
 	CurlEncodeFunc encodefunc;
 	CurlSizeFunc sizefunc;
 }
@@ -1291,7 +1291,7 @@ struct CurlMimePart
 	CurlMimePart* nextpart;
 	CurlMimeKind kind;
 	uint flags;
-	char* data;
+	ZString data;
 	CurlReadCallback readfunc;
 	CurlSeekCallback seekfunc;
 	CurlFreeCallback freefunc;
@@ -1299,9 +1299,9 @@ struct CurlMimePart
 	File *fp;
 	CurlSlist* curlheader;
 	CurlSlist* userheader;
-	char* mimetype;
-	char* filename;
-	char* name;
+	ZString mimetype;
+	ZString filename;
+	ZString name;
 	CurlOff datasize;
 	CurlMimeState state;
 	CurlMimeEncoder *encoder;
@@ -1320,7 +1320,7 @@ extern fn CurlResult mime_name(CurlMimePart* part, ZString name) @cname("curl_mi
 extern fn CurlResult mime_filename(CurlMimePart* part, ZString filename) @cname("curl_mime_filename");
 extern fn CurlResult mime_type(CurlMimePart* part, ZString mimetype) @cname("curl_mime_type");
 extern fn CurlResult mime_encoder(CurlMimePart* part, ZString encoding) @cname("curl_mime_encoder");
-extern fn CurlResult mime_data(CurlMimePart* part, char* data, usz datasize) @cname("curl_mime_data");
+extern fn CurlResult mime_data(CurlMimePart* part, ZString data, usz datasize) @cname("curl_mime_data");
 extern fn CurlResult mime_filedata(CurlMimePart* part, ZString filename) @cname("curl_mime_filedata");
 extern fn CurlResult mime_data_cb(CurlMimePart* part, CurlOff datasize, CurlReadCallback readfunc, CurlSeekCallback seekfunc, CurlFreeCallback freefunc, void* arg) @cname("curl_mime_data_cb");
 extern fn CurlResult mime_subparts(CurlMimePart* part, CurlMime* subparts) @cname("curl_mime_subparts");
@@ -1328,26 +1328,26 @@ extern fn CurlResult mime_headers(CurlMimePart* part, CurlSlist* headers, int ta
 extern fn CurlFormAddResult formadd(CurlHttpPost **httppost, CurlHttpPost **last_post, ...) @cname("curl_formadd");
 extern fn usz formget(CurlHttpPost *form, void* arg, Curl_formget_callback append) @cname("curl_formget");
 extern fn void formfree(CurlHttpPost* form) @cname("curl_formfree");
-extern fn ZString getenv(char* variable) @cname("curl_getenv");
+extern fn ZString getenv(ZString variable) @cname("curl_getenv");
 extern fn ZString version() @cname("curl_version");
-extern fn ZString easy_escape(Curl* handle, char* string, int length) @cname("curl_easy_escape");
-extern fn ZString escape(char* string, int length) @cname("curl_escape");
-extern fn char* easy_unescape(Curl* handle, char* string, int length, int* outlength) @cname("curl_easy_unescape");
-extern fn ZString unescape(char* string, int length) @cname("curl_unescape");
+extern fn ZString easy_escape(Curl* handle, ZString string, int length) @cname("curl_easy_escape");
+extern fn ZString escape(ZString string, int length) @cname("curl_escape");
+extern fn ZString easy_unescape(Curl* handle, ZString string, int length, int* outlength) @cname("curl_easy_unescape");
+extern fn ZString unescape(ZString string, int length) @cname("curl_unescape");
 extern fn void free(void* p) @cname("curl_free");
 extern fn CurlResult global_init(long flags) @cname("curl_global_init");
 extern fn CurlResult global_init_mem(long flags, CurlMallocCallback m, CurlFreeCallback f, CurlReallocCallback r, CurlStrdupCallback s, CurlCallocCallback c) @cname("curl_global_init_mem");
 extern fn void global_cleanup() @cname("curl_global_cleanup");
-extern fn CurlSslSetResult global_sslset(CurlSslBackendType id, char* name, CurlSslBackend ***avail) @cname("curl_global_sslset");
-extern fn CurlSlist* slist_append(CurlSlist* list, char* data) @cname("curl_slist_append");
+extern fn CurlSslSetResult global_sslset(CurlSslBackendType id, ZString name, CurlSslBackend ***avail) @cname("curl_global_sslset");
+extern fn CurlSlist* slist_append(CurlSlist* list, ZString data) @cname("curl_slist_append");
 extern fn void slist_free_all(CurlSlist* list) @cname("curl_slist_free_all");
-extern fn Time_t getdate(char* p, libc::Time_t *unused) @cname("curl_getdate");
+extern fn Time_t getdate(ZString p, Time_t *unused) @cname("curl_getdate");
 extern fn void* share_init() @cname("curl_share_init");
 extern fn CurlShResult share_setopt(void* share, CurlShOption option, ...) @cname("curl_share_setopt");
 extern fn CurlShResult share_cleanup(void* share) @cname("curl_share_cleanup");
 extern fn CurlVersionInfoData* version_info(CurlVersionType) @cname("curl_version_info");
-extern fn char* easy_strerror(CurlResult) @cname("curl_easy_strerror");
-extern fn char* share_strerror(CurlShResult) @cname("curl_share_strerror");
+extern fn ZString easy_strerror(CurlResult) @cname("curl_easy_strerror");
+extern fn ZString share_strerror(CurlShResult) @cname("curl_share_strerror");
 extern fn CurlResult easy_pause(Curl* handle, int bitmask) @cname("curl_easy_pause");
 extern fn Curl* easy_init() @cname("curl_easy_init");
 extern fn CurlResult easy_setopt(Curl* curl, CurlOption option, ...) @cname("curl_easy_setopt");
@@ -1369,25 +1369,25 @@ extern fn CurlMResult multi_wakeup(CurlM* multi_handle) @cname("curl_multi_wakeu
 extern fn CurlMResult multi_perform(CurlM* multi_handle, int* running_handles) @cname("curl_multi_perform");
 extern fn CurlMResult multi_cleanup(CurlM* multi_handle) @cname("curl_multi_cleanup");
 extern fn CurlMsg *multi_info_read(CurlM* multi_handle, int* msgs_in_queue) @cname("curl_multi_info_read");
-extern fn char* multi_strerror(CurlMResult) @cname("curl_multi_strerror");
+extern fn ZString multi_strerror(CurlMResult) @cname("curl_multi_strerror");
 extern fn CurlMResult multi_socket(CurlM* multi_handle, CurlSocket s, int* running_handles) @cname("curl_multi_socket");
 extern fn CurlMResult multi_socket_action(CurlM* multi_handle, CurlSocket s, int ev_bitmask, int* running_handles) @cname("curl_multi_socket_action");
 extern fn CurlMResult multi_socket_all(CurlM* multi_handle, int* running_handles) @cname("curl_multi_socket_all");
 extern fn CurlMResult multi_timeout(CurlM* multi_handle, CLong* milliseconds) @cname("curl_multi_timeout");
 extern fn CurlMResult multi_setopt(CurlM* multi_handle, CurlMOption option, ...) @cname("curl_multi_setopt");
 extern fn CurlMResult multi_assign(CurlM* multi_handle, CurlSocket sockfd, void* sockp) @cname("curl_multi_assign");
-extern fn char* pushheader_bynum(PushHeaders* h, usz num) @cname("curl_pushheader_bynum");
-extern fn char* pushheader_byname(PushHeaders* h, char *name) @cname("curl_pushheader_byname");
+extern fn ZString pushheader_bynum(PushHeaders* h, usz num) @cname("curl_pushheader_bynum");
+extern fn ZString pushheader_byname(PushHeaders* h, char *name) @cname("curl_pushheader_byname");
 extern fn CurlU* url() @cname("curl_url");
 extern fn void url_cleanup(CurlU* handle) @cname("curl_url_cleanup");
 extern fn CurlU* url_dup(CurlU* in) @cname("curl_url_dup");
-extern fn CurlUResult url_get(CurlU* handle, CurlUPartType what, char** part, uint flags) @cname("curl_url_get");
-extern fn CurlUResult url_set(CurlU* handle, CurlUPartType what, char* part, uint flags) @cname("curl_url_set");
-extern fn char* url_strerror(CurlUResult a1) @cname("curl_url_strerror");
+extern fn CurlUResult url_get(CurlU* handle, CurlUPartType what, ZString* part, uint flags) @cname("curl_url_get");
+extern fn CurlUResult url_set(CurlU* handle, CurlUPartType what, ZString part, uint flags) @cname("curl_url_set");
+extern fn ZString url_strerror(CurlUResult a1) @cname("curl_url_strerror");
 extern fn CurlEasyOption* easy_option_by_name(char *name) @cname("curl_easy_option_by_name");
 extern fn CurlEasyOption* easy_option_by_id(CurlOption id) @cname("curl_easy_option_by_id");
 extern fn CurlEasyOption* easy_option_next(CurlEasyOption* prev) @cname("curl_easy_option_next");
-extern fn CurlHResult easy_header(Curl* easy, char* name, usz index, uint origin, int request, CurlHeader **hout) @cname("curl_easy_header");
+extern fn CurlHResult easy_header(Curl* easy, ZString name, usz index, uint origin, int request, CurlHeader **hout) @cname("curl_easy_header");
 extern fn CurlHeader *easy_nextheader(Curl* easy, uint origin, int request, CurlHeader *prev) @cname("curl_easy_nextheader");
 extern fn CurlResult ws_recv(Curl* curl, void* buffer, usz buflen, usz* recv, CurlWsFrame **metap) @cname("curl_ws_recv");
 extern fn CurlResult ws_send(Curl* curl, void* buffer, usz buflen, usz* sent, CurlOff framesize, uint sendflags) @cname("curl_ws_send");
