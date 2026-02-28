@@ -1,6 +1,6 @@
 // sdl2.c3i
 // Created 14/07/2023
-// Updated 29/12/2023
+// Updated 28/02/2026
 // Originally created Kenta @ https://github.com/Its-Kenta
 
 module sdl;
@@ -37,10 +37,10 @@ struct AssertData
 {
 	int alwaysIgnore;
 	uint triggerCount;
-	char* condition;
-	char* filename;
+	ZString condition;
+	ZString filename;
 	int linenum;
-	char* function;
+	ZString function;
 	AssertData* next;
 }
 
@@ -136,7 +136,7 @@ struct RWops
 
 alias AudioFormat = ushort;
 
-alias AudioCallback = fn void(void *userdata, char* stream, int len);
+alias AudioCallback = fn void(void *userdata, ZString stream, int len);
 
 struct AudioSpec
 {
@@ -159,7 +159,7 @@ struct AudioCVT
 	AudioFormat src_format;
 	AudioFormat dst_format;
 	double rate_incr;
-	char* buf;
+	ZString buf;
 	int len;
 	int len_cvt;
 	int len_mul;
@@ -262,57 +262,59 @@ struct PixelFormat
 	PixelFormat* next;
 }
 
-typedef PixelFormatEnum = int;
-const PixelFormatEnum PIXELFORMAT_UNKNOWN = 0;
-const PixelFormatEnum PIXELFORMAT_INDEX1LSB = 286261504;
-const PixelFormatEnum PIXELFORMAT_INDEX1MSB = 287310080;
-const PixelFormatEnum PIXELFORMAT_INDEX4LSB = 303039488;
-const PixelFormatEnum PIXELFORMAT_INDEX4MSB = 304088064;
-const PixelFormatEnum PIXELFORMAT_INDEX8 = 318769153;
-const PixelFormatEnum PIXELFORMAT_RGB332 = 336660481;
-const PixelFormatEnum PIXELFORMAT_XRGB4444 = 353504258;
-const PixelFormatEnum PIXELFORMAT_RGB444 = 353504258;
-const PixelFormatEnum PIXELFORMAT_XBGR4444 = 357698562;
-const PixelFormatEnum PIXELFORMAT_BGR444 = 357698562;
-const PixelFormatEnum PIXELFORMAT_XRGB1555 = 353570562;
-const PixelFormatEnum PIXELFORMAT_RGB555 = 353570562;
-const PixelFormatEnum PIXELFORMAT_XBGR1555 = 357764866;
-const PixelFormatEnum PIXELFORMAT_BGR555 = 357764866;
-const PixelFormatEnum PIXELFORMAT_ARGB4444 = 355602434;
-const PixelFormatEnum PIXELFORMAT_RGBA4444 = 356651010;
-const PixelFormatEnum PIXELFORMAT_ABGR4444 = 359796738;
-const PixelFormatEnum PIXELFORMAT_BGRA4444 = 360845314;
-const PixelFormatEnum PIXELFORMAT_ARGB1555 = 355667970;
-const PixelFormatEnum PIXELFORMAT_RGBA5551 = 356782082;
-const PixelFormatEnum PIXELFORMAT_ABGR1555 = 359862274;
-const PixelFormatEnum PIXELFORMAT_BGRA5551 = 360976386;
-const PixelFormatEnum PIXELFORMAT_RGB565 = 353701890;
-const PixelFormatEnum PIXELFORMAT_BGR565 = 357896194;
-const PixelFormatEnum PIXELFORMAT_RGB24 = 386930691;
-const PixelFormatEnum PIXELFORMAT_BGR24 = 390076419;
-const PixelFormatEnum PIXELFORMAT_XRGB8888 = 370546692;
-const PixelFormatEnum PIXELFORMAT_RGB888 = 370546692;
-const PixelFormatEnum PIXELFORMAT_RGBX8888 = 371595268;
-const PixelFormatEnum PIXELFORMAT_XBGR8888 = 374740996;
-const PixelFormatEnum PIXELFORMAT_BGR888 = 374740996;
-const PixelFormatEnum PIXELFORMAT_BGRX8888 = 375789572;
-const PixelFormatEnum PIXELFORMAT_ARGB8888 = 372645892;
-const PixelFormatEnum PIXELFORMAT_RGBA8888 = 373694468;
-const PixelFormatEnum PIXELFORMAT_ABGR8888 = 376840196;
-const PixelFormatEnum PIXELFORMAT_BGRA8888 = 377888772;
-const PixelFormatEnum PIXELFORMAT_ARGB2101010 = 372711428;
-const PixelFormatEnum PIXELFORMAT_RGBA32 = 376840196;
-const PixelFormatEnum PIXELFORMAT_ARGB32 = 377888772;
-const PixelFormatEnum PIXELFORMAT_BGRA32 = 372645892;
-const PixelFormatEnum PIXELFORMAT_ABGR32 = 373694468;
-const PixelFormatEnum PIXELFORMAT_YV12 = 842094169;
-const PixelFormatEnum PIXELFORMAT_IYUV = 1448433993;
-const PixelFormatEnum PIXELFORMAT_YUY2 = 844715353;
-const PixelFormatEnum PIXELFORMAT_UYVY = 1498831189;
-const PixelFormatEnum PIXELFORMAT_YVYU = 1431918169;
-const PixelFormatEnum PIXELFORMAT_NV12 = 842094158;
-const PixelFormatEnum PIXELFORMAT_NV21 = 825382478;
-const PixelFormatEnum PIXELFORMAT_EXTERNAL_OES = 542328143;
+constdef PixelFormatEnum : int
+{
+	UNKNOWN = 0,
+	INDEX1LSB = 286261504,
+	INDEX1MSB = 287310080,
+	INDEX4LSB = 303039488,
+	INDEX4MSB = 304088064,
+	INDEX8 = 318769153,
+	RGB332 = 336660481,
+	XRGB4444 = 353504258,
+	RGB444 = 353504258,
+	XBGR4444 = 357698562,
+	BGR444 = 357698562,
+	XRGB1555 = 353570562,
+	RGB555 = 353570562,
+	XBGR1555 = 357764866,
+	BGR555 = 357764866,
+	ARGB4444 = 355602434,
+	RGBA4444 = 356651010,
+	ABGR4444 = 359796738,
+	BGRA4444 = 360845314,
+	ARGB1555 = 355667970,
+	RGBA5551 = 356782082,
+	ABGR1555 = 359862274,
+	BGRA5551 = 360976386,
+	RGB565 = 353701890,
+	BGR565 = 357896194,
+	RGB24 = 386930691,
+	BGR24 = 390076419,
+	XRGB8888 = 370546692,
+	RGB888 = 370546692,
+	RGBX8888 = 371595268,
+	XBGR8888 = 374740996,
+	BGR888 = 374740996,
+	BGRX8888 = 375789572,
+	ARGB8888 = 372645892,
+	RGBA8888 = 373694468,
+	ABGR8888 = 376840196,
+	BGRA8888 = 377888772,
+	ARGB2101010 = 372711428,
+	RGBA32 = 376840196,
+	ARGB32 = 377888772,
+	BGRA32 = 372645892,
+	ABGR32 = 373694468,
+	YV12 = 842094169,
+	IYUV = 1448433993,
+	YUY2 = 844715353,
+	UYVY = 1498831189,
+	YVYU = 1431918169,
+	NV12 = 842094158,
+	NV21 = 825382478,
+	EXTERNAL_OES = 542328143,
+}
 
 struct Color 
 {
@@ -358,13 +360,15 @@ struct FRect
 	float h;
 }
 
-typedef BlendMode = int;
-const BlendMode BLENDMODE_NONE = 0;
-const BlendMode BLENDMODE_BLEND = 1;
-const BlendMode BLENDMODE_ADD = 2;
-const BlendMode BLENDMODE_MOD = 4;
-const BlendMode BLENDMODE_MUL = 8;
-const BlendMode BLENDMODE_INVALID = 2147483647;
+constdef BlendMode : int
+{
+	NONE = 0;
+	BLEND = 1;
+	ADD = 2;
+	MOD = 4;
+	MUL = 8;
+	INVALID = 2147483647;
+}
 
 enum BlendOperation : int
 {
@@ -432,549 +436,555 @@ struct DisplayMode
 
 alias Window = void;
 
-typedef WindowFlags = int;
-const WindowFlags WINDOW_FULLSCREEN = 1;
-const WindowFlags WINDOW_OPENGL = 2;
-const WindowFlags WINDOW_SHOWN = 4;
-const WindowFlags WINDOW_HIDDEN = 8;
-const WindowFlags WINDOW_BORDERLESS = 16;
-const WindowFlags WINDOW_RESIZABLE = 32;
-const WindowFlags WINDOW_MINIMIZED = 64;
-const WindowFlags WINDOW_MAXIMIZED = 128;
-const WindowFlags WINDOW_MOUSE_GRABBED = 256;
-const WindowFlags WINDOW_INPUT_FOCUS = 512;
-const WindowFlags WINDOW_MOUSE_FOCUS = 1024;
-const WindowFlags WINDOW_FULLSCREEN_DESKTOP = 4097;
-const WindowFlags WINDOW_FOREIGN = 2048;
-const WindowFlags WINDOW_ALLOW_HIGHDPI = 8192;
-const WindowFlags WINDOW_MOUSE_CAPTURE = 16384;
-const WindowFlags WINDOW_ALWAYS_ON_TOP = 32768;
-const WindowFlags WINDOW_SKIP_TASKBAR = 65536;
-const WindowFlags WINDOW_UTILITY = 131072;
-const WindowFlags WINDOW_TOOLTIP = 262144;
-const WindowFlags WINDOW_POPUP_MENU = 524288;
-const WindowFlags WINDOW_KEYBOARD_GRABBED = 1048576;
-const WindowFlags WINDOW_VULKAN = 268435456;
-const WindowFlags WINDOW_METAL = 536870912;
-const WindowFlags WINDOW_INPUT_GRABBED = 256;
+constdef WindowFlags : int
+{
+	FULLSCREEN = 1,
+	OPENGL = 2,
+	SHOWN = 4,
+	HIDDEN = 8,
+	BORDERLESS = 16,
+	RESIZABLE = 32,
+	MINIMIZED = 64,
+	MAXIMIZED = 128,
+	MOUSE_GRABBED = 256,
+	INPUT_FOCUS = 512,
+	MOUSE_FOCUS = 1024,
+	FULLSCREEN_DESKTOP = 4097,
+	FOREIGN = 2048,
+	ALLOW_HIGHDPI = 8192,
+	MOUSE_CAPTURE = 16384,
+	ALWAYS_ON_TOP = 32768,
+	SKIP_TASKBAR = 65536,
+	UTILITY = 131072,
+	TOOLTIP = 262144,
+	POPUP_MENU = 524288,
+	KEYBOARD_GRABBED = 1048576,
+	VULKAN = 268435456,
+	METAL = 536870912,
+	INPUT_GRABBED = 256,
+}
 
-typedef Scancode = int;
+constdef Scancode : int
+{
+	UNKNOWN = 0,
+	A = 4,
+	B = 5,
+	C = 6,
+	D = 7,
+	E = 8,
+	F = 9,
+	G = 10,
+	H = 11,
+	I = 12,
+	J = 13,
+	K = 14,
+	L = 15,
+	M = 16,
+	N = 17,
+	O = 18,
+	P = 19,
+	Q = 20,
+	R = 21,
+	S = 22,
+	T = 23,
+	U = 24,
+	V = 25,
+	W = 26,
+	X = 27,
+	Y = 28,
+	Z = 29,
+	1 = 30,
+	2 = 31,
+	3 = 32,
+	4 = 33,
+	5 = 34,
+	6 = 35,
+	7 = 36,
+	8 = 37,
+	9 = 38,
+	0 = 39,
+	RETURN = 40,
+	ESCAPE = 41,
+	BACKSPACE = 42,
+	TAB = 43,
+	SPACE = 44,
+	MINUS = 45,
+	EQUALS = 46,
+	LEFTBRACKET = 47,
+	RIGHTBRACKET = 48,
+	BACKSLASH = 49,
+	NONUSHASH = 50,
+	SEMICOLON = 51,
+	APOSTROPHE = 52,
+	GRAVE = 53,
+	COMMA = 54,
+	PERIOD = 55,
+	SLASH = 56,
+	CAPSLOCK = 57,
+	F1 = 58,
+	F2 = 59,
+	F3 = 60,
+	F4 = 61,
+	F5 = 62,
+	F6 = 63,
+	F7 = 64,
+	F8 = 65,
+	F9 = 66,
+	F10 = 67,
+	F11 = 68,
+	F12 = 69,
+	PRINTSCREEN = 70,
+	SCROLLLOCK = 71,
+	PAUSE = 72,
+	INSERT = 73,
+	HOME = 74,
+	PAGEUP = 75,
+	DELETE = 76,
+	END = 77,
+	PAGEDOWN = 78,
+	RIGHT = 79,
+	LEFT = 80,
+	DOWN = 81,
+	UP = 82,
+	NUMLOCKCLEAR = 83,
+	KP_DIVIDE = 84,
+	KP_MULTIPLY = 85,
+	KP_MINUS = 86,
+	KP_PLUS = 87,
+	KP_ENTER = 88,
+	KP_1 = 89,
+	KP_2 = 90,
+	KP_3 = 91,
+	KP_4 = 92,
+	KP_5 = 93,
+	KP_6 = 94,
+	KP_7 = 95,
+	KP_8 = 96,
+	KP_9 = 97,
+	KP_0 = 98,
+	KP_PERIOD = 99,
+	NONUSBACKSLASH = 100,
+	APPLICATION = 101,
+	POWER = 102,
+	KP_EQUALS = 103,
+	F13 = 104,
+	F14 = 105,
+	F15 = 106,
+	F16 = 107,
+	F17 = 108,
+	F18 = 109,
+	F19 = 110,
+	F20 = 111,
+	F21 = 112,
+	F22 = 113,
+	F23 = 114,
+	F24 = 115,
+	EXECUTE = 116,
+	HELP = 117,
+	MENU = 118,
+	SELECT = 119,
+	STOP = 120,
+	AGAIN = 121,
+	UNDO = 122,
+	CUT = 123,
+	COPY = 124,
+	PASTE = 125,
+	FIND = 126,
+	MUTE = 127,
+	VOLUMEUP = 128,
+	VOLUMEDOWN = 129,
+	KP_COMMA = 133,
+	KP_EQUALSAS400 = 134,
+	INTERNATIONAL1 = 135,
+	INTERNATIONAL2 = 136,
+	INTERNATIONAL3 = 137,
+	INTERNATIONAL4 = 138,
+	INTERNATIONAL5 = 139,
+	INTERNATIONAL6 = 140,
+	INTERNATIONAL7 = 141,
+	INTERNATIONAL8 = 142,
+	INTERNATIONAL9 = 143,
+	LANG1 = 144,
+	LANG2 = 145,
+	LANG3 = 146,
+	LANG4 = 147,
+	LANG5 = 148,
+	LANG6 = 149,
+	LANG7 = 150,
+	LANG8 = 151,
+	LANG9 = 152,
+	ALTERASE = 153,
+	SYSREQ = 154,
+	CANCEL = 155,
+	CLEAR = 156,
+	PRIOR = 157,
+	RETURN2 = 158,
+	SEPARATOR = 159,
+	OUT = 160,
+	OPER = 161,
+	CLEARAGAIN = 162,
+	CRSEL = 163,
+	EXSEL = 164,
+	KP_00 = 176,
+	KP_000 = 177,
+	THOUSANDSSEPARATOR = 178,
+	DECIMALSEPARATOR = 179,
+	CURRENCYUNIT = 180,
+	CURRENCYSUBUNIT = 181,
+	KP_LEFTPAREN = 182,
+	KP_RIGHTPAREN = 183,
+	KP_LEFTBRACE = 184,
+	KP_RIGHTBRACE = 185,
+	KP_TAB = 186,
+	KP_BACKSPACE = 187,
+	KP_A = 188,
+	KP_B = 189,
+	KP_C = 190,
+	KP_D = 191,
+	KP_E = 192,
+	KP_F = 193,
+	KP_XOR = 194,
+	KP_POWER = 195,
+	KP_PERCENT = 196,
+	KP_LESS = 197,
+	KP_GREATER = 198,
+	KP_AMPERSAND = 199,
+	KP_DBLAMPERSAND = 200,
+	KP_VERTICALBAR = 201,
+	KP_DBLVERTICALBAR = 202,
+	KP_COLON = 203,
+	KP_HASH = 204,
+	KP_SPACE = 205,
+	KP_AT = 206,
+	KP_EXCLAM = 207,
+	KP_MEMSTORE = 208,
+	KP_MEMRECALL = 209,
+	KP_MEMCLEAR = 210,
+	KP_MEMADD = 211,
+	KP_MEMSUBTRACT = 212,
+	KP_MEMMULTIPLY = 213,
+	KP_MEMDIVIDE = 214,
+	KP_PLUSMINUS = 215,
+	KP_CLEAR = 216,
+	KP_CLEARENTRY = 217,
+	KP_BINARY = 218,
+	KP_OCTAL = 219,
+	KP_DECIMAL = 220,
+	KP_HEXADECIMAL = 221,
+	LCTRL = 224,
+	LSHIFT = 225,
+	LALT = 226,
+	LGUI = 227,
+	RCTRL = 228,
+	RSHIFT = 229,
+	RALT = 230,
+	RGUI = 231,
+	MODE = 257,
+	AUDIONEXT = 258,
+	AUDIOPREV = 259,
+	AUDIOSTOP = 260,
+	AUDIOPLAY = 261,
+	AUDIOMUTE = 262,
+	MEDIASELECT = 263,
+	WWW = 264,
+	MAIL = 265,
+	CALCULATOR = 266,
+	COMPUTER = 267,
+	AC_SEARCH = 268,
+	AC_HOME = 269,
+	AC_BACK = 270,
+	AC_FORWARD = 271,
+	AC_STOP = 272,
+	AC_REFRESH = 273,
+	AC_BOOKMARKS = 274,
+	BRIGHTNESSDOWN = 275,
+	BRIGHTNESSUP = 276,
+	DISPLAYSWITCH = 277,
+	KBDILLUMTOGGLE = 278,
+	KBDILLUMDOWN = 279,
+	KBDILLUMUP = 280,
+	EJECT = 281,
+	SLEEP = 282,
+	APP1 = 283,
+	APP2 = 284,
+	AUDIOREWIND = 285,
+	AUDIOFASTFORWARD = 286,
+	SOFTLEFT = 287,
+	SOFTRIGHT = 288,
+	CALL = 289,
+	ENDCALL = 290,
+	NUM_SCANCODES = 512,
+}
 
-const Scancode SCANCODE_UNKNOWN = 0;
-const Scancode SCANCODE_A = 4;
-const Scancode SCANCODE_B = 5;
-const Scancode SCANCODE_C = 6;
-const Scancode SCANCODE_D = 7;
-const Scancode SCANCODE_E = 8;
-const Scancode SCANCODE_F = 9;
-const Scancode SCANCODE_G = 10;
-const Scancode SCANCODE_H = 11;
-const Scancode SCANCODE_I = 12;
-const Scancode SCANCODE_J = 13;
-const Scancode SCANCODE_K = 14;
-const Scancode SCANCODE_L = 15;
-const Scancode SCANCODE_M = 16;
-const Scancode SCANCODE_N = 17;
-const Scancode SCANCODE_O = 18;
-const Scancode SCANCODE_P = 19;
-const Scancode SCANCODE_Q = 20;
-const Scancode SCANCODE_R = 21;
-const Scancode SCANCODE_S = 22;
-const Scancode SCANCODE_T = 23;
-const Scancode SCANCODE_U = 24;
-const Scancode SCANCODE_V = 25;
-const Scancode SCANCODE_W = 26;
-const Scancode SCANCODE_X = 27;
-const Scancode SCANCODE_Y = 28;
-const Scancode SCANCODE_Z = 29;
-const Scancode SCANCODE_1 = 30;
-const Scancode SCANCODE_2 = 31;
-const Scancode SCANCODE_3 = 32;
-const Scancode SCANCODE_4 = 33;
-const Scancode SCANCODE_5 = 34;
-const Scancode SCANCODE_6 = 35;
-const Scancode SCANCODE_7 = 36;
-const Scancode SCANCODE_8 = 37;
-const Scancode SCANCODE_9 = 38;
-const Scancode SCANCODE_0 = 39;
-const Scancode SCANCODE_RETURN = 40;
-const Scancode SCANCODE_ESCAPE = 41;
-const Scancode SCANCODE_BACKSPACE = 42;
-const Scancode SCANCODE_TAB = 43;
-const Scancode SCANCODE_SPACE = 44;
-const Scancode SCANCODE_MINUS = 45;
-const Scancode SCANCODE_EQUALS = 46;
-const Scancode SCANCODE_LEFTBRACKET = 47;
-const Scancode SCANCODE_RIGHTBRACKET = 48;
-const Scancode SCANCODE_BACKSLASH = 49;
-const Scancode SCANCODE_NONUSHASH = 50;
-const Scancode SCANCODE_SEMICOLON = 51;
-const Scancode SCANCODE_APOSTROPHE = 52;
-const Scancode SCANCODE_GRAVE = 53;
-const Scancode SCANCODE_COMMA = 54;
-const Scancode SCANCODE_PERIOD = 55;
-const Scancode SCANCODE_SLASH = 56;
-const Scancode SCANCODE_CAPSLOCK = 57;
-const Scancode SCANCODE_F1 = 58;
-const Scancode SCANCODE_F2 = 59;
-const Scancode SCANCODE_F3 = 60;
-const Scancode SCANCODE_F4 = 61;
-const Scancode SCANCODE_F5 = 62;
-const Scancode SCANCODE_F6 = 63;
-const Scancode SCANCODE_F7 = 64;
-const Scancode SCANCODE_F8 = 65;
-const Scancode SCANCODE_F9 = 66;
-const Scancode SCANCODE_F10 = 67;
-const Scancode SCANCODE_F11 = 68;
-const Scancode SCANCODE_F12 = 69;
-const Scancode SCANCODE_PRINTSCREEN = 70;
-const Scancode SCANCODE_SCROLLLOCK = 71;
-const Scancode SCANCODE_PAUSE = 72;
-const Scancode SCANCODE_INSERT = 73;
-const Scancode SCANCODE_HOME = 74;
-const Scancode SCANCODE_PAGEUP = 75;
-const Scancode SCANCODE_DELETE = 76;
-const Scancode SCANCODE_END = 77;
-const Scancode SCANCODE_PAGEDOWN = 78;
-const Scancode SCANCODE_RIGHT = 79;
-const Scancode SCANCODE_LEFT = 80;
-const Scancode SCANCODE_DOWN = 81;
-const Scancode SCANCODE_UP = 82;
-const Scancode SCANCODE_NUMLOCKCLEAR = 83;
-const Scancode SCANCODE_KP_DIVIDE = 84;
-const Scancode SCANCODE_KP_MULTIPLY = 85;
-const Scancode SCANCODE_KP_MINUS = 86;
-const Scancode SCANCODE_KP_PLUS = 87;
-const Scancode SCANCODE_KP_ENTER = 88;
-const Scancode SCANCODE_KP_1 = 89;
-const Scancode SCANCODE_KP_2 = 90;
-const Scancode SCANCODE_KP_3 = 91;
-const Scancode SCANCODE_KP_4 = 92;
-const Scancode SCANCODE_KP_5 = 93;
-const Scancode SCANCODE_KP_6 = 94;
-const Scancode SCANCODE_KP_7 = 95;
-const Scancode SCANCODE_KP_8 = 96;
-const Scancode SCANCODE_KP_9 = 97;
-const Scancode SCANCODE_KP_0 = 98;
-const Scancode SCANCODE_KP_PERIOD = 99;
-const Scancode SCANCODE_NONUSBACKSLASH = 100;
-const Scancode SCANCODE_APPLICATION = 101;
-const Scancode SCANCODE_POWER = 102;
-const Scancode SCANCODE_KP_EQUALS = 103;
-const Scancode SCANCODE_F13 = 104;
-const Scancode SCANCODE_F14 = 105;
-const Scancode SCANCODE_F15 = 106;
-const Scancode SCANCODE_F16 = 107;
-const Scancode SCANCODE_F17 = 108;
-const Scancode SCANCODE_F18 = 109;
-const Scancode SCANCODE_F19 = 110;
-const Scancode SCANCODE_F20 = 111;
-const Scancode SCANCODE_F21 = 112;
-const Scancode SCANCODE_F22 = 113;
-const Scancode SCANCODE_F23 = 114;
-const Scancode SCANCODE_F24 = 115;
-const Scancode SCANCODE_EXECUTE = 116;
-const Scancode SCANCODE_HELP = 117;
-const Scancode SCANCODE_MENU = 118;
-const Scancode SCANCODE_SELECT = 119;
-const Scancode SCANCODE_STOP = 120;
-const Scancode SCANCODE_AGAIN = 121;
-const Scancode SCANCODE_UNDO = 122;
-const Scancode SCANCODE_CUT = 123;
-const Scancode SCANCODE_COPY = 124;
-const Scancode SCANCODE_PASTE = 125;
-const Scancode SCANCODE_FIND = 126;
-const Scancode SCANCODE_MUTE = 127;
-const Scancode SCANCODE_VOLUMEUP = 128;
-const Scancode SCANCODE_VOLUMEDOWN = 129;
-const Scancode SCANCODE_KP_COMMA = 133;
-const Scancode SCANCODE_KP_EQUALSAS400 = 134;
-const Scancode SCANCODE_INTERNATIONAL1 = 135;
-const Scancode SCANCODE_INTERNATIONAL2 = 136;
-const Scancode SCANCODE_INTERNATIONAL3 = 137;
-const Scancode SCANCODE_INTERNATIONAL4 = 138;
-const Scancode SCANCODE_INTERNATIONAL5 = 139;
-const Scancode SCANCODE_INTERNATIONAL6 = 140;
-const Scancode SCANCODE_INTERNATIONAL7 = 141;
-const Scancode SCANCODE_INTERNATIONAL8 = 142;
-const Scancode SCANCODE_INTERNATIONAL9 = 143;
-const Scancode SCANCODE_LANG1 = 144;
-const Scancode SCANCODE_LANG2 = 145;
-const Scancode SCANCODE_LANG3 = 146;
-const Scancode SCANCODE_LANG4 = 147;
-const Scancode SCANCODE_LANG5 = 148;
-const Scancode SCANCODE_LANG6 = 149;
-const Scancode SCANCODE_LANG7 = 150;
-const Scancode SCANCODE_LANG8 = 151;
-const Scancode SCANCODE_LANG9 = 152;
-const Scancode SCANCODE_ALTERASE = 153;
-const Scancode SCANCODE_SYSREQ = 154;
-const Scancode SCANCODE_CANCEL = 155;
-const Scancode SCANCODE_CLEAR = 156;
-const Scancode SCANCODE_PRIOR = 157;
-const Scancode SCANCODE_RETURN2 = 158;
-const Scancode SCANCODE_SEPARATOR = 159;
-const Scancode SCANCODE_OUT = 160;
-const Scancode SCANCODE_OPER = 161;
-const Scancode SCANCODE_CLEARAGAIN = 162;
-const Scancode SCANCODE_CRSEL = 163;
-const Scancode SCANCODE_EXSEL = 164;
-const Scancode SCANCODE_KP_00 = 176;
-const Scancode SCANCODE_KP_000 = 177;
-const Scancode SCANCODE_THOUSANDSSEPARATOR = 178;
-const Scancode SCANCODE_DECIMALSEPARATOR = 179;
-const Scancode SCANCODE_CURRENCYUNIT = 180;
-const Scancode SCANCODE_CURRENCYSUBUNIT = 181;
-const Scancode SCANCODE_KP_LEFTPAREN = 182;
-const Scancode SCANCODE_KP_RIGHTPAREN = 183;
-const Scancode SCANCODE_KP_LEFTBRACE = 184;
-const Scancode SCANCODE_KP_RIGHTBRACE = 185;
-const Scancode SCANCODE_KP_TAB = 186;
-const Scancode SCANCODE_KP_BACKSPACE = 187;
-const Scancode SCANCODE_KP_A = 188;
-const Scancode SCANCODE_KP_B = 189;
-const Scancode SCANCODE_KP_C = 190;
-const Scancode SCANCODE_KP_D = 191;
-const Scancode SCANCODE_KP_E = 192;
-const Scancode SCANCODE_KP_F = 193;
-const Scancode SCANCODE_KP_XOR = 194;
-const Scancode SCANCODE_KP_POWER = 195;
-const Scancode SCANCODE_KP_PERCENT = 196;
-const Scancode SCANCODE_KP_LESS = 197;
-const Scancode SCANCODE_KP_GREATER = 198;
-const Scancode SCANCODE_KP_AMPERSAND = 199;
-const Scancode SCANCODE_KP_DBLAMPERSAND = 200;
-const Scancode SCANCODE_KP_VERTICALBAR = 201;
-const Scancode SCANCODE_KP_DBLVERTICALBAR = 202;
-const Scancode SCANCODE_KP_COLON = 203;
-const Scancode SCANCODE_KP_HASH = 204;
-const Scancode SCANCODE_KP_SPACE = 205;
-const Scancode SCANCODE_KP_AT = 206;
-const Scancode SCANCODE_KP_EXCLAM = 207;
-const Scancode SCANCODE_KP_MEMSTORE = 208;
-const Scancode SCANCODE_KP_MEMRECALL = 209;
-const Scancode SCANCODE_KP_MEMCLEAR = 210;
-const Scancode SCANCODE_KP_MEMADD = 211;
-const Scancode SCANCODE_KP_MEMSUBTRACT = 212;
-const Scancode SCANCODE_KP_MEMMULTIPLY = 213;
-const Scancode SCANCODE_KP_MEMDIVIDE = 214;
-const Scancode SCANCODE_KP_PLUSMINUS = 215;
-const Scancode SCANCODE_KP_CLEAR = 216;
-const Scancode SCANCODE_KP_CLEARENTRY = 217;
-const Scancode SCANCODE_KP_BINARY = 218;
-const Scancode SCANCODE_KP_OCTAL = 219;
-const Scancode SCANCODE_KP_DECIMAL = 220;
-const Scancode SCANCODE_KP_HEXADECIMAL = 221;
-const Scancode SCANCODE_LCTRL = 224;
-const Scancode SCANCODE_LSHIFT = 225;
-const Scancode SCANCODE_LALT = 226;
-const Scancode SCANCODE_LGUI = 227;
-const Scancode SCANCODE_RCTRL = 228;
-const Scancode SCANCODE_RSHIFT = 229;
-const Scancode SCANCODE_RALT = 230;
-const Scancode SCANCODE_RGUI = 231;
-const Scancode SCANCODE_MODE = 257;
-const Scancode SCANCODE_AUDIONEXT = 258;
-const Scancode SCANCODE_AUDIOPREV = 259;
-const Scancode SCANCODE_AUDIOSTOP = 260;
-const Scancode SCANCODE_AUDIOPLAY = 261;
-const Scancode SCANCODE_AUDIOMUTE = 262;
-const Scancode SCANCODE_MEDIASELECT = 263;
-const Scancode SCANCODE_WWW = 264;
-const Scancode SCANCODE_MAIL = 265;
-const Scancode SCANCODE_CALCULATOR = 266;
-const Scancode SCANCODE_COMPUTER = 267;
-const Scancode SCANCODE_AC_SEARCH = 268;
-const Scancode SCANCODE_AC_HOME = 269;
-const Scancode SCANCODE_AC_BACK = 270;
-const Scancode SCANCODE_AC_FORWARD = 271;
-const Scancode SCANCODE_AC_STOP = 272;
-const Scancode SCANCODE_AC_REFRESH = 273;
-const Scancode SCANCODE_AC_BOOKMARKS = 274;
-const Scancode SCANCODE_BRIGHTNESSDOWN = 275;
-const Scancode SCANCODE_BRIGHTNESSUP = 276;
-const Scancode SCANCODE_DISPLAYSWITCH = 277;
-const Scancode SCANCODE_KBDILLUMTOGGLE = 278;
-const Scancode SCANCODE_KBDILLUMDOWN = 279;
-const Scancode SCANCODE_KBDILLUMUP = 280;
-const Scancode SCANCODE_EJECT = 281;
-const Scancode SCANCODE_SLEEP = 282;
-const Scancode SCANCODE_APP1 = 283;
-const Scancode SCANCODE_APP2 = 284;
-const Scancode SCANCODE_AUDIOREWIND = 285;
-const Scancode SCANCODE_AUDIOFASTFORWARD = 286;
-const Scancode SCANCODE_SOFTLEFT = 287;
-const Scancode SCANCODE_SOFTRIGHT = 288;
-const Scancode SCANCODE_CALL = 289;
-const Scancode SCANCODE_ENDCALL = 290;
-const Scancode NUM_SCANCODES = 512;
+constdef Keycode : int
+{
+	UNKNOWN = 0,
+	RETURN = 13,
+	ESCAPE = 27,
+	BACKSPACE = 8,
+	TAB = 9,
+	SPACE = 32,
+	EXCLAIM = 33,
+	QUOTEDBL = 34,
+	HASH = 35,
+	PERCENT = 37,
+	DOLLAR = 36,
+	AMPERSAND = 38,
+	QUOTE = 39,
+	LEFTPAREN = 40,
+	RIGHTPAREN = 41,
+	ASTERISK = 42,
+	PLUS = 43,
+	COMMA = 44,
+	MINUS = 45,
+	PERIOD = 46,
+	SLASH = 47,
+	0 = 48,
+	1 = 49,
+	2 = 50,
+	3 = 51,
+	4 = 52,
+	5 = 53,
+	6 = 54,
+	7 = 55,
+	8 = 56,
+	9 = 57,
+	COLON = 58,
+	SEMICOLON = 59,
+	LESS = 60,
+	EQUALS = 61,
+	GREATER = 62,
+	QUESTION = 63,
+	AT = 64,
+	LEFTBRACKET = 91,
+	BACKSLASH = 92,
+	RIGHTBRACKET = 93,
+	CARET = 94,
+	UNDERSCORE = 95,
+	BACKQUOTE = 96,
+	A = 97,
+	B = 98,
+	C = 99,
+	D = 100,
+	E = 101,
+	F = 102,
+	G = 103,
+	H = 104,
+	I = 105,
+	J = 106,
+	K = 107,
+	L = 108,
+	M = 109,
+	N = 110,
+	O = 111,
+	P = 112,
+	Q = 113,
+	R = 114,
+	S = 115,
+	T = 116,
+	U = 117,
+	V = 118,
+	W = 119,
+	X = 120,
+	Y = 121,
+	Z = 122,
+	CAPSLOCK = 1073741881,
+	F1 = 1073741882,
+	F2 = 1073741883,
+	F3 = 1073741884,
+	F4 = 1073741885,
+	F5 = 1073741886,
+	F6 = 1073741887,
+	F7 = 1073741888,
+	F8 = 1073741889,
+	F9 = 1073741890,
+	F10 = 1073741891,
+	F11 = 1073741892,
+	F12 = 1073741893,
+	PRINTSCREEN = 1073741894,
+	SCROLLLOCK = 1073741895,
+	PAUSE = 1073741896,
+	INSERT = 1073741897,
+	HOME = 1073741898,
+	PAGEUP = 1073741899,
+	DELETE = 127,
+	END = 1073741901,
+	PAGEDOWN = 1073741902,
+	RIGHT = 1073741903,
+	LEFT = 1073741904,
+	DOWN = 1073741905,
+	UP = 1073741906,
+	NUMLOCKCLEAR = 1073741907,
+	KP_DIVIDE = 1073741908,
+	KP_MULTIPLY = 1073741909,
+	KP_MINUS = 1073741910,
+	KP_PLUS = 1073741911,
+	KP_ENTER = 1073741912,
+	KP_1 = 1073741913,
+	KP_2 = 1073741914,
+	KP_3 = 1073741915,
+	KP_4 = 1073741916,
+	KP_5 = 1073741917,
+	KP_6 = 1073741918,
+	KP_7 = 1073741919,
+	KP_8 = 1073741920,
+	KP_9 = 1073741921,
+	KP_0 = 1073741922,
+	KP_PERIOD = 1073741923,
+	APPLICATION = 1073741925,
+	POWER = 1073741926,
+	KP_EQUALS = 1073741927,
+	F13 = 1073741928,
+	F14 = 1073741929,
+	F15 = 1073741930,
+	F16 = 1073741931,
+	F17 = 1073741932,
+	F18 = 1073741933,
+	F19 = 1073741934,
+	F20 = 1073741935,
+	F21 = 1073741936,
+	F22 = 1073741937,
+	F23 = 1073741938,
+	F24 = 1073741939,
+	EXECUTE = 1073741940,
+	HELP = 1073741941,
+	MENU = 1073741942,
+	SELECT = 1073741943,
+	STOP = 1073741944,
+	AGAIN = 1073741945,
+	UNDO = 1073741946,
+	CUT = 1073741947,
+	COPY = 1073741948,
+	PASTE = 1073741949,
+	FIND = 1073741950,
+	MUTE = 1073741951,
+	VOLUMEUP = 1073741952,
+	VOLUMEDOWN = 1073741953,
+	KP_COMMA = 1073741957,
+	KP_EQUALSAS400 = 1073741958,
+	ALTERASE = 1073741977,
+	SYSREQ = 1073741978,
+	CANCEL = 1073741979,
+	CLEAR = 1073741980,
+	PRIOR = 1073741981,
+	RETURN2 = 1073741982,
+	SEPARATOR = 1073741983,
+	OUT = 1073741984,
+	OPER = 1073741985,
+	CLEARAGAIN = 1073741986,
+	CRSEL = 1073741987,
+	EXSEL = 1073741988,
+	KP_00 = 1073742000,
+	KP_000 = 1073742001,
+	THOUSANDSSEPARATOR = 1073742002,
+	DECIMALSEPARATOR = 1073742003,
+	CURRENCYUNIT = 1073742004,
+	CURRENCYSUBUNIT = 1073742005,
+	KP_LEFTPAREN = 1073742006,
+	KP_RIGHTPAREN = 1073742007,
+	KP_LEFTBRACE = 1073742008,
+	KP_RIGHTBRACE = 1073742009,
+	KP_TAB = 1073742010,
+	KP_BACKSPACE = 1073742011,
+	KP_A = 1073742012,
+	KP_B = 1073742013,
+	KP_C = 1073742014,
+	KP_D = 1073742015,
+	KP_E = 1073742016,
+	KP_F = 1073742017,
+	KP_XOR = 1073742018,
+	KP_POWER = 1073742019,
+	KP_PERCENT = 1073742020,
+	KP_LESS = 1073742021,
+	KP_GREATER = 1073742022,
+	KP_AMPERSAND = 1073742023,
+	KP_DBLAMPERSAND = 1073742024,
+	KP_VERTICALBAR = 1073742025,
+	KP_DBLVERTICALBAR = 1073742026,
+	KP_COLON = 1073742027,
+	KP_HASH = 1073742028,
+	KP_SPACE = 1073742029,
+	KP_AT = 1073742030,
+	KP_EXCLAM = 1073742031,
+	KP_MEMSTORE = 1073742032,
+	KP_MEMRECALL = 1073742033,
+	KP_MEMCLEAR = 1073742034,
+	KP_MEMADD = 1073742035,
+	KP_MEMSUBTRACT = 1073742036,
+	KP_MEMMULTIPLY = 1073742037,
+	KP_MEMDIVIDE = 1073742038,
+	KP_PLUSMINUS = 1073742039,
+	KP_CLEAR = 1073742040,
+	KP_CLEARENTRY = 1073742041,
+	KP_BINARY = 1073742042,
+	KP_OCTAL = 1073742043,
+	KP_DECIMAL = 1073742044,
+	KP_HEXADECIMAL = 1073742045,
+	LCTRL = 1073742048,
+	LSHIFT = 1073742049,
+	LALT = 1073742050,
+	LGUI = 1073742051,
+	RCTRL = 1073742052,
+	RSHIFT = 1073742053,
+	RALT = 1073742054,
+	RGUI = 1073742055,
+	MODE = 1073742081,
+	AUDIONEXT = 1073742082,
+	AUDIOPREV = 1073742083,
+	AUDIOSTOP = 1073742084,
+	AUDIOPLAY = 1073742085,
+	AUDIOMUTE = 1073742086,
+	MEDIASELECT = 1073742087,
+	WWW = 1073742088,
+	MAIL = 1073742089,
+	CALCULATOR = 1073742090,
+	COMPUTER = 1073742091,
+	AC_SEARCH = 1073742092,
+	AC_HOME = 1073742093,
+	AC_BACK = 1073742094,
+	AC_FORWARD = 1073742095,
+	AC_STOP = 1073742096,
+	AC_REFRESH = 1073742097,
+	AC_BOOKMARKS = 1073742098,
+	BRIGHTNESSDOWN = 1073742099,
+	BRIGHTNESSUP = 1073742100,
+	DISPLAYSWITCH = 1073742101,
+	KBDILLUMTOGGLE = 1073742102,
+	KBDILLUMDOWN = 1073742103,
+	KBDILLUMUP = 1073742104,
+	EJECT = 1073742105,
+	SLEEP = 1073742106,
+	APP1 = 1073742107,
+	APP2 = 1073742108,
+	AUDIOREWIND = 1073742109,
+	AUDIOFASTFORWARD = 1073742110,
+	SOFTLEFT = 1073742111,
+	SOFTRIGHT = 1073742112,
+	CALL = 1073742113,
+	ENDCALL = 1073742114,
+}
 
-typedef Keycode = int;
-const Keycode SDLK_UNKNOWN = 0;
-const Keycode SDLK_RETURN = 13;
-const Keycode SDLK_ESCAPE = 27;
-const Keycode SDLK_BACKSPACE = 8;
-const Keycode SDLK_TAB = 9;
-const Keycode SDLK_SPACE = 32;
-const Keycode SDLK_EXCLAIM = 33;
-const Keycode SDLK_QUOTEDBL = 34;
-const Keycode SDLK_HASH = 35;
-const Keycode SDLK_PERCENT = 37;
-const Keycode SDLK_DOLLAR = 36;
-const Keycode SDLK_AMPERSAND = 38;
-const Keycode SDLK_QUOTE = 39;
-const Keycode SDLK_LEFTPAREN = 40;
-const Keycode SDLK_RIGHTPAREN = 41;
-const Keycode SDLK_ASTERISK = 42;
-const Keycode SDLK_PLUS = 43;
-const Keycode SDLK_COMMA = 44;
-const Keycode SDLK_MINUS = 45;
-const Keycode SDLK_PERIOD = 46;
-const Keycode SDLK_SLASH = 47;
-const Keycode SDLK_0 = 48;
-const Keycode SDLK_1 = 49;
-const Keycode SDLK_2 = 50;
-const Keycode SDLK_3 = 51;
-const Keycode SDLK_4 = 52;
-const Keycode SDLK_5 = 53;
-const Keycode SDLK_6 = 54;
-const Keycode SDLK_7 = 55;
-const Keycode SDLK_8 = 56;
-const Keycode SDLK_9 = 57;
-const Keycode SDLK_COLON = 58;
-const Keycode SDLK_SEMICOLON = 59;
-const Keycode SDLK_LESS = 60;
-const Keycode SDLK_EQUALS = 61;
-const Keycode SDLK_GREATER = 62;
-const Keycode SDLK_QUESTION = 63;
-const Keycode SDLK_AT = 64;
-const Keycode SDLK_LEFTBRACKET = 91;
-const Keycode SDLK_BACKSLASH = 92;
-const Keycode SDLK_RIGHTBRACKET = 93;
-const Keycode SDLK_CARET = 94;
-const Keycode SDLK_UNDERSCORE = 95;
-const Keycode SDLK_BACKQUOTE = 96;
-const Keycode SDLK_A = 97;
-const Keycode SDLK_B = 98;
-const Keycode SDLK_C = 99;
-const Keycode SDLK_D = 100;
-const Keycode SDLK_E = 101;
-const Keycode SDLK_F = 102;
-const Keycode SDLK_G = 103;
-const Keycode SDLK_H = 104;
-const Keycode SDLK_I = 105;
-const Keycode SDLK_J = 106;
-const Keycode SDLK_K = 107;
-const Keycode SDLK_L = 108;
-const Keycode SDLK_M = 109;
-const Keycode SDLK_N = 110;
-const Keycode SDLK_O = 111;
-const Keycode SDLK_P = 112;
-const Keycode SDLK_Q = 113;
-const Keycode SDLK_R = 114;
-const Keycode SDLK_S = 115;
-const Keycode SDLK_T = 116;
-const Keycode SDLK_U = 117;
-const Keycode SDLK_V = 118;
-const Keycode SDLK_W = 119;
-const Keycode SDLK_X = 120;
-const Keycode SDLK_Y = 121;
-const Keycode SDLK_Z = 122;
-const Keycode SDLK_CAPSLOCK = 1073741881;
-const Keycode SDLK_F1 = 1073741882;
-const Keycode SDLK_F2 = 1073741883;
-const Keycode SDLK_F3 = 1073741884;
-const Keycode SDLK_F4 = 1073741885;
-const Keycode SDLK_F5 = 1073741886;
-const Keycode SDLK_F6 = 1073741887;
-const Keycode SDLK_F7 = 1073741888;
-const Keycode SDLK_F8 = 1073741889;
-const Keycode SDLK_F9 = 1073741890;
-const Keycode SDLK_F10 = 1073741891;
-const Keycode SDLK_F11 = 1073741892;
-const Keycode SDLK_F12 = 1073741893;
-const Keycode SDLK_PRINTSCREEN = 1073741894;
-const Keycode SDLK_SCROLLLOCK = 1073741895;
-const Keycode SDLK_PAUSE = 1073741896;
-const Keycode SDLK_INSERT = 1073741897;
-const Keycode SDLK_HOME = 1073741898;
-const Keycode SDLK_PAGEUP = 1073741899;
-const Keycode SDLK_DELETE = 127;
-const Keycode SDLK_END = 1073741901;
-const Keycode SDLK_PAGEDOWN = 1073741902;
-const Keycode SDLK_RIGHT = 1073741903;
-const Keycode SDLK_LEFT = 1073741904;
-const Keycode SDLK_DOWN = 1073741905;
-const Keycode SDLK_UP = 1073741906;
-const Keycode SDLK_NUMLOCKCLEAR = 1073741907;
-const Keycode SDLK_KP_DIVIDE = 1073741908;
-const Keycode SDLK_KP_MULTIPLY = 1073741909;
-const Keycode SDLK_KP_MINUS = 1073741910;
-const Keycode SDLK_KP_PLUS = 1073741911;
-const Keycode SDLK_KP_ENTER = 1073741912;
-const Keycode SDLK_KP_1 = 1073741913;
-const Keycode SDLK_KP_2 = 1073741914;
-const Keycode SDLK_KP_3 = 1073741915;
-const Keycode SDLK_KP_4 = 1073741916;
-const Keycode SDLK_KP_5 = 1073741917;
-const Keycode SDLK_KP_6 = 1073741918;
-const Keycode SDLK_KP_7 = 1073741919;
-const Keycode SDLK_KP_8 = 1073741920;
-const Keycode SDLK_KP_9 = 1073741921;
-const Keycode SDLK_KP_0 = 1073741922;
-const Keycode SDLK_KP_PERIOD = 1073741923;
-const Keycode SDLK_APPLICATION = 1073741925;
-const Keycode SDLK_POWER = 1073741926;
-const Keycode SDLK_KP_EQUALS = 1073741927;
-const Keycode SDLK_F13 = 1073741928;
-const Keycode SDLK_F14 = 1073741929;
-const Keycode SDLK_F15 = 1073741930;
-const Keycode SDLK_F16 = 1073741931;
-const Keycode SDLK_F17 = 1073741932;
-const Keycode SDLK_F18 = 1073741933;
-const Keycode SDLK_F19 = 1073741934;
-const Keycode SDLK_F20 = 1073741935;
-const Keycode SDLK_F21 = 1073741936;
-const Keycode SDLK_F22 = 1073741937;
-const Keycode SDLK_F23 = 1073741938;
-const Keycode SDLK_F24 = 1073741939;
-const Keycode SDLK_EXECUTE = 1073741940;
-const Keycode SDLK_HELP = 1073741941;
-const Keycode SDLK_MENU = 1073741942;
-const Keycode SDLK_SELECT = 1073741943;
-const Keycode SDLK_STOP = 1073741944;
-const Keycode SDLK_AGAIN = 1073741945;
-const Keycode SDLK_UNDO = 1073741946;
-const Keycode SDLK_CUT = 1073741947;
-const Keycode SDLK_COPY = 1073741948;
-const Keycode SDLK_PASTE = 1073741949;
-const Keycode SDLK_FIND = 1073741950;
-const Keycode SDLK_MUTE = 1073741951;
-const Keycode SDLK_VOLUMEUP = 1073741952;
-const Keycode SDLK_VOLUMEDOWN = 1073741953;
-const Keycode SDLK_KP_COMMA = 1073741957;
-const Keycode SDLK_KP_EQUALSAS400 = 1073741958;
-const Keycode SDLK_ALTERASE = 1073741977;
-const Keycode SDLK_SYSREQ = 1073741978;
-const Keycode SDLK_CANCEL = 1073741979;
-const Keycode SDLK_CLEAR = 1073741980;
-const Keycode SDLK_PRIOR = 1073741981;
-const Keycode SDLK_RETURN2 = 1073741982;
-const Keycode SDLK_SEPARATOR = 1073741983;
-const Keycode SDLK_OUT = 1073741984;
-const Keycode SDLK_OPER = 1073741985;
-const Keycode SDLK_CLEARAGAIN = 1073741986;
-const Keycode SDLK_CRSEL = 1073741987;
-const Keycode SDLK_EXSEL = 1073741988;
-const Keycode SDLK_KP_00 = 1073742000;
-const Keycode SDLK_KP_000 = 1073742001;
-const Keycode SDLK_THOUSANDSSEPARATOR = 1073742002;
-const Keycode SDLK_DECIMALSEPARATOR = 1073742003;
-const Keycode SDLK_CURRENCYUNIT = 1073742004;
-const Keycode SDLK_CURRENCYSUBUNIT = 1073742005;
-const Keycode SDLK_KP_LEFTPAREN = 1073742006;
-const Keycode SDLK_KP_RIGHTPAREN = 1073742007;
-const Keycode SDLK_KP_LEFTBRACE = 1073742008;
-const Keycode SDLK_KP_RIGHTBRACE = 1073742009;
-const Keycode SDLK_KP_TAB = 1073742010;
-const Keycode SDLK_KP_BACKSPACE = 1073742011;
-const Keycode SDLK_KP_A = 1073742012;
-const Keycode SDLK_KP_B = 1073742013;
-const Keycode SDLK_KP_C = 1073742014;
-const Keycode SDLK_KP_D = 1073742015;
-const Keycode SDLK_KP_E = 1073742016;
-const Keycode SDLK_KP_F = 1073742017;
-const Keycode SDLK_KP_XOR = 1073742018;
-const Keycode SDLK_KP_POWER = 1073742019;
-const Keycode SDLK_KP_PERCENT = 1073742020;
-const Keycode SDLK_KP_LESS = 1073742021;
-const Keycode SDLK_KP_GREATER = 1073742022;
-const Keycode SDLK_KP_AMPERSAND = 1073742023;
-const Keycode SDLK_KP_DBLAMPERSAND = 1073742024;
-const Keycode SDLK_KP_VERTICALBAR = 1073742025;
-const Keycode SDLK_KP_DBLVERTICALBAR = 1073742026;
-const Keycode SDLK_KP_COLON = 1073742027;
-const Keycode SDLK_KP_HASH = 1073742028;
-const Keycode SDLK_KP_SPACE = 1073742029;
-const Keycode SDLK_KP_AT = 1073742030;
-const Keycode SDLK_KP_EXCLAM = 1073742031;
-const Keycode SDLK_KP_MEMSTORE = 1073742032;
-const Keycode SDLK_KP_MEMRECALL = 1073742033;
-const Keycode SDLK_KP_MEMCLEAR = 1073742034;
-const Keycode SDLK_KP_MEMADD = 1073742035;
-const Keycode SDLK_KP_MEMSUBTRACT = 1073742036;
-const Keycode SDLK_KP_MEMMULTIPLY = 1073742037;
-const Keycode SDLK_KP_MEMDIVIDE = 1073742038;
-const Keycode SDLK_KP_PLUSMINUS = 1073742039;
-const Keycode SDLK_KP_CLEAR = 1073742040;
-const Keycode SDLK_KP_CLEARENTRY = 1073742041;
-const Keycode SDLK_KP_BINARY = 1073742042;
-const Keycode SDLK_KP_OCTAL = 1073742043;
-const Keycode SDLK_KP_DECIMAL = 1073742044;
-const Keycode SDLK_KP_HEXADECIMAL = 1073742045;
-const Keycode SDLK_LCTRL = 1073742048;
-const Keycode SDLK_LSHIFT = 1073742049;
-const Keycode SDLK_LALT = 1073742050;
-const Keycode SDLK_LGUI = 1073742051;
-const Keycode SDLK_RCTRL = 1073742052;
-const Keycode SDLK_RSHIFT = 1073742053;
-const Keycode SDLK_RALT = 1073742054;
-const Keycode SDLK_RGUI = 1073742055;
-const Keycode SDLK_MODE = 1073742081;
-const Keycode SDLK_AUDIONEXT = 1073742082;
-const Keycode SDLK_AUDIOPREV = 1073742083;
-const Keycode SDLK_AUDIOSTOP = 1073742084;
-const Keycode SDLK_AUDIOPLAY = 1073742085;
-const Keycode SDLK_AUDIOMUTE = 1073742086;
-const Keycode SDLK_MEDIASELECT = 1073742087;
-const Keycode SDLK_WWW = 1073742088;
-const Keycode SDLK_MAIL = 1073742089;
-const Keycode SDLK_CALCULATOR = 1073742090;
-const Keycode SDLK_COMPUTER = 1073742091;
-const Keycode SDLK_AC_SEARCH = 1073742092;
-const Keycode SDLK_AC_HOME = 1073742093;
-const Keycode SDLK_AC_BACK = 1073742094;
-const Keycode SDLK_AC_FORWARD = 1073742095;
-const Keycode SDLK_AC_STOP = 1073742096;
-const Keycode SDLK_AC_REFRESH = 1073742097;
-const Keycode SDLK_AC_BOOKMARKS = 1073742098;
-const Keycode SDLK_BRIGHTNESSDOWN = 1073742099;
-const Keycode SDLK_BRIGHTNESSUP = 1073742100;
-const Keycode SDLK_DISPLAYSWITCH = 1073742101;
-const Keycode SDLK_KBDILLUMTOGGLE = 1073742102;
-const Keycode SDLK_KBDILLUMDOWN = 1073742103;
-const Keycode SDLK_KBDILLUMUP = 1073742104;
-const Keycode SDLK_EJECT = 1073742105;
-const Keycode SDLK_SLEEP = 1073742106;
-const Keycode SDLK_APP1 = 1073742107;
-const Keycode SDLK_APP2 = 1073742108;
-const Keycode SDLK_AUDIOREWIND = 1073742109;
-const Keycode SDLK_AUDIOFASTFORWARD = 1073742110;
-const Keycode SDLK_SOFTLEFT = 1073742111;
-const Keycode SDLK_SOFTRIGHT = 1073742112;
-const Keycode SDLK_CALL = 1073742113;
-const Keycode SDLK_ENDCALL = 1073742114;
-
-typedef Keymod = int;
-
-const Keymod KMOD_NONE = 0;
-const Keymod KMOD_LSHIFT = 1;
-const Keymod KMOD_RSHIFT = 2;
-const Keymod KMOD_LCTRL = 64;
-const Keymod KMOD_RCTRL = 128;
-const Keymod KMOD_LALT = 256;
-const Keymod KMOD_RALT = 512;
-const Keymod KMOD_LGUI = 1024;
-const Keymod KMOD_RGUI = 2048;
-const Keymod KMOD_NUM = 4096;
-const Keymod KMOD_CAPS = 8192;
-const Keymod KMOD_MODE = 16384;
-const Keymod KMOD_SCROLL = 32768;
-const Keymod KMOD_CTRL = 192;
-const Keymod KMOD_SHIFT = 3;
-const Keymod KMOD_ALT = 768;
-const Keymod KMOD_GUI = 3072;
-const Keymod KMOD_RESERVED = 32768;
+constdef Keymod : int
+{
+	NONE = 0,
+	LSHIFT = 1,
+	RSHIFT = 2,
+	LCTRL = 64,
+	RCTRL = 128,
+	LALT = 256,
+	RALT = 512,
+	LGUI = 1024,
+	RGUI = 2048,
+	NUM = 4096,
+	CAPS = 8192,
+	MODE = 16384,
+	SCROLL = 32768,
+	CTRL = 192,
+	SHIFT = 3,
+	ALT = 768,
+	GUI = 3072,
+	RESERVED = 32768,
+}
 
 enum WindowEventID : int
 {
@@ -1058,19 +1068,20 @@ enum GLattr : int
 	GL_FLOATBUFFERS
 }
 
-typedef GLProfile = int;
+constdef GLProfile : int
+{
+	CORE = 1,
+	COMPATIBILITY = 2,
+	ES = 4,
+}
 
-const GLProfile GL_CONTEXT_PROFILE_CORE = 1;
-const GLProfile GL_CONTEXT_PROFILE_COMPATIBILITY = 2;
-const GLProfile GL_CONTEXT_PROFILE_ES = 4;
-
-
-typedef GLContextFlag = int;
-
-const GLContextFlag GL_CONTEXT_DEBUG_FLAG = 1;
-const GLContextFlag GL_CONTEXT_FORWARD_COMPATIBLE_FLAG = 2;
-const GLContextFlag GL_CONTEXT_ROBUST_ACCESS_FLAG = 4;
-const GLContextFlag GL_CONTEXT_RESET_ISOLATION_FLAG = 8;
+constdef GLContextFlag : int
+{
+	DEBUG_FLAG = 1,
+	FORWARD_COMPATIBLE_FLAG = 2,
+	ROBUST_ACCESS_FLAG = 4,
+	RESET_ISOLATION_FLAG = 8,
+}
 
 enum GLContextReleaseFlag : int
 {
@@ -1160,14 +1171,16 @@ enum JoystickType : int
 	JOYSTICK_TYPE_THROTTLE
 }
 
-typedef JoystickPowerLevel = int;
-const JoystickPowerLevel JOYSTICK_POWER_UNKNOWN = -1;
-const JoystickPowerLevel JOYSTICK_POWER_EMPTY = 0;
-const JoystickPowerLevel JOYSTICK_POWER_LOW = 1;
-const JoystickPowerLevel JOYSTICK_POWER_MEDIUM = 2;
-const JoystickPowerLevel JOYSTICK_POWER_FULL = 3;
-const JoystickPowerLevel JOYSTICK_POWER_WIRED = 4;
-const JoystickPowerLevel JOYSTICK_POWER_MAX = 5;
+constdef JoystickPowerLevel : int
+{
+	UNKNOWN = -1,
+	EMPTY = 0,
+	LOW = 1,
+	MEDIUM = 2,
+	FULL = 3,
+	WIRED = 4,
+	MAX = 5,
+}
 
 alias Update = fn void(void* userdata);
 alias SetPlayerIndex = fn int(void* userdata, int player_index);
@@ -1189,7 +1202,7 @@ struct VirtualJoystickDesc {
 
 	uint axis_mask;
 
-	char* name;
+	ZString name;
 
 	void *userdata;
 	Update update;
@@ -1202,15 +1215,17 @@ struct VirtualJoystickDesc {
 
 alias SensorID = int;
 
-typedef SensorType = int;
-const SensorType SENSOR_INVALID = -1;
-const SensorType SENSOR_UNKNOWN = 0;
-const SensorType SENSOR_ACCEL = 1;
-const SensorType SENSOR_GYRO = 2;
-const SensorType SENSOR_ACCEL_L = 3;
-const SensorType SENSOR_GYRO_L = 4;
-const SensorType SENSOR_ACCEL_R = 5;
-const SensorType SENSOR_GYRO_R = 6;
+constdef SensorType : int
+{
+	INVALID = -1,
+	UNKNOWN = 0,
+	ACCEL = 1,
+	GYRO = 2,
+	ACCEL_L = 3,
+	GYRO_L = 4,
+	ACCEL_R = 5,
+	GYRO_R = 6,
+}
 
 typedef Sensor_hwdata = void*;
 typedef SensorDriver = void*;
@@ -1219,7 +1234,7 @@ typedef SensorDriver = void*;
 struct Sensor
 {
 	SensorID instance_id;
-	char* name;
+	ZString name;
 	SensorType type;
 	int non_portable_type;
 
@@ -1277,51 +1292,55 @@ struct GameControllerButtonBind
 	}
 }
 
-typedef GameControllerAxis = int;
+constdef GameControllerAxis : int
+{
+	INVALID = -1,
+	LEFTX = 0,
+	LEFTY = 1,
+	RIGHTX = 2,
+	RIGHTY = 3,
+	TRIGGERLEFT = 4,
+	TRIGGERRIGHT = 5,
+	MAX = 6,
+}
 
-const GameControllerAxis CONTROLLER_AXIS_INVALID = -1;
-const GameControllerAxis CONTROLLER_AXIS_LEFTX = 0;
-const GameControllerAxis CONTROLLER_AXIS_LEFTY = 1;
-const GameControllerAxis CONTROLLER_AXIS_RIGHTX = 2;
-const GameControllerAxis CONTROLLER_AXIS_RIGHTY = 3;
-const GameControllerAxis CONTROLLER_AXIS_TRIGGERLEFT = 4;
-const GameControllerAxis CONTROLLER_AXIS_TRIGGERRIGHT = 5;
-const GameControllerAxis CONTROLLER_AXIS_MAX = 6;
-
-typedef GameControllerButton = int;
-
-const GameControllerButton CONTROLLER_BUTTON_INVALID = -1;
-const GameControllerButton CONTROLLER_BUTTON_A = 0;
-const GameControllerButton CONTROLLER_BUTTON_B = 1;
-const GameControllerButton CONTROLLER_BUTTON_X = 2;
-const GameControllerButton CONTROLLER_BUTTON_Y = 3;
-const GameControllerButton CONTROLLER_BUTTON_BACK = 4;
-const GameControllerButton CONTROLLER_BUTTON_GUIDE = 5;
-const GameControllerButton CONTROLLER_BUTTON_START = 6;
-const GameControllerButton CONTROLLER_BUTTON_LEFTSTICK = 7;
-const GameControllerButton CONTROLLER_BUTTON_RIGHTSTICK = 8;
-const GameControllerButton CONTROLLER_BUTTON_LEFTSHOULDER = 9;
-const GameControllerButton CONTROLLER_BUTTON_RIGHTSHOULDER = 10;
-const GameControllerButton CONTROLLER_BUTTON_DPAD_UP = 11;
-const GameControllerButton CONTROLLER_BUTTON_DPAD_DOWN = 12;
-const GameControllerButton CONTROLLER_BUTTON_DPAD_LEFT = 13;
-const GameControllerButton CONTROLLER_BUTTON_DPAD_RIGHT = 14;
-const GameControllerButton CONTROLLER_BUTTON_MISC1 = 15;
-const GameControllerButton CONTROLLER_BUTTON_PADDLE1 = 16;
-const GameControllerButton CONTROLLER_BUTTON_PADDLE2 = 17;
-const GameControllerButton CONTROLLER_BUTTON_PADDLE3 = 18;
-const GameControllerButton CONTROLLER_BUTTON_PADDLE4 = 19;
-const GameControllerButton CONTROLLER_BUTTON_TOUCHPAD = 20;
-const GameControllerButton CONTROLLER_BUTTON_MAX = 21;
+constdef GameControllerButton : int
+{
+	INVALID = -1,
+	A = 0,
+	B = 1,
+	X = 2,
+	Y = 3,
+	BACK = 4,
+	GUIDE = 5,
+	START = 6,
+	LEFTSTICK = 7,
+	RIGHTSTICK = 8,
+	LEFTSHOULDER = 9,
+	RIGHTSHOULDER = 10,
+	DPAD_UP = 11,
+	DPAD_DOWN = 12,
+	DPAD_LEFT = 13,
+	DPAD_RIGHT = 14,
+	MISC1 = 15,
+	PADDLE1 = 16,
+	PADDLE2 = 17,
+	PADDLE3 = 18,
+	PADDLE4 = 19,
+	TOUCHPAD = 20,
+	MAX = 21,
+}
 
 alias TouchID = long;
 alias FingerID = long;
 
-typedef TouchDeviceType = int;
-const TouchDeviceType CONTROLLER_BINDTYPE_NONE = -1;
-const TouchDeviceType CONTROLLER_BINDTYPE_BUTTON = 0;
-const TouchDeviceType CONTROLLER_BINDTYPE_AXIS = 1;
-const TouchDeviceType CONTROLLER_BINDTYPE_HAT = 2;
+constdef TouchDeviceType : int
+{
+	NONE = -1,
+	BUTTON = 0,
+	AXIS = 1,
+	HAT = 2,
+}
 
 struct Finger
 {
@@ -1333,66 +1352,68 @@ struct Finger
 
 alias GestureID = long;
 
-typedef EventType = int;
-const EventType FIRSTEVENT = 0;
-const EventType QUIT = 256;
-const EventType APP_TERMINATING = 257;
-const EventType APP_LOWMEMORY = 258;
-const EventType APP_WILLENTERBACKGROUND = 259;
-const EventType APP_DIDENTERBACKGROUND = 260;
-const EventType APP_WILLENTERFOREGROUND = 261;
-const EventType APP_DIDENTERFOREGROUND = 262;
-const EventType LOCALECHANGED = 263;
-const EventType DISPLAYEVENT = 336;
-const EventType WINDOWEVENT = 512;
-const EventType SYSWMEVENT = 513;
-const EventType KEYDOWN = 768;
-const EventType KEYUP = 769;
-const EventType TEXTEDITING = 770;
-const EventType TEXTINPUT = 771;
-const EventType KEYMAPCHANGED = 772;
-const EventType TEXTEDITING_EXT = 773;
-const EventType MOUSEMOTION = 1024;
-const EventType MOUSEBUTTONDOWN = 1025;
-const EventType MOUSEBUTTONUP = 1026;
-const EventType MOUSEWHEEL = 1027;
-const EventType JOYAXISMOTION = 1536;
-const EventType JOYBALLMOTION = 1537;
-const EventType JOYHATMOTION = 1538;
-const EventType JOYBUTTONDOWN = 1539;
-const EventType JOYBUTTONUP = 1540;
-const EventType JOYDEVICEADDED = 1541;
-const EventType JOYDEVICEREMOVED = 1542;
-const EventType JOYBATTERYUPDATED = 1543;
-const EventType CONTROLLERAXISMOTION = 1616;
-const EventType CONTROLLERBUTTONDOWN = 1617;
-const EventType CONTROLLERBUTTONUP = 1618;
-const EventType CONTROLLERDEVICEADDED = 1619;
-const EventType CONTROLLERDEVICEREMOVED = 1620;
-const EventType CONTROLLERDEVICEREMAPPED = 1621;
-const EventType CONTROLLERTOUCHPADDOWN = 1622;
-const EventType CONTROLLERTOUCHPADMOTION = 1623;
-const EventType CONTROLLERTOUCHPADUP = 1624;
-const EventType CONTROLLERSENSORUPDATE = 1625;
-const EventType FINGERDOWN = 1792;
-const EventType FINGERUP = 1793;
-const EventType FINGERMOTION = 1794;
-const EventType DOLLARGESTURE = 2048;
-const EventType DOLLARRECORD = 2049;
-const EventType MULTIGESTURE = 2050;
-const EventType CLIPBOARDUPDATE = 2304;
-const EventType DROPFILE = 4096;
-const EventType DROPTEXT = 4097;
-const EventType DROPBEGIN = 4098;
-const EventType DROPCOMPLETE = 4099;
-const EventType AUDIODEVICEADDED = 4352;
-const EventType AUDIODEVICEREMOVED = 4353;
-const EventType SENSORUPDATE = 4608;
-const EventType RENDER_TARGETS_RESET = 8192;
-const EventType RENDER_DEVICE_RESET = 8193;
-const EventType POLLSENTINEL = 32512;
-const EventType USEREVENT = 32768;
-const EventType LASTEVENT = 65535;
+constdef EventType : int
+{
+	FIRSTEVENT = 0,
+	QUIT = 256,
+	APP_TERMINATING = 257,
+	APP_LOWMEMORY = 258,
+	APP_WILLENTERBACKGROUND = 259,
+	APP_DIDENTERBACKGROUND = 260,
+	APP_WILLENTERFOREGROUND = 261,
+	APP_DIDENTERFOREGROUND = 262,
+	LOCALECHANGED = 263,
+	DISPLAYEVENT = 336,
+	WINDOWEVENT = 512,
+	SYSWMEVENT = 513,
+	KEYDOWN = 768,
+	KEYUP = 769,
+	TEXTEDITING = 770,
+	TEXTINPUT = 771,
+	KEYMAPCHANGED = 772,
+	TEXTEDITING_EXT = 773,
+	MOUSEMOTION = 1024,
+	MOUSEBUTTONDOWN = 1025,
+	MOUSEBUTTONUP = 1026,
+	MOUSEWHEEL = 1027,
+	JOYAXISMOTION = 1536,
+	JOYBALLMOTION = 1537,
+	JOYHATMOTION = 1538,
+	JOYBUTTONDOWN = 1539,
+	JOYBUTTONUP = 1540,
+	JOYDEVICEADDED = 1541,
+	JOYDEVICEREMOVED = 1542,
+	JOYBATTERYUPDATED = 1543,
+	CONTROLLERAXISMOTION = 1616,
+	CONTROLLERBUTTONDOWN = 1617,
+	CONTROLLERBUTTONUP = 1618,
+	CONTROLLERDEVICEADDED = 1619,
+	CONTROLLERDEVICEREMOVED = 1620,
+	CONTROLLERDEVICEREMAPPED = 1621,
+	CONTROLLERTOUCHPADDOWN = 1622,
+	CONTROLLERTOUCHPADMOTION = 1623,
+	CONTROLLERTOUCHPADUP = 1624,
+	CONTROLLERSENSORUPDATE = 1625,
+	FINGERDOWN = 1792,
+	FINGERUP = 1793,
+	FINGERMOTION = 1794,
+	DOLLARGESTURE = 2048,
+	DOLLARRECORD = 2049,
+	MULTIGESTURE = 2050,
+	CLIPBOARDUPDATE = 2304,
+	DROPFILE = 4096,
+	DROPTEXT = 4097,
+	DROPBEGIN = 4098,
+	DROPCOMPLETE = 4099,
+	AUDIODEVICEADDED = 4352,
+	AUDIODEVICEREMOVED = 4353,
+	SENSORUPDATE = 4608,
+	RENDER_TARGETS_RESET = 8192,
+	RENDER_DEVICE_RESET = 8193,
+	POLLSENTINEL = 32512,
+	USEREVENT = 32768,
+	LASTEVENT = 65535,
+}
 
 struct CommonEvent
 {
@@ -1452,7 +1473,7 @@ struct TextEditingExtEvent
 	uint type;
 	uint timestamp;
 	uint windowid;
-	char* text;
+	ZString text;
 	int start;
 	int length;
 }
@@ -1674,7 +1695,7 @@ struct DropEvent
 {
 	uint type;
 	uint timestamp;
-	char* file;
+	ZString file;
 	uint windowid;
 }
 
@@ -1875,13 +1896,13 @@ alias Hid_Device = void*;
 
 struct Hid_Device_Info
 {
-	char* path;
+	ZString path;
 	ushort vendor_Id;
 	ushort product_Id;
-	char* serial_Number;
+	ZString serial_Number;
 	ushort release_Number;
-	char* manufacturer_String;
-	char* product_String;
+	ZString manufacturer_String;
+	ZString product_String;
 	ushort usage_Page;
 	ushort usage;
 	int interface_Number;
@@ -1898,7 +1919,7 @@ enum HintPriority : int
   SDL_HINT_OVERRIDE
 }
 
-alias HintCallback = fn void(void* userdata, char* name, char* oldValue, char* newValue);
+alias HintCallback = fn void(void* userdata, ZString name, ZString oldValue, ZString newValue);
 
 enum LogCategory : int
 {
@@ -1924,36 +1945,39 @@ enum LogCategory : int
 	LOG_CATEGORY_CUSTOM
 }
 
-typedef LogPriority = int;
+constdef LogPriority : int
+{
+	VERBOSE = 1,
+	DEBUG = 2,
+	INFO = 3,
+	WARN = 4,
+	ERROR = 5,
+	CRITICAL = 6,
+	NUM_LOG_PRIORITIES = 7,
+}
 
-const LogPriority LOG_PRIORITY_VERBOSE = 1;
-const LogPriority LOG_PRIORITY_DEBUG = 2;
-const LogPriority LOG_PRIORITY_INFO = 3;
-const LogPriority LOG_PRIORITY_WARN = 4;
-const LogPriority LOG_PRIORITY_ERROR = 5;
-const LogPriority LOG_PRIORITY_CRITICAL = 6;
-const LogPriority NUM_LOG_PRIORITIES = 7;
+alias LogOutputFunction = fn void(void* userdata, int category, LogPriority priority, ZString message);
 
-alias LogOutputFunction = fn void(void* userdata, int category, LogPriority priority, char* message);
+constdef MessageBoxFlags : int
+{
+	ERROR = 16,
+	WARNING = 32,
+	INFORMATION = 64,
+	BUTTONS_LEFT_TO_RIGHT = 128,
+	BUTTONS_RIGHT_TO_LEFT = 256,
+}
 
-typedef MessageBoxFlags = int;
-
-const MessageBoxFlags MESSAGEBOX_ERROR = 16;
-const MessageBoxFlags MESSAGEBOX_WARNING = 32;
-const MessageBoxFlags MESSAGEBOX_INFORMATION = 64;
-const MessageBoxFlags MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT = 128;
-const MessageBoxFlags MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT = 256;
-
-typedef MessageBoxButtonFlags = int;
-
-const MessageBoxButtonFlags MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT = 1;
-const MessageBoxButtonFlags MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT = 2;
+constdef MessageBoxButtonFlags : int
+{
+	RETURNKEY_DEFAULT = 1,
+	ESCAPEKEY_DEFAULT = 2,
+}
 
 struct MessageBoxButtonData
 {
 	uint flags;
 	int buttonid;
-	char* text;
+	ZString text;
 }
 
 struct MessageBoxColor
@@ -1982,8 +2006,8 @@ struct MessageBoxData
 {
 	uint flags;
 	Window* window;
-	char* title;
-	char* message;
+	ZString title;
+	ZString message;
 	int numbuttons;
 	MessageBoxButtonData* buttons;
 	MessageBoxColorScheme* colorscheme;
@@ -2000,16 +2024,17 @@ enum PowerState : int
   POWERSTATE_CHARGED
 }
 
-typedef RendererFlags = uint;
-
-const RendererFlags RENDERER_SOFTWARE = 1;
-const RendererFlags RENDERER_ACCELERATED = 2;
-const RendererFlags RENDERER_PRESENTVSYNC = 4;
-const RendererFlags RENDERER_TARGETTEXTURE = 8;
+constdef RendererFlags : uint
+{
+	SOFTWARE = 1,
+	ACCELERATED = 2,
+	PRESENTVSYNC = 4,
+	TARGETTEXTURE = 8,
+}
 
 struct RendererInfo
 {
-	char* name;
+	ZString name;
 	uint flags;
 	uint num_Texture_Formats;
 	uint[16] texture_Formats;
@@ -2053,7 +2078,8 @@ enum RendererFlip : int
 alias Renderer = void*;
 alias Texture = void*;
 
-enum WindowShapeModeEnum : int{
+enum WindowShapeModeEnum : int
+{
 	SHAPE_MODE_DEFAULT,
 	SHAPE_MODE_BINARIZE_ALPHA,
 	SHAPE_MODE_REVERSE_BINARIZE_ALPHA,
@@ -2086,183 +2112,183 @@ struct Version
 
 struct Locale
 {
-	char* language;
-	char* country;
+	ZString language;
+	ZString country;
 }
 
-const char* HINT_ACCELEROMETER_AS_JOYSTICK = "SDL_ACCELEROMETER_AS_JOYSTICK";
-const char* HINT_ALLOW_ALT_TAB_WHILE_GRABBED = "SDL_ALLOW_ALT_TAB_WHILE_GRABBED";
-const char* HINT_ALLOW_TOPMOST = "SDL_ALLOW_TOPMOST";
-const char* HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION = "SDL_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION";
-const char* HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION = "SDL_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION";
-const char* HINT_ANDROID_BLOCK_ON_PAUSE = "SDL_ANDROID_BLOCK_ON_PAUSE";
-const char* HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO = "SDL_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO";
-const char* HINT_ANDROID_TRAP_BACK_BUTTON = "SDL_ANDROID_TRAP_BACK_BUTTON";
-const char* HINT_APP_NAME = "SDL_APP_NAME";
-const char* HINT_APPLE_TV_CONTROLLER_UI_EVENTS = "SDL_APPLE_TV_CONTROLLER_UI_EVENTS";
-const char* HINT_APPLE_TV_REMOTE_ALLOW_ROTATION = "SDL_APPLE_TV_REMOTE_ALLOW_ROTATION";
-const char* HINT_AUDIO_CATEGORY = "SDL_AUDIO_CATEGORY";
-const char* HINT_AUDIO_DEVICE_APP_NAME = "SDL_AUDIO_DEVICE_APP_NAME";
-const char* HINT_AUDIO_DEVICE_STREAM_NAME = "SDL_AUDIO_DEVICE_STREAM_NAME";
-const char* HINT_AUDIO_DEVICE_STREAM_ROLE = "SDL_AUDIO_DEVICE_STREAM_ROLE";
-const char* HINT_AUDIO_RESAMPLING_MODE = "SDL_AUDIO_RESAMPLING_MODE";
-const char* HINT_AUTO_UPDATE_JOYSTICKS = "SDL_AUTO_UPDATE_JOYSTICKS";
-const char* HINT_AUTO_UPDATE_SENSORS = "SDL_AUTO_UPDATE_SENSORS";
-const char* HINT_BMP_SAVE_LEGACY_FORMAT = "SDL_BMP_SAVE_LEGACY_FORMAT";
-const char* HINT_DISPLAY_USABLE_BOUNDS = "SDL_DISPLAY_USABLE_BOUNDS";
-const char* HINT_EMSCRIPTEN_ASYNCIFY = "SDL_EMSCRIPTEN_ASYNCIFY";
-const char* HINT_EMSCRIPTEN_KEYBOARD_ELEMENT = "SDL_EMSCRIPTEN_KEYBOARD_ELEMENT";
-const char* HINT_ENABLE_SCREEN_KEYBOARD = "SDL_ENABLE_SCREEN_KEYBOARD";
-const char* HINT_ENABLE_STEAM_CONTROLLERS = "SDL_ENABLE_STEAM_CONTROLLERS";
-const char* HINT_EVENT_LOGGING = "SDL_EVENT_LOGGING";
-const char* HINT_FORCE_RAISEWINDOW = "SDL_HINT_FORCE_RAISEWINDOW";
-const char* HINT_FRAMEBUFFER_ACCELERATION = "SDL_FRAMEBUFFER_ACCELERATION";
-const char* HINT_GAMECONTROLLERCONFIG = "SDL_GAMECONTROLLERCONFIG";
-const char* HINT_GAMECONTROLLERCONFIG_FILE = "SDL_GAMECONTROLLERCONFIG_FILE";
-const char* HINT_GAMECONTROLLERTYPE = "SDL_GAMECONTROLLERTYPE";
-const char* HINT_GAMECONTROLLER_IGNORE_DEVICES = "SDL_GAMECONTROLLER_IGNORE_DEVICES";
-const char* HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT = "SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT";
-const char* HINT_GAMECONTROLLER_USE_BUTTON_LABELS = "SDL_GAMECONTROLLER_USE_BUTTON_LABELS";
-const char* HINT_GRAB_KEYBOARD = "SDL_GRAB_KEYBOARD";
-const char* HINT_HIDAPI_IGNORE_DEVICES = "SDL_HIDAPI_IGNORE_DEVICES";
-const char* HINT_IDLE_TIMER_DISABLED = "SDL_IOS_IDLE_TIMER_DISABLED";
-const char* HINT_IME_INTERNAL_EDITING = "SDL_IME_INTERNAL_EDITING";
-const char* HINT_IME_SHOW_UI = "SDL_IME_SHOW_UI";
-const char* HINT_IME_SUPPORT_EXTENDED_TEXT = "SDL_IME_SUPPORT_EXTENDED_TEXT";
-const char* HINT_IOS_HIDE_HOME_INDICATOR = "SDL_IOS_HIDE_HOME_INDICATOR";
-const char* HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS = "SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS";
-const char* HINT_JOYSTICK_HIDAPI = "SDL_JOYSTICK_HIDAPI";
-const char* HINT_JOYSTICK_HIDAPI_GAMECUBE = "SDL_JOYSTICK_HIDAPI_GAMECUBE";
-const char* HINT_JOYSTICK_GAMECUBE_RUMBLE_BRAKE = "SDL_JOYSTICK_GAMECUBE_RUMBLE_BRAKE";
-const char* HINT_JOYSTICK_HIDAPI_JOY_CONS = "SDL_JOYSTICK_HIDAPI_JOY_CONS";
-const char* HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS = "SDL_JOYSTICK_HIDAPI_COMBINE_JOY_CONS";
-const char* HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS = "SDL_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS";
-const char* HINT_JOYSTICK_HIDAPI_LUNA = "SDL_JOYSTICK_HIDAPI_LUNA";
-const char* HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC = "SDL_JOYSTICK_HIDAPI_NINTENDO_CLASSIC";
-const char* HINT_JOYSTICK_HIDAPI_SHIELD = "SDL_JOYSTICK_HIDAPI_SHIELD";
-const char* HINT_JOYSTICK_HIDAPI_PS3 = "SDL_JOYSTICK_HIDAPI_PS3";
-const char* HINT_JOYSTICK_HIDAPI_PS4 = "SDL_JOYSTICK_HIDAPI_PS4";
-const char* HINT_JOYSTICK_HIDAPI_PS4_RUMBLE = "SDL_JOYSTICK_HIDAPI_PS4_RUMBLE";
-const char* HINT_JOYSTICK_HIDAPI_PS5 = "SDL_JOYSTICK_HIDAPI_PS5";
-const char* HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED = "SDL_JOYSTICK_HIDAPI_PS5_PLAYER_LED";
-const char* HINT_JOYSTICK_HIDAPI_PS5_RUMBLE = "SDL_JOYSTICK_HIDAPI_PS5_RUMBLE";
-const char* HINT_JOYSTICK_HIDAPI_STADIA = "SDL_JOYSTICK_HIDAPI_STADIA";
-const char* HINT_JOYSTICK_HIDAPI_STEAM = "SDL_JOYSTICK_HIDAPI_STEAM";
-const char* HINT_JOYSTICK_HIDAPI_SWITCH = "SDL_JOYSTICK_HIDAPI_SWITCH";
-const char* HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED = "SDL_JOYSTICK_HIDAPI_SWITCH_HOME_LED";
-const char* HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED = "SDL_JOYSTICK_HIDAPI_JOYCON_HOME_LED";
-const char* HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED = "SDL_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED";
-const char* HINT_JOYSTICK_HIDAPI_WII = "SDL_JOYSTICK_HIDAPI_WII";
-const char* HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED = "SDL_JOYSTICK_HIDAPI_WII_PLAYER_LED";
-const char* HINT_JOYSTICK_HIDAPI_XBOX = "SDL_JOYSTICK_HIDAPI_XBOX";
-const char* HINT_JOYSTICK_HIDAPI_XBOX_360 = "SDL_JOYSTICK_HIDAPI_XBOX_360";
-const char* HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED = "SDL_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED";
-const char* HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS = "SDL_JOYSTICK_HIDAPI_XBOX_360_WIRELESS";
-const char* HINT_JOYSTICK_HIDAPI_XBOX_ONE = "SDL_JOYSTICK_HIDAPI_XBOX_ONE";
-const char* HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED = "SDL_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED";
-const char* HINT_JOYSTICK_RAWINPUT = "SDL_JOYSTICK_RAWINPUT";
-const char* HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT = "SDL_JOYSTICK_RAWINPUT_CORRELATE_XINPUT";
-const char* HINT_JOYSTICK_ROG_CHAKRAM = "SDL_JOYSTICK_ROG_CHAKRAM";
-const char* HINT_JOYSTICK_THREAD = "SDL_JOYSTICK_THREAD";
-const char* HINT_KMSDRM_REQUIRE_DRM_MASTER = "SDL_KMSDRM_REQUIRE_DRM_MASTER";
-const char* HINT_JOYSTICK_DEVICE = "SDL_JOYSTICK_DEVICE";
-const char* HINT_LINUX_DIGITAL_HATS = "SDL_LINUX_DIGITAL_HATS";
-const char* HINT_LINUX_HAT_DEADZONES = "SDL_LINUX_HAT_DEADZONES";
-const char* HINT_LINUX_JOYSTICK_CLASSIC = "SDL_LINUX_JOYSTICK_CLASSIC";
-const char* HINT_LINUX_JOYSTICK_DEADZONES = "SDL_LINUX_JOYSTICK_DEADZONES";
-const char* HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK = "SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK";
-const char* HINT_MOUSE_DOUBLE_CLICK_RADIUS = "SDL_MOUSE_DOUBLE_CLICK_RADIUS";
-const char* HINT_MOUSE_FOCUS_CLICKTHROUGH = "SDL_MOUSE_FOCUS_CLICKTHROUGH";
-const char* HINT_MOUSE_RELATIVE_MODE_CENTER = "SDL_MOUSE_RELATIVE_MODE_CENTER";
-const char* HINT_MOUSE_RELATIVE_SCALING = "SDL_MOUSE_RELATIVE_SCALING";
-const char* HINT_MOUSE_RELATIVE_SYSTEM_SCALE = "SDL_MOUSE_RELATIVE_SYSTEM_SCALE";
-const char* HINT_MAC_BACKGROUND_APP = "SDL_MAC_BACKGROUND_APP";
-const char* HINT_MAC_OPENGL_ASYNC_DISPATCH = "SDL_MAC_OPENGL_ASYNC_DISPATCH";
-const char* HINT_MOUSE_DOUBLE_CLICK_TIME = "SDL_MOUSE_DOUBLE_CLICK_TIME";
-const char* HINT_MOUSE_NORMAL_SPEED_SCALE = "SDL_MOUSE_NORMAL_SPEED_SCALE";
-const char* HINT_MOUSE_RELATIVE_MODE_WARP = "SDL_MOUSE_RELATIVE_MODE_WARP";
-const char* HINT_MOUSE_RELATIVE_SPEED_SCALE = "SDL_MOUSE_RELATIVE_SPEED_SCALE";
-const char* HINT_MOUSE_RELATIVE_WARP_MOTION = "SDL_MOUSE_RELATIVE_WARP_MOTION";
-const char* HINT_MOUSE_AUTO_CAPTURE = "SDL_MOUSE_AUTO_CAPTURE";
-const char* HINT_OPENGL_ES_DRIVER = "SDL_OPENGL_ES_DRIVER";
-const char* HINT_POLL_SENTINEL = "SDL_POLL_SENTINEL";
-const char* HINT_QTWAYLAND_CONTENT_ORIENTATION = "SDL_QTWAYLAND_CONTENT_ORIENTATION";
-const char* HINT_RENDER_BATCHING = "SDL_RENDER_BATCHING";
-const char* HINT_RENDER_DIRECT3D11_DEBUG = "SDL_RENDER_DIRECT3D11_DEBUG";
-const char* HINT_RENDER_DRIVER = "SDL_RENDER_DRIVER";
-const char* HINT_RENDER_OPENGL_SHADERS = "SDL_RENDER_OPENGL_SHADERS";
-const char* HINT_RENDER_VSYNC = "SDL_RENDER_VSYNC";
-const char* HINT_RETURN_KEY_HIDES_IME = "SDL_RETURN_KEY_HIDES_IME";
-const char* HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME = "SDL_SCREENSAVER_INHIBIT_ACTIVITY_NAME";
-const char* HINT_THREAD_PRIORITY_POLICY = "SDL_THREAD_PRIORITY_POLICY";
-const char* HINT_TIMER_RESOLUTION = "SDL_TIMER_RESOLUTION";
-const char* HINT_VITA_TOUCH_MOUSE_DEVICE = "SDL_HINT_VITA_TOUCH_MOUSE_DEVICE";
-const char* HINT_VIDEO_DOUBLE_BUFFER = "SDL_VIDEO_DOUBLE_BUFFER";
-const char* HINT_VIDEO_EXTERNAL_CONTEXT = "SDL_VIDEO_EXTERNAL_CONTEXT";
-const char* HINT_VIDEO_HIGHDPI_DISABLED = "SDL_VIDEO_HIGHDPI_DISABLED";
-const char* HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS = "SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS";
-const char* HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR = "SDL_VIDEO_WAYLAND_ALLOW_LIBDECOR";
-const char* HINT_VIDEO_WAYLAND_MODE_EMULATION = "SDL_VIDEO_WAYLAND_MODE_EMULATION";
-const char* HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT = "SDL_VIDEO_WINDOW_SHARE_PIXEL_FORMAT";
-const char* HINT_VIDEO_FOREIGN_WINDOW_VULKAN = "SDL_VIDEO_FOREIGN_WINDOW_VULKAN";
-const char* HINT_VIDEO_X11_FORCE_EGL = "SDL_VIDEO_X11_FORCE_EGL";
-const char* HINT_VIDEO_X11_NET_WM_PING = "SDL_VIDEO_X11_NET_WM_PING";
-const char* HINT_VIDEO_X11_XINERAMA = "SDL_VIDEO_X11_XINERAMA";
-const char* HINT_VIDEO_X11_XVIDMODE = "SDL_VIDEO_X11_XVIDMODE";
-const char* HINT_WAVE_RIFF_CHUNK_SIZE = "SDL_WAVE_RIFF_CHUNK_SIZE";
-const char* HINT_WINDOWS_DISABLE_THREAD_NAMING = "SDL_WINDOWS_DISABLE_THREAD_NAMING";
-const char* HINT_WINDOWS_ENABLE_MESSAGELOOP = "SDL_WINDOWS_ENABLE_MESSAGELOOP";
-const char* HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL = "SDL_WINDOWS_FORCE_SEMAPHORE_KERNEL";
-const char* HINT_WINDOWS_INTRESOURCE_ICON = "SDL_WINDOWS_INTRESOURCE_ICON";
-const char* HINT_WINDOWS_NO_CLOSE_ON_ALT_F4 = "SDL_WINDOWS_NO_CLOSE_ON_ALT_F4";
-const char* HINT_WINDOWS_DPI_AWARENESS = "SDL_WINDOWS_DPI_AWARENESS";
-const char* HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN = "SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN";
-const char* HINT_WINRT_HANDLE_BACK_BUTTON = "SDL_WINRT_HANDLE_BACK_BUTTON";
-const char* HINT_WINRT_PRIVACY_POLICY_URL = "SDL_WINRT_PRIVACY_POLICY_URL";
-const char* HINT_XINPUT_ENABLED = "SDL_XINPUT_ENABLED";
-const char* HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING = "SDL_XINPUT_USE_OLD_JOYSTICK_MAPPING";
-const char* HINT_X11_WINDOW_TYPE = "SDL_X11_WINDOW_TYPE";
-const char* HINT_VIDEODRIVER = "SDL_VIDEODRIVER";
-const char* HINT_AUDIODRIVER = "SDL_AUDIODRIVER";
-const char* HINT_TRACKPAD_IS_TOUCH_ONLY = "SDL_TRACKPAD_IS_TOUCH_ONLY";
-const char* HINT_MOUSE_TOUCH_EVENTS = "SDL_MOUSE_TOUCH_EVENTS";
-const char* HINT_NO_SIGNAL_HANDLERS = "SDL_NO_SIGNAL_HANDLERS";
-const char* HINT_ORIENTATIONS = "SDL_IOS_ORIENTATIONS";
-const char* HINT_PREFERRED_LOCALES = "SDL_PREFERRED_LOCALES";
-const char* HINT_QTWAYLAND_WINDOW_FLAGS = "SDL_QTWAYLAND_WINDOW_FLAGS";
-const char* HINT_RENDER_LINE_METHOD = "SDL_RENDER_LINE_METHOD";
-const char* HINT_RENDER_DIRECT3D_THREADSAFE = "SDL_RENDER_DIRECT3D_THREADSAFE";
-const char* HINT_RENDER_LOGICAL_SIZE_MODE = "SDL_RENDER_LOGICAL_SIZE_MODE";
-const char* HINT_RENDER_SCALE_QUALITY = "SDL_RENDER_SCALE_QUALITY";
-const char* HINT_PS2_DYNAMIC_VSYNC = "SDL_PS2_DYNAMIC_VSYNC";
-const char* HINT_RPI_VIDEO_LAYER = "SDL_RPI_VIDEO_LAYER";
-const char* HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL = "SDL_THREAD_FORCE_REALTIME_TIME_CRITICAL";
-const char* HINT_THREAD_STACK_SIZE = "SDL_THREAD_STACK_SIZE";
-const char* HINT_TOUCH_MOUSE_EVENTS = "SDL_TOUCH_MOUSE_EVENTS";
-const char* HINT_TV_REMOTE_AS_JOYSTICK = "SDL_TV_REMOTE_AS_JOYSTICK";
-const char* HINT_VIDEO_EGL_ALLOW_TRANSPARENCY = "SDL_VIDEO_EGL_ALLOW_TRANSPARENCY";
-const char* HINT_VIDEO_MAC_FULLSCREEN_SPACES = "SDL_VIDEO_MAC_FULLSCREEN_SPACES";
-const char* HINT_VIDEO_WAYLAND_PREFER_LIBDECOR = "SDL_VIDEO_WAYLAND_PREFER_LIBDECOR";
-const char* HINT_VIDEO_WAYLAND_EMULATE_MOUSE_WARP = "SDL_VIDEO_WAYLAND_EMULATE_MOUSE_WARP";
-const char* HINT_VIDEO_FOREIGN_WINDOW_OPENGL = "SDL_VIDEO_FOREIGN_WINDOW_OPENGL";
-const char* HINT_VIDEO_WIN_D3DCOMPILER = "SDL_VIDEO_WIN_D3DCOMPILER";
-const char* HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR = "SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR";
-const char* HINT_VIDEO_X11_WINDOW_VISUALID = "SDL_VIDEO_X11_WINDOW_VISUALID";
-const char* HINT_VIDEO_X11_XRANDR = "SDL_VIDEO_X11_XRANDR";
-const char* HINT_WAVE_FACT_CHUNK = "SDL_WAVE_FACT_CHUNK";
-const char* HINT_WAVE_TRUNCATION = "SDL_WAVE_TRUNCATION";
-const char* HINT_WINDOWS_ENABLE_MENU_MNEMONICS = "SDL_WINDOWS_ENABLE_MENU_MNEMONICS";
-const char* HINT_WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS = "SDL_WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS";
-const char* HINT_WINDOWS_INTRESOURCE_ICON_SMALL = "SDL_WINDOWS_INTRESOURCE_ICON_SMALL";
-const char* HINT_WINDOWS_USE_D3D9EX = "SDL_WINDOWS_USE_D3D9EX";
-const char* HINT_WINDOWS_DPI_SCALING = "SDL_WINDOWS_DPI_SCALING";
-const char* HINT_WINDOW_NO_ACTIVATION_WHEN_SHOWN = "SDL_WINDOW_NO_ACTIVATION_WHEN_SHOWN";
-const char* HINT_WINRT_PRIVACY_POLICY_LABEL = "SDL_WINRT_PRIVACY_POLICY_LABEL";
-const char* HINT_X11_FORCE_OVERRIDE_REDIRECT = "SDL_X11_FORCE_OVERRIDE_REDIRECT";
-const char* HINT_DIRECTINPUT_ENABLED = "SDL_DIRECTINPUT_ENABLED";
-const char* HINT_AUDIO_INCLUDE_MONITORS = "SDL_AUDIO_INCLUDE_MONITORS";
-const char* HINT_QUIT_ON_LAST_WINDOW_CLOSE = "SDL_QUIT_ON_LAST_WINDOW_CLOSE";
-const char* HINT_KMSDRM_DEVICE_INDEX = "SDL_KMSDRM_DEVICE_INDEX";
+const ZString HINT_ACCELEROMETER_AS_JOYSTICK = "SDL_ACCELEROMETER_AS_JOYSTICK";
+const ZString HINT_ALLOW_ALT_TAB_WHILE_GRABBED = "SDL_ALLOW_ALT_TAB_WHILE_GRABBED";
+const ZString HINT_ALLOW_TOPMOST = "SDL_ALLOW_TOPMOST";
+const ZString HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION = "SDL_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION";
+const ZString HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION = "SDL_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION";
+const ZString HINT_ANDROID_BLOCK_ON_PAUSE = "SDL_ANDROID_BLOCK_ON_PAUSE";
+const ZString HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO = "SDL_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO";
+const ZString HINT_ANDROID_TRAP_BACK_BUTTON = "SDL_ANDROID_TRAP_BACK_BUTTON";
+const ZString HINT_APP_NAME = "SDL_APP_NAME";
+const ZString HINT_APPLE_TV_CONTROLLER_UI_EVENTS = "SDL_APPLE_TV_CONTROLLER_UI_EVENTS";
+const ZString HINT_APPLE_TV_REMOTE_ALLOW_ROTATION = "SDL_APPLE_TV_REMOTE_ALLOW_ROTATION";
+const ZString HINT_AUDIO_CATEGORY = "SDL_AUDIO_CATEGORY";
+const ZString HINT_AUDIO_DEVICE_APP_NAME = "SDL_AUDIO_DEVICE_APP_NAME";
+const ZString HINT_AUDIO_DEVICE_STREAM_NAME = "SDL_AUDIO_DEVICE_STREAM_NAME";
+const ZString HINT_AUDIO_DEVICE_STREAM_ROLE = "SDL_AUDIO_DEVICE_STREAM_ROLE";
+const ZString HINT_AUDIO_RESAMPLING_MODE = "SDL_AUDIO_RESAMPLING_MODE";
+const ZString HINT_AUTO_UPDATE_JOYSTICKS = "SDL_AUTO_UPDATE_JOYSTICKS";
+const ZString HINT_AUTO_UPDATE_SENSORS = "SDL_AUTO_UPDATE_SENSORS";
+const ZString HINT_BMP_SAVE_LEGACY_FORMAT = "SDL_BMP_SAVE_LEGACY_FORMAT";
+const ZString HINT_DISPLAY_USABLE_BOUNDS = "SDL_DISPLAY_USABLE_BOUNDS";
+const ZString HINT_EMSCRIPTEN_ASYNCIFY = "SDL_EMSCRIPTEN_ASYNCIFY";
+const ZString HINT_EMSCRIPTEN_KEYBOARD_ELEMENT = "SDL_EMSCRIPTEN_KEYBOARD_ELEMENT";
+const ZString HINT_ENABLE_SCREEN_KEYBOARD = "SDL_ENABLE_SCREEN_KEYBOARD";
+const ZString HINT_ENABLE_STEAM_CONTROLLERS = "SDL_ENABLE_STEAM_CONTROLLERS";
+const ZString HINT_EVENT_LOGGING = "SDL_EVENT_LOGGING";
+const ZString HINT_FORCE_RAISEWINDOW = "SDL_HINT_FORCE_RAISEWINDOW";
+const ZString HINT_FRAMEBUFFER_ACCELERATION = "SDL_FRAMEBUFFER_ACCELERATION";
+const ZString HINT_GAMECONTROLLERCONFIG = "SDL_GAMECONTROLLERCONFIG";
+const ZString HINT_GAMECONTROLLERCONFIG_FILE = "SDL_GAMECONTROLLERCONFIG_FILE";
+const ZString HINT_GAMECONTROLLERTYPE = "SDL_GAMECONTROLLERTYPE";
+const ZString HINT_GAMECONTROLLER_IGNORE_DEVICES = "SDL_GAMECONTROLLER_IGNORE_DEVICES";
+const ZString HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT = "SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT";
+const ZString HINT_GAMECONTROLLER_USE_BUTTON_LABELS = "SDL_GAMECONTROLLER_USE_BUTTON_LABELS";
+const ZString HINT_GRAB_KEYBOARD = "SDL_GRAB_KEYBOARD";
+const ZString HINT_HIDAPI_IGNORE_DEVICES = "SDL_HIDAPI_IGNORE_DEVICES";
+const ZString HINT_IDLE_TIMER_DISABLED = "SDL_IOS_IDLE_TIMER_DISABLED";
+const ZString HINT_IME_INTERNAL_EDITING = "SDL_IME_INTERNAL_EDITING";
+const ZString HINT_IME_SHOW_UI = "SDL_IME_SHOW_UI";
+const ZString HINT_IME_SUPPORT_EXTENDED_TEXT = "SDL_IME_SUPPORT_EXTENDED_TEXT";
+const ZString HINT_IOS_HIDE_HOME_INDICATOR = "SDL_IOS_HIDE_HOME_INDICATOR";
+const ZString HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS = "SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS";
+const ZString HINT_JOYSTICK_HIDAPI = "SDL_JOYSTICK_HIDAPI";
+const ZString HINT_JOYSTICK_HIDAPI_GAMECUBE = "SDL_JOYSTICK_HIDAPI_GAMECUBE";
+const ZString HINT_JOYSTICK_GAMECUBE_RUMBLE_BRAKE = "SDL_JOYSTICK_GAMECUBE_RUMBLE_BRAKE";
+const ZString HINT_JOYSTICK_HIDAPI_JOY_CONS = "SDL_JOYSTICK_HIDAPI_JOY_CONS";
+const ZString HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS = "SDL_JOYSTICK_HIDAPI_COMBINE_JOY_CONS";
+const ZString HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS = "SDL_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS";
+const ZString HINT_JOYSTICK_HIDAPI_LUNA = "SDL_JOYSTICK_HIDAPI_LUNA";
+const ZString HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC = "SDL_JOYSTICK_HIDAPI_NINTENDO_CLASSIC";
+const ZString HINT_JOYSTICK_HIDAPI_SHIELD = "SDL_JOYSTICK_HIDAPI_SHIELD";
+const ZString HINT_JOYSTICK_HIDAPI_PS3 = "SDL_JOYSTICK_HIDAPI_PS3";
+const ZString HINT_JOYSTICK_HIDAPI_PS4 = "SDL_JOYSTICK_HIDAPI_PS4";
+const ZString HINT_JOYSTICK_HIDAPI_PS4_RUMBLE = "SDL_JOYSTICK_HIDAPI_PS4_RUMBLE";
+const ZString HINT_JOYSTICK_HIDAPI_PS5 = "SDL_JOYSTICK_HIDAPI_PS5";
+const ZString HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED = "SDL_JOYSTICK_HIDAPI_PS5_PLAYER_LED";
+const ZString HINT_JOYSTICK_HIDAPI_PS5_RUMBLE = "SDL_JOYSTICK_HIDAPI_PS5_RUMBLE";
+const ZString HINT_JOYSTICK_HIDAPI_STADIA = "SDL_JOYSTICK_HIDAPI_STADIA";
+const ZString HINT_JOYSTICK_HIDAPI_STEAM = "SDL_JOYSTICK_HIDAPI_STEAM";
+const ZString HINT_JOYSTICK_HIDAPI_SWITCH = "SDL_JOYSTICK_HIDAPI_SWITCH";
+const ZString HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED = "SDL_JOYSTICK_HIDAPI_SWITCH_HOME_LED";
+const ZString HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED = "SDL_JOYSTICK_HIDAPI_JOYCON_HOME_LED";
+const ZString HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED = "SDL_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED";
+const ZString HINT_JOYSTICK_HIDAPI_WII = "SDL_JOYSTICK_HIDAPI_WII";
+const ZString HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED = "SDL_JOYSTICK_HIDAPI_WII_PLAYER_LED";
+const ZString HINT_JOYSTICK_HIDAPI_XBOX = "SDL_JOYSTICK_HIDAPI_XBOX";
+const ZString HINT_JOYSTICK_HIDAPI_XBOX_360 = "SDL_JOYSTICK_HIDAPI_XBOX_360";
+const ZString HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED = "SDL_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED";
+const ZString HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS = "SDL_JOYSTICK_HIDAPI_XBOX_360_WIRELESS";
+const ZString HINT_JOYSTICK_HIDAPI_XBOX_ONE = "SDL_JOYSTICK_HIDAPI_XBOX_ONE";
+const ZString HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED = "SDL_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED";
+const ZString HINT_JOYSTICK_RAWINPUT = "SDL_JOYSTICK_RAWINPUT";
+const ZString HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT = "SDL_JOYSTICK_RAWINPUT_CORRELATE_XINPUT";
+const ZString HINT_JOYSTICK_ROG_CHAKRAM = "SDL_JOYSTICK_ROG_CHAKRAM";
+const ZString HINT_JOYSTICK_THREAD = "SDL_JOYSTICK_THREAD";
+const ZString HINT_KMSDRM_REQUIRE_DRM_MASTER = "SDL_KMSDRM_REQUIRE_DRM_MASTER";
+const ZString HINT_JOYSTICK_DEVICE = "SDL_JOYSTICK_DEVICE";
+const ZString HINT_LINUX_DIGITAL_HATS = "SDL_LINUX_DIGITAL_HATS";
+const ZString HINT_LINUX_HAT_DEADZONES = "SDL_LINUX_HAT_DEADZONES";
+const ZString HINT_LINUX_JOYSTICK_CLASSIC = "SDL_LINUX_JOYSTICK_CLASSIC";
+const ZString HINT_LINUX_JOYSTICK_DEADZONES = "SDL_LINUX_JOYSTICK_DEADZONES";
+const ZString HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK = "SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK";
+const ZString HINT_MOUSE_DOUBLE_CLICK_RADIUS = "SDL_MOUSE_DOUBLE_CLICK_RADIUS";
+const ZString HINT_MOUSE_FOCUS_CLICKTHROUGH = "SDL_MOUSE_FOCUS_CLICKTHROUGH";
+const ZString HINT_MOUSE_RELATIVE_MODE_CENTER = "SDL_MOUSE_RELATIVE_MODE_CENTER";
+const ZString HINT_MOUSE_RELATIVE_SCALING = "SDL_MOUSE_RELATIVE_SCALING";
+const ZString HINT_MOUSE_RELATIVE_SYSTEM_SCALE = "SDL_MOUSE_RELATIVE_SYSTEM_SCALE";
+const ZString HINT_MAC_BACKGROUND_APP = "SDL_MAC_BACKGROUND_APP";
+const ZString HINT_MAC_OPENGL_ASYNC_DISPATCH = "SDL_MAC_OPENGL_ASYNC_DISPATCH";
+const ZString HINT_MOUSE_DOUBLE_CLICK_TIME = "SDL_MOUSE_DOUBLE_CLICK_TIME";
+const ZString HINT_MOUSE_NORMAL_SPEED_SCALE = "SDL_MOUSE_NORMAL_SPEED_SCALE";
+const ZString HINT_MOUSE_RELATIVE_MODE_WARP = "SDL_MOUSE_RELATIVE_MODE_WARP";
+const ZString HINT_MOUSE_RELATIVE_SPEED_SCALE = "SDL_MOUSE_RELATIVE_SPEED_SCALE";
+const ZString HINT_MOUSE_RELATIVE_WARP_MOTION = "SDL_MOUSE_RELATIVE_WARP_MOTION";
+const ZString HINT_MOUSE_AUTO_CAPTURE = "SDL_MOUSE_AUTO_CAPTURE";
+const ZString HINT_OPENGL_ES_DRIVER = "SDL_OPENGL_ES_DRIVER";
+const ZString HINT_POLL_SENTINEL = "SDL_POLL_SENTINEL";
+const ZString HINT_QTWAYLAND_CONTENT_ORIENTATION = "SDL_QTWAYLAND_CONTENT_ORIENTATION";
+const ZString HINT_RENDER_BATCHING = "SDL_RENDER_BATCHING";
+const ZString HINT_RENDER_DIRECT3D11_DEBUG = "SDL_RENDER_DIRECT3D11_DEBUG";
+const ZString HINT_RENDER_DRIVER = "SDL_RENDER_DRIVER";
+const ZString HINT_RENDER_OPENGL_SHADERS = "SDL_RENDER_OPENGL_SHADERS";
+const ZString HINT_RENDER_VSYNC = "SDL_RENDER_VSYNC";
+const ZString HINT_RETURN_KEY_HIDES_IME = "SDL_RETURN_KEY_HIDES_IME";
+const ZString HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME = "SDL_SCREENSAVER_INHIBIT_ACTIVITY_NAME";
+const ZString HINT_THREAD_PRIORITY_POLICY = "SDL_THREAD_PRIORITY_POLICY";
+const ZString HINT_TIMER_RESOLUTION = "SDL_TIMER_RESOLUTION";
+const ZString HINT_VITA_TOUCH_MOUSE_DEVICE = "SDL_HINT_VITA_TOUCH_MOUSE_DEVICE";
+const ZString HINT_VIDEO_DOUBLE_BUFFER = "SDL_VIDEO_DOUBLE_BUFFER";
+const ZString HINT_VIDEO_EXTERNAL_CONTEXT = "SDL_VIDEO_EXTERNAL_CONTEXT";
+const ZString HINT_VIDEO_HIGHDPI_DISABLED = "SDL_VIDEO_HIGHDPI_DISABLED";
+const ZString HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS = "SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS";
+const ZString HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR = "SDL_VIDEO_WAYLAND_ALLOW_LIBDECOR";
+const ZString HINT_VIDEO_WAYLAND_MODE_EMULATION = "SDL_VIDEO_WAYLAND_MODE_EMULATION";
+const ZString HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT = "SDL_VIDEO_WINDOW_SHARE_PIXEL_FORMAT";
+const ZString HINT_VIDEO_FOREIGN_WINDOW_VULKAN = "SDL_VIDEO_FOREIGN_WINDOW_VULKAN";
+const ZString HINT_VIDEO_X11_FORCE_EGL = "SDL_VIDEO_X11_FORCE_EGL";
+const ZString HINT_VIDEO_X11_NET_WM_PING = "SDL_VIDEO_X11_NET_WM_PING";
+const ZString HINT_VIDEO_X11_XINERAMA = "SDL_VIDEO_X11_XINERAMA";
+const ZString HINT_VIDEO_X11_XVIDMODE = "SDL_VIDEO_X11_XVIDMODE";
+const ZString HINT_WAVE_RIFF_CHUNK_SIZE = "SDL_WAVE_RIFF_CHUNK_SIZE";
+const ZString HINT_WINDOWS_DISABLE_THREAD_NAMING = "SDL_WINDOWS_DISABLE_THREAD_NAMING";
+const ZString HINT_WINDOWS_ENABLE_MESSAGELOOP = "SDL_WINDOWS_ENABLE_MESSAGELOOP";
+const ZString HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL = "SDL_WINDOWS_FORCE_SEMAPHORE_KERNEL";
+const ZString HINT_WINDOWS_INTRESOURCE_ICON = "SDL_WINDOWS_INTRESOURCE_ICON";
+const ZString HINT_WINDOWS_NO_CLOSE_ON_ALT_F4 = "SDL_WINDOWS_NO_CLOSE_ON_ALT_F4";
+const ZString HINT_WINDOWS_DPI_AWARENESS = "SDL_WINDOWS_DPI_AWARENESS";
+const ZString HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN = "SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN";
+const ZString HINT_WINRT_HANDLE_BACK_BUTTON = "SDL_WINRT_HANDLE_BACK_BUTTON";
+const ZString HINT_WINRT_PRIVACY_POLICY_URL = "SDL_WINRT_PRIVACY_POLICY_URL";
+const ZString HINT_XINPUT_ENABLED = "SDL_XINPUT_ENABLED";
+const ZString HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING = "SDL_XINPUT_USE_OLD_JOYSTICK_MAPPING";
+const ZString HINT_X11_WINDOW_TYPE = "SDL_X11_WINDOW_TYPE";
+const ZString HINT_VIDEODRIVER = "SDL_VIDEODRIVER";
+const ZString HINT_AUDIODRIVER = "SDL_AUDIODRIVER";
+const ZString HINT_TRACKPAD_IS_TOUCH_ONLY = "SDL_TRACKPAD_IS_TOUCH_ONLY";
+const ZString HINT_MOUSE_TOUCH_EVENTS = "SDL_MOUSE_TOUCH_EVENTS";
+const ZString HINT_NO_SIGNAL_HANDLERS = "SDL_NO_SIGNAL_HANDLERS";
+const ZString HINT_ORIENTATIONS = "SDL_IOS_ORIENTATIONS";
+const ZString HINT_PREFERRED_LOCALES = "SDL_PREFERRED_LOCALES";
+const ZString HINT_QTWAYLAND_WINDOW_FLAGS = "SDL_QTWAYLAND_WINDOW_FLAGS";
+const ZString HINT_RENDER_LINE_METHOD = "SDL_RENDER_LINE_METHOD";
+const ZString HINT_RENDER_DIRECT3D_THREADSAFE = "SDL_RENDER_DIRECT3D_THREADSAFE";
+const ZString HINT_RENDER_LOGICAL_SIZE_MODE = "SDL_RENDER_LOGICAL_SIZE_MODE";
+const ZString HINT_RENDER_SCALE_QUALITY = "SDL_RENDER_SCALE_QUALITY";
+const ZString HINT_PS2_DYNAMIC_VSYNC = "SDL_PS2_DYNAMIC_VSYNC";
+const ZString HINT_RPI_VIDEO_LAYER = "SDL_RPI_VIDEO_LAYER";
+const ZString HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL = "SDL_THREAD_FORCE_REALTIME_TIME_CRITICAL";
+const ZString HINT_THREAD_STACK_SIZE = "SDL_THREAD_STACK_SIZE";
+const ZString HINT_TOUCH_MOUSE_EVENTS = "SDL_TOUCH_MOUSE_EVENTS";
+const ZString HINT_TV_REMOTE_AS_JOYSTICK = "SDL_TV_REMOTE_AS_JOYSTICK";
+const ZString HINT_VIDEO_EGL_ALLOW_TRANSPARENCY = "SDL_VIDEO_EGL_ALLOW_TRANSPARENCY";
+const ZString HINT_VIDEO_MAC_FULLSCREEN_SPACES = "SDL_VIDEO_MAC_FULLSCREEN_SPACES";
+const ZString HINT_VIDEO_WAYLAND_PREFER_LIBDECOR = "SDL_VIDEO_WAYLAND_PREFER_LIBDECOR";
+const ZString HINT_VIDEO_WAYLAND_EMULATE_MOUSE_WARP = "SDL_VIDEO_WAYLAND_EMULATE_MOUSE_WARP";
+const ZString HINT_VIDEO_FOREIGN_WINDOW_OPENGL = "SDL_VIDEO_FOREIGN_WINDOW_OPENGL";
+const ZString HINT_VIDEO_WIN_D3DCOMPILER = "SDL_VIDEO_WIN_D3DCOMPILER";
+const ZString HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR = "SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR";
+const ZString HINT_VIDEO_X11_WINDOW_VISUALID = "SDL_VIDEO_X11_WINDOW_VISUALID";
+const ZString HINT_VIDEO_X11_XRANDR = "SDL_VIDEO_X11_XRANDR";
+const ZString HINT_WAVE_FACT_CHUNK = "SDL_WAVE_FACT_CHUNK";
+const ZString HINT_WAVE_TRUNCATION = "SDL_WAVE_TRUNCATION";
+const ZString HINT_WINDOWS_ENABLE_MENU_MNEMONICS = "SDL_WINDOWS_ENABLE_MENU_MNEMONICS";
+const ZString HINT_WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS = "SDL_WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS";
+const ZString HINT_WINDOWS_INTRESOURCE_ICON_SMALL = "SDL_WINDOWS_INTRESOURCE_ICON_SMALL";
+const ZString HINT_WINDOWS_USE_D3D9EX = "SDL_WINDOWS_USE_D3D9EX";
+const ZString HINT_WINDOWS_DPI_SCALING = "SDL_WINDOWS_DPI_SCALING";
+const ZString HINT_WINDOW_NO_ACTIVATION_WHEN_SHOWN = "SDL_WINDOW_NO_ACTIVATION_WHEN_SHOWN";
+const ZString HINT_WINRT_PRIVACY_POLICY_LABEL = "SDL_WINRT_PRIVACY_POLICY_LABEL";
+const ZString HINT_X11_FORCE_OVERRIDE_REDIRECT = "SDL_X11_FORCE_OVERRIDE_REDIRECT";
+const ZString HINT_DIRECTINPUT_ENABLED = "SDL_DIRECTINPUT_ENABLED";
+const ZString HINT_AUDIO_INCLUDE_MONITORS = "SDL_AUDIO_INCLUDE_MONITORS";
+const ZString HINT_QUIT_ON_LAST_WINDOW_CLOSE = "SDL_QUIT_ON_LAST_WINDOW_CLOSE";
+const ZString HINT_KMSDRM_DEVICE_INDEX = "SDL_KMSDRM_DEVICE_INDEX";
 const int HAPTIC_CONSTANT = 1;
 const int HAPTIC_SINE = 2;
 const int HAPTIC_LEFTRIGHT = 4;
@@ -2319,7 +2345,7 @@ const double IPHONE_MAX_GFORCE = 5.0;
 const int VIRTUAL_JOYSTICK_DESC_VERSION = 1;
 
 
-fn char* getPlatform() @cname("SDL_GetPlatform");
+fn ZString getPlatform() @cname("SDL_GetPlatform");
 fn void* malloc(usz size) @cname("SDL_malloc");
 fn void* calloc(usz nmemb, usz size) @cname("SDL_calloc");
 fn void* realloc(void* mem, usz size) @cname("SDL_realloc");
@@ -2333,8 +2359,8 @@ alias Free_func = fn void(void* mem);
 fn void* getoriginalmemoryfunctions(Malloc_func* malloc_Func, Calloc_func* calloc_Func, Realloc_func* realloc_Func, Free_func* free_Func) @cname("SDL_GetMemoryFunctions");
 fn int setMemoryfns(Malloc_func malloc_func, Calloc_func calloc_func, Realloc_func realloc_func, Free_func free_func) @cname("SDL_SetMemoryFunctions");
 fn int getNumAllocations() @cname("SDL_GetNumAllocations");
-fn char* getenv(char* name)  @cname("SDL_getenv");
-fn int setenv(char* name, char* value, int overwrite) @cname("SDL_setenv");
+fn ZString getenv(ZString name)  @cname("SDL_getenv");
+fn int setenv(ZString name, ZString value, int overwrite) @cname("SDL_setenv");
 alias Compare = fn int(void* pointer, void* pointer_);
 fn void qsort(void* base, usz nmemb, usz size, Compare* compare) @cname("SDL_qsort");
 fn void* bsearch(void* key, void* base, usz nmemb, usz size, Compare* compare) @cname("SDL_bsearch");
@@ -2360,47 +2386,47 @@ fn void* memset4(void* dst, uint val, usz dwords) @cname("SDL_memset4");
 fn void* memcpy(void* dst, void* src, usz len) @cname("SDL_memcpy");
 fn void* memmove(void* dst, void* src, usz len) @cname("SDL_memmove");
 fn int memcmp(void* s1, void* s2, usz len) @cname("SDL_memcmp");
-fn usz wcslen(char* wstr) @cname("SDL_wcslen");
-fn usz wcslcpy(char* dst, char* src, usz maxlen) @cname("SDL_wcslcpy");
-fn usz wcslcat(char* dst, char* src, usz maxlen) @cname("SDL_wcslcat");
-fn char* wcsdup(char* wstr) @cname("SDL_wcsdup");
-fn char* wcsstr(char* haystack, char* needle) @cname("SDL_wcsstr");
-fn int wcscmp(char* str1, char* str2) @cname("");
-fn int wcsncmp(char* str1, char* str2, usz maxlen) @cname("SDL_wcsncmp");
-fn int wcscasecmp(char* str1, char* str2) @cname("SDL_wcscasecmp");
-fn int wcsncasecmp(char* str1, char* str2, usz len) @cname("SDL_wcsncasecmp");
-fn usz strlen(char* str) @cname("SDL_strlen");
-fn usz strlcpy(char* dst, char* src, usz maxlen) @cname("SDL_strlcpy");
-fn usz utf8strlcpy(char* dst, char* src, usz dst_bytes) @cname("SDL_utf8strlcpy");
-fn usz strlcat(char* dst, char* src, usz maxlen) @cname("SDL_strlcat");
-fn char* strdup(char* str) @cname("SDL_strdup");
-fn char* strrev(char* str) @cname("SDL_strrev");
-fn char* strupr(char* str) @cname("SDL_strupr");
-fn char* strlwr(char* str) @cname("SDL_strlwr");
-fn char* strchr(char* str, int c) @cname("SDL_strchr");
-fn char* strrchr(char* str, int c) @cname("SDL_strrchr");
-fn char* strstr(char* haystack, char* needle) @cname("SDL_strstr");
-fn char* strcasestr(char* haystack, char* needle) @cname("SDL_strcasestr");
-fn char* strtokr(char* s1, char* s2, char* saveptr) @cname("SDL_strtokr");
-fn usz utf8strlen(char* str) @cname("SDL_utf8strlen");
-fn usz utf8strnlen(char* str, usz bytes) @cname("SDL_utf8strnlen");
-fn char* itoa(int value, char* str, int radix) @cname("SDL_itoa");
-fn char* uitoa(uint value, char* str, int radix) @cname("SDL_uitoa");
-fn char* ltoa(long value, char* str, int radix) @cname("SDL_ltoa");
-fn char* ultoa(ulong value, char* str, int radix) @cname("SDL_ultoa");
-fn char* lltoa(long value, char* str, int radix) @cname("SDL_lltoa");
-fn char* ulltoa(ulong value, char* str, int radix) @cname("SDL_ulltoa");
-fn int atoi(char* str) @cname("SDL_atoi");
-fn double atof(char* str) @cname("SDL_atof");
-fn long strtol(char* str, char** endp, int base) @cname("SDL_strtol");
-fn ulong strtoul(char* str, char** endp, int base) @cname("SDL_strtoul");
-fn long strtoll(char* str, char** endp, int base) @cname("SDL_strtoll");
-fn ulong strtoull(char* str, char** endp, int base) @cname("SDL_strtoull");
-fn double strtod(char* str, char** endp) @cname("SDL_strtod");
-fn int strcmp(char* str1, char* str2) @cname("SDL_strcmp");
-fn int strncmp(char* str1, char* str2, usz maxlen) @cname("SDL_strncmp");
-fn int strcasecmp(char* str1, char* str2) @cname("SDL_strcasecmp");
-fn int strncasecmp(char* str1, char* str2, usz len) @cname("SDL_strncasecmp");
+fn usz wcslen(ZString wstr) @cname("SDL_wcslen");
+fn usz wcslcpy(ZString dst, ZString src, usz maxlen) @cname("SDL_wcslcpy");
+fn usz wcslcat(ZString dst, ZString src, usz maxlen) @cname("SDL_wcslcat");
+fn ZString wcsdup(ZString wstr) @cname("SDL_wcsdup");
+fn ZString wcsstr(ZString haystack, ZString needle) @cname("SDL_wcsstr");
+fn int wcscmp(ZString str1, ZString str2) @cname("");
+fn int wcsncmp(ZString str1, ZString str2, usz maxlen) @cname("SDL_wcsncmp");
+fn int wcscasecmp(ZString str1, ZString str2) @cname("SDL_wcscasecmp");
+fn int wcsncasecmp(ZString str1, ZString str2, usz len) @cname("SDL_wcsncasecmp");
+fn usz strlen(ZString str) @cname("SDL_strlen");
+fn usz strlcpy(ZString dst, ZString src, usz maxlen) @cname("SDL_strlcpy");
+fn usz utf8strlcpy(ZString dst, ZString src, usz dst_bytes) @cname("SDL_utf8strlcpy");
+fn usz strlcat(ZString dst, ZString src, usz maxlen) @cname("SDL_strlcat");
+fn ZString strdup(ZString str) @cname("SDL_strdup");
+fn ZString strrev(ZString str) @cname("SDL_strrev");
+fn ZString strupr(ZString str) @cname("SDL_strupr");
+fn ZString strlwr(ZString str) @cname("SDL_strlwr");
+fn ZString strchr(ZString str, int c) @cname("SDL_strchr");
+fn ZString strrchr(ZString str, int c) @cname("SDL_strrchr");
+fn ZString strstr(ZString haystack, ZString needle) @cname("SDL_strstr");
+fn ZString strcasestr(ZString haystack, ZString needle) @cname("SDL_strcasestr");
+fn ZString strtokr(ZString s1, ZString s2, ZString saveptr) @cname("SDL_strtokr");
+fn usz utf8strlen(ZString str) @cname("SDL_utf8strlen");
+fn usz utf8strnlen(ZString str, usz bytes) @cname("SDL_utf8strnlen");
+fn ZString itoa(int value, ZString str, int radix) @cname("SDL_itoa");
+fn ZString uitoa(uint value, ZString str, int radix) @cname("SDL_uitoa");
+fn ZString ltoa(long value, ZString str, int radix) @cname("SDL_ltoa");
+fn ZString ultoa(ulong value, ZString str, int radix) @cname("SDL_ultoa");
+fn ZString lltoa(long value, ZString str, int radix) @cname("SDL_lltoa");
+fn ZString ulltoa(ulong value, ZString str, int radix) @cname("SDL_ulltoa");
+fn int atoi(ZString str) @cname("SDL_atoi");
+fn double atof(ZString str) @cname("SDL_atof");
+fn long strtol(ZString str, ZString* endp, int base) @cname("SDL_strtol");
+fn ulong strtoul(ZString str, ZString* endp, int base) @cname("SDL_strtoul");
+fn long strtoll(ZString str, ZString* endp, int base) @cname("SDL_strtoll");
+fn ulong strtoull(ZString str, ZString* endp, int base) @cname("SDL_strtoull");
+fn double strtod(ZString str, ZString* endp) @cname("SDL_strtod");
+fn int strcmp(ZString str1, ZString str2) @cname("SDL_strcmp");
+fn int strncmp(ZString str1, ZString str2, usz maxlen) @cname("SDL_strncmp");
+fn int strcasecmp(ZString str1, ZString str2) @cname("SDL_strcasecmp");
+fn int strncasecmp(ZString str1, ZString str2, usz len) @cname("SDL_strncasecmp");
 fn double acos(double x) @cname("SDL_acos");
 fn float acosf(float x) @cname("SDL_acosf");
 fn double asin(double x) @cname("SDL_asin");
@@ -2443,16 +2469,16 @@ fn double sqrt(double x) @cname("SDL_sqrt");
 fn float sqrtf(float x) @cname("SDL_sqrtf");
 fn double tan(double x) @cname("SDL_tan");
 fn float tanf(float x) @cname("SDL_tanf");
-fn Iconv_t iconvOpen(char* tocode, char* fromcode) @cname("SDL_iconv_open");
+fn Iconv_t iconvOpen(ZString tocode, ZString fromcode) @cname("SDL_iconv_open");
 fn int iconvClose(Iconv_t cd) @cname("SDL_iconv_close");
-fn usz iconV(Iconv_t cd, char** inbuf, usz inbytesleft, char* outbuf, usz* outbytesleft) @cname("SDL_iconv");
-fn char* iconvString(char* tocode, char* fromcode, char* inbuf, usz inbytesleft) @cname("SDL_iconv_string");
+fn usz iconV(Iconv_t cd, ZString* inbuf, usz inbytesleft, ZString outbuf, usz* outbytesleft) @cname("SDL_iconv");
+fn ZString iconvString(ZString tocode, ZString fromcode, ZString inbuf, usz inbytesleft) @cname("SDL_iconv_string");
 fn void* memcpy4(void* dst, void* src, usz dwords) @cname("SDL_memcpy4");
 fn int sizeMulOverflow(usz a, usz b, usz* ret) @cname("SDL_size_mul_overflow");
 fn int sizeAddOverflow(usz a, usz b, usz* ret) @cname("SDL_size_add_overflow");
 fn int cMain(int argc, char argv) @cname("SDL_main");
 fn void* setMainReady() @cname("SDL_SetMainReady");
-fn AssertState reportAssertion(AssertData a1, char a2, char* a3, int a4) @cname("SDL_ReportAssertion");
+fn AssertState reportAssertion(AssertData a1, char a2, ZString a3, int a4) @cname("SDL_ReportAssertion");
 fn void* setAssertionHandler(AssertionHandler handler, void* userdata) @cname("SDL_SetAssertionHandler");
 fn AssertionHandler getDefaultAssertionHandler() @cname("SDL_GetDefaultAssertionHandler");
 fn AssertionHandler getAssertionHandler(void* puserdata) @cname("SDL_GetAssertionHandler");
@@ -2470,9 +2496,9 @@ fn int atomicAdd(AtomicT* a, int v) @cname("SDL_AtomicAdd");
 fn bool atomicCASPtr(void* a, void* oldval, void* newval) @cname("SDL_AtomicCASPtr");
 fn void* atomicSetPtr(void* a, void* v) @cname("SDL_AtomicSetPtr");
 fn void* atomicGetPtr(void* a) @cname("SDL_AtomicGetPtr");
-fn int setError(char* fmt, ...) @cname("SDL_SetError");
-fn char* getError() @cname("SDL_GetError");
-fn char* getErrorMsg(char* errstr, int maxlen) @cname("SDL_GetErrorMsg");
+fn int setError(ZString fmt, ...) @cname("SDL_SetError");
+fn ZString getError() @cname("SDL_GetError");
+fn ZString getErrorMsg(ZString errstr, int maxlen) @cname("SDL_GetErrorMsg");
 fn void* clearError() @cname("SDL_ClearError");
 fn int error(ErrorCode code) @cname("SDL_Error");
 fn float swapFloat(float x) @cname("SDL_SwapFloat");
@@ -2499,7 +2525,7 @@ alias ThreadFn = fn int(void* data);
 
 fn Thread createThread(ThreadFn thread_fn, char name, void* data) @cname("SDL_CreateThread");
 fn Thread createThreadWithStackSize(ThreadFn thread_fn, char name, usz stacksize, void* data) @cname("SDL_CreateThreadWithStackSize");
-fn char* getThreadName(Thread* thread) @cname("SDL_GetThreadName");
+fn ZString getThreadName(Thread* thread) @cname("SDL_GetThreadName");
 fn ThreadID threadID() @cname("SDL_ThreadID");
 fn ThreadID getThreadID(Thread* thread) @cname("SDL_GetThreadID");
 fn int setThreadPriority(ThreadPriority priority) @cname("SDL_SetThreadPriority");
@@ -2512,7 +2538,7 @@ alias TlsDestructor = fn void(void*);
 
 fn int tlsSet(TlSID id, void* value, TlsDestructor* destructor) @cname("SDL_TLSSet");
 fn void* tlsCleanup() @cname("SDL_TLSCleanup");
-fn RWops rwFromFile(char file, char* mode) @cname("SDL_RWFromFile");
+fn RWops rwFromFile(char file, ZString mode) @cname("SDL_RWFromFile");
 fn RWops* rwFromFP(File* fp, bool autoclose) @cname("SDL_RWFromFP");
 fn RWops rwFromMem(void* mem, int size) @cname("SDL_RWFromMem");
 fn RWops rwFromConstMem(void* mem, int size) @cname("SDL_RWFromConstMem");
@@ -2525,7 +2551,7 @@ fn usz rwRead(RWops context, void* ptr, usz size, usz maxnum) @cname("SDL_RWread
 fn usz rwWrite(RWops context, void* ptr, usz size, usz num) @cname("SDL_RWwrite");
 fn int rwClose(RWops* context) @cname("SDL_RWclose");
 fn void* loadFile_RW(RWops* src, usz* datasize, int freesrc) @cname("SDL_LoadFile_RW");
-fn void* loadFile(char* file, usz* datasize) @cname("SDL_LoadFile");
+fn void* loadFile(ZString file, usz* datasize) @cname("SDL_LoadFile");
 fn char readU8(RWops* src) @cname("SDL_ReadU8");
 fn ushort readLE16(RWops* src) @cname("SDL_ReadLE16");
 fn ushort readBE16(RWops* src) @cname("SDL_ReadBE16");
@@ -2541,22 +2567,22 @@ fn usz writeBE32(RWops* dst, uint value) @cname("SDL_WriteBE32");
 fn usz writeLE64(RWops* dst, ulong value) @cname("SDL_WriteLE64");
 fn usz writeBE64(RWops* dst, ulong value) @cname("SDL_WriteBE64");
 fn int getNumAudioDrivers() @cname("SDL_GetNumAudioDrivers");
-fn char* getAudioDriver(int index) @cname("SDL_GetAudioDriver");
-fn int audioInit(char* driver_name) @cname("SDL_AudioInit");
+fn ZString getAudioDriver(int index) @cname("SDL_GetAudioDriver");
+fn int audioInit(ZString driver_name) @cname("SDL_AudioInit");
 fn void* audioQuit() @cname("SDL_AudioQuit");
-fn char* getCurrentAudioDriver() @cname("SDL_GetCurrentAudioDriver");
+fn ZString getCurrentAudioDriver() @cname("SDL_GetCurrentAudioDriver");
 fn int openAudio(AudioSpec* desired, AudioSpec* obtained) @cname("SDL_OpenAudio");
 fn int getNumAudioDevices(int iscapture) @cname("SDL_GetNumAudioDevices");
-fn char* getAudioDeviceName(int index, int iscapture) @cname("SDL_GetAudioDeviceName");
+fn ZString getAudioDeviceName(int index, int iscapture) @cname("SDL_GetAudioDeviceName");
 fn int getAudioDeviceSpec(int index, int iscapture, AudioSpec* spec) @cname("SDL_GetAudioDeviceSpec");
-fn int getDefaultAudioInfo(char* name, AudioSpec* spec, int iscapture) @cname("SDL_GetDefaultAudioInfo");
-fn AudioDeviceID openAudioDevice(char* device, int iscapture, AudioSpec* desired, AudioSpec* obtained, int allowed_changes) @cname("SDL_OpenAudioDevice");
+fn int getDefaultAudioInfo(ZString name, AudioSpec* spec, int iscapture) @cname("SDL_GetDefaultAudioInfo");
+fn AudioDeviceID openAudioDevice(ZString device, int iscapture, AudioSpec* desired, AudioSpec* obtained, int allowed_changes) @cname("SDL_OpenAudioDevice");
 fn AudioStatus getAudioStatus() @cname("SDL_GetAudioStatus");
 fn AudioStatus getAudioDeviceStatus(AudioDeviceID dev) @cname("SDL_GetAudioDeviceStatus");
 fn void* pauseAudio(int pause_on) @cname("SDL_PauseAudio");
 fn void* pauseAudioDevice(AudioDeviceID dev, int pause_on) @cname("SDL_PauseAudioDevice");
-fn AudioSpec* loadWAV_RW(RWops* src, int freesrc, AudioSpec* spec, char** audio_buf, char* audio_len) @cname("SDL_LoadWAV_RW");
-fn void* freeWAV(char* audio_buf) @cname("SDL_FreeWAV");
+fn AudioSpec* loadWAV_RW(RWops* src, int freesrc, AudioSpec* spec, ZString* audio_buf, ZString audio_len) @cname("SDL_LoadWAV_RW");
+fn void* freeWAV(ZString audio_buf) @cname("SDL_FreeWAV");
 fn int buildAudioCVT(AudioCVT* cvt, AudioFormat src_format, char src_channels, int src_rate, AudioFormat dst_format, char dst_channels, int dst_rate) @cname("SDL_BuildAudioCVT");
 fn int convertAudio(AudioCVT* cvt) @cname("SDL_ConvertAudio");
 fn AudioStream* newAudioStream(AudioFormat src_format, char src_channels, int src_rate, AudioFormat dst_format, char dst_channels, int dst_rate) @cname("SDL_NewAudioStream");
@@ -2566,8 +2592,8 @@ fn int audioStreamAvailable(AudioStream* stream) @cname("SDL_AudioStreamAvailabl
 fn int audioStreamFlush(AudioStream* stream) @cname("SDL_AudioStreamFlush");
 fn void* audioStreamClear(AudioStream* stream) @cname("SDL_AudioStreamClear");
 fn void* freeAudioStream(AudioStream* stream) @cname("SDL_FreeAudioStream");
-fn void* mixAudio(char* dst, char* src, uint len, int volume) @cname("SDL_MixAudio");
-fn void* mixAudioFormat(char* dst, char* src, AudioFormat format, uint len, int volume) @cname("SDL_MixAudioFormat");
+fn void* mixAudio(ZString dst, ZString src, uint len, int volume) @cname("SDL_MixAudio");
+fn void* mixAudioFormat(ZString dst, ZString src, AudioFormat format, uint len, int volume) @cname("SDL_MixAudioFormat");
 fn int queueAudio(AudioDeviceID dev, void* data, uint len) @cname("SDL_QueueAudio");
 fn uint dequeueAudio(AudioDeviceID dev, void* data, uint len) @cname("SDL_DequeueAudio");
 fn uint getQueuedAudioSize(AudioDeviceID dev) @cname("SDL_GetQueuedAudioSize");
@@ -2578,11 +2604,11 @@ fn void* unlockAudio() @cname("SDL_UnlockAudio");
 fn void* unlockAudioDevice(AudioDeviceID dev) @cname("SDL_UnlockAudioDevice");
 fn void* closeAudio() @cname("SDL_CloseAudio");
 fn void* closeAudioDevice(AudioDeviceID dev) @cname("SDL_CloseAudioDevice");
-fn int setClipboardText(char* text) @cname("SDL_SetClipboardText");
-fn char* getClipboardText() @cname("SDL_GetClipboardText");
+fn int setClipboardText(ZString text) @cname("SDL_SetClipboardText");
+fn ZString getClipboardText() @cname("SDL_GetClipboardText");
 fn bool hasClipboardText() @cname("SDL_HasClipboardText");
-fn int setPrimarySelectionText(char* text) @cname("SDL_SetPrimarySelectionText");
-fn char* getPrimarySelectionText() @cname("SDL_GetPrimarySelectionText");
+fn int setPrimarySelectionText(ZString text) @cname("SDL_SetPrimarySelectionText");
+fn ZString getPrimarySelectionText() @cname("SDL_GetPrimarySelectionText");
 fn bool hasPrimarySelectionText() @cname("SDL_HasPrimarySelectionText");
 fn int getCPUCount() @cname("SDL_GetCPUCount");
 fn int getCPUCacheLineSize() @cname("SDL_GetCPUCacheLineSize");
@@ -2607,7 +2633,7 @@ fn usz simdGetAlignment() @cname("SDL_SIMDGetAlignment");
 fn void* simdAlloc(usz len) @cname("SDL_SIMDAlloc");
 fn void* simdRealloc(void* mem, usz len) @cname("SDL_SIMDRealloc");
 fn void* simdFree(void* ptr) @cname("SDL_SIMDFree");
-fn char* getPixelFormatName(uint format) @cname("SDL_GetPixelFormatName");
+fn ZString getPixelFormatName(uint format) @cname("SDL_GetPixelFormatName");
 fn bool pixelFormatEnumToMasks(uint format, int* bpp, uint* rmask, uint* gmask, uint* bmask, uint* amask) @cname("SDL_PixelFormatEnumToMasks");
 fn uint masksToPixelFormatEnum(int bpp, uint rmask, uint gmask, uint bmask, uint amask) @cname("SDL_MasksToPixelFormatEnum");
 fn PixelFormat* allocFormat(uint pixelFormat) @cname("SDL_AllocFormat");
@@ -2618,8 +2644,8 @@ fn int setPaletteColors(Palette* palette, Color* colors, int firstcolor, int nco
 fn void* freePalette(Palette* palette) @cname("SDL_FreePalette");
 fn uint mapRGB(PixelFormat* format, char r, char g, char b) @cname("SDL_MapRGB");
 fn uint mapRGBA(PixelFormat* format, char r, char g, char b, char a) @cname("SDL_MapRGBA");
-fn void* getRGB(uint pixel, PixelFormat* format, char* r, char* g, char* b) @cname("SDL_GetRGB");
-fn void* getRGBA(uint pixel, PixelFormat* format, char* r, char* g, char* b, char* a) @cname("SDL_GetRGBA");
+fn void* getRGB(uint pixel, PixelFormat* format, ZString r, ZString g, ZString b) @cname("SDL_GetRGB");
+fn void* getRGBA(uint pixel, PixelFormat* format, ZString r, ZString g, ZString b, ZString a) @cname("SDL_GetRGBA");
 fn void* calculateGammaRamp(float gamma, ushort* ramp) @cname("SDL_CalculateGammaRamp");
 fn bool pointInRect(Point* p, Rect* r) @cname("SDL_PointInRect");
 fn bool rectEmpty(Rect* r) @cname("SDL_RectEmpty");
@@ -2655,9 +2681,9 @@ fn int setColorKey(Surface* surface, int flag, uint key) @cname("SDL_SetColorKey
 fn bool hasColorKey(Surface* surface) @cname("SDL_HasColorKey");
 fn int getColorKey(Surface* surface, uint* key) @cname("SDL_GetColorKey");
 fn int setSurfaceColorMod(Surface* surface, char r, char g, char b) @cname("SDL_SetSurfaceColorMod");
-fn int getSurfaceColorMod(Surface* surface, char* r, char* g, char* b) @cname("SDL_GetSurfaceColorMod");
+fn int getSurfaceColorMod(Surface* surface, ZString r, ZString g, ZString b) @cname("SDL_GetSurfaceColorMod");
 fn int setSurfaceAlphaMod(Surface* surface, char alpha) @cname("SDL_SetSurfaceAlphaMod");
-fn int getSurfaceAlphaMod(Surface* surface, char* alpha) @cname("SDL_GetSurfaceAlphaMod");
+fn int getSurfaceAlphaMod(Surface* surface, ZString alpha) @cname("SDL_GetSurfaceAlphaMod");
 fn int setSurfaceBlendMode(Surface* surface, BlendMode blendMode) @cname("SDL_SetSurfaceBlendMode");
 fn int getSurfaceBlendMode(Surface* surface, BlendMode* blendMode) @cname("SDL_GetSurfaceBlendMode");
 fn bool setClipRect(Surface* surface, Rect* rect) @cname("SDL_SetClipRect");
@@ -2682,12 +2708,12 @@ fn YUVConversionMode getYUVConversionMode() @cname("SDL_GetYUVConversionMode");
 fn YUVConversionMode getYUVConversionModeForResolution(int width, int height) @cname("SDL_GetYUVConversionModeForResolution");
 
 fn int getNumVideoDrivers() @cname("SDL_GetNumVideoDrivers");
-fn char* getVideoDriver(int index) @cname("SDL_GetVideoDriver");
-fn int videoInit(char* driver_name) @cname("SDL_VideoInit");
+fn ZString getVideoDriver(int index) @cname("SDL_GetVideoDriver");
+fn int videoInit(ZString driver_name) @cname("SDL_VideoInit");
 fn void* videoQuit() @cname("SDL_VideoQuit");
-fn char* getCurrentVideoDriver() @cname("SDL_GetCurrentVideoDriver");
+fn ZString getCurrentVideoDriver() @cname("SDL_GetCurrentVideoDriver");
 fn int getNumVideoDisplays() @cname("SDL_GetNumVideoDisplays");
-fn char* getDisplayName(int displayIndex) @cname("SDL_GetDisplayName");
+fn ZString getDisplayName(int displayIndex) @cname("SDL_GetDisplayName");
 fn int getDisplayBounds(int displayIndex, Rect* rect) @cname("SDL_GetDisplayBounds");
 fn int getDisplayUsableBounds(int displayIndex, Rect* rect) @cname("SDL_GetDisplayUsableBounds");
 fn int getDisplayDPI(int displayIndex, float* ddpi, float* hdpi, float* vdpi) @cname("SDL_GetDisplayDPI");
@@ -2704,16 +2730,16 @@ fn int setWindowDisplayMode(Window* window, DisplayMode* mode) @cname("SDL_SetWi
 fn int getWindowDisplayMode(Window* window, DisplayMode* mode) @cname("SDL_GetWindowDisplayMode");
 fn void getWindowICCProfile(Window* window, usz size) @cname("SDL_GetWindowICCProfile");
 fn uint getWindowPixelFormat(Window* window) @cname("SDL_GetWindowPixelFormat");
-fn Window* createWindow(char* title, int x, int y, int w, int h, uint flags) @cname("SDL_CreateWindow");
+fn Window* createWindow(ZString title, int x, int y, int w, int h, uint flags) @cname("SDL_CreateWindow");
 fn Window* createWindowFrom(void* data) @cname("SDL_CreateWindowFrom");
 fn uint getWindowID(Window* window) @cname("SDL_GetWindowID");
 fn Window* getWindowFromID(uint id) @cname("SDL_GetWindowFromID");
 fn uint getWindowFlags(Window* window) @cname("SDL_GetWindowFlags");
-fn void* setWindowTitle(Window* window, char* title) @cname("SDL_SetWindowTitle");
-fn char* getWindowTitle(Window* window) @cname("SDL_GetWindowTitle");
+fn void* setWindowTitle(Window* window, ZString title) @cname("SDL_SetWindowTitle");
+fn ZString getWindowTitle(Window* window) @cname("SDL_GetWindowTitle");
 fn void* setWindowIcon(Window* window, Surface* icon) @cname("SDL_SetWindowIcon");
-fn void* setWindowData(Window* window, char* name, void* userdata) @cname("SDL_SetWindowData");
-fn void* getWindowData(Window* window, char* name) @cname("SDL_GetWindowData");
+fn void* setWindowData(Window* window, ZString name, void* userdata) @cname("SDL_SetWindowData");
+fn void* getWindowData(Window* window, ZString name) @cname("SDL_GetWindowData");
 fn void* setWindowPosition(Window* window, int x, int y) @cname("SDL_SetWindowPosition");
 fn void* getWindowPosition(Window* window, int* x, int* y) @cname("SDL_GetWindowPosition");
 fn void* setWindowSize(Window* window, int w, int h) @cname("SDL_SetWindowSize");
@@ -2762,10 +2788,10 @@ fn void* destroyWindow(Window* window) @cname("SDL_DestroyWindow");
 fn bool isScreenSaverEnabled() @cname("SDL_IsScreenSaverEnabled");
 fn void* enableScreenSaver() @cname("SDL_EnableScreenSaver");
 fn void* disableScreenSaver() @cname("SDL_DisableScreenSaver");
-fn int glLoadLibrary(char* path) @cname("SDL_GL_LoadLibrary");
-fn void* glGetProcAddress(char* proc) @cname("SDL_GL_GetProcAddress");
+fn int glLoadLibrary(ZString path) @cname("SDL_GL_LoadLibrary");
+fn void* glGetProcAddress(ZString proc) @cname("SDL_GL_GetProcAddress");
 fn void* glUnloadLibrary() @cname("SDL_GL_UnloadLibrary");
-fn bool glExtensionSupported(char* extension) @cname("SDL_GL_ExtensionSupported");
+fn bool glExtensionSupported(ZString extension) @cname("SDL_GL_ExtensionSupported");
 fn void* glResetAttributes() @cname("SDL_GL_ResetAttributes");
 fn int glSetAttribute(GLattr attr, int value) @cname("SDL_GL_SetAttribute");
 fn int glGetAttribute(GLattr attr, int* value) @cname("SDL_GL_GetAttribute");
@@ -2779,16 +2805,16 @@ fn int glGetSwapInterval() @cname("SDL_GL_GetSwapInterval");
 fn void* glSwapWindow(Window* window) @cname("SDL_GL_SwapWindow");
 fn void* glDeleteContext(GLContext context) @cname("SDL_GL_DeleteContext");
 fn Window* getKeyboardFocus() @cname("SDL_GetKeyboardFocus");
-fn char* getKeyboardState(int* numkeys) @cname("SDL_GetKeyboardState");
+fn ZString getKeyboardState(int* numkeys) @cname("SDL_GetKeyboardState");
 fn void* resetKeyboard() @cname("SDL_ResetKeyboard");
 fn Keymod getModState() @cname("SDL_GetModState");
 fn void* setModState(Keymod modstate) @cname("SDL_SetModState");
 fn Keycode getKeyFromScancode(Scancode scancode) @cname("SDL_GetKeyFromScancode");
 fn Scancode getScancodeFromKey(Keycode key) @cname("SDL_GetScancodeFromKey");
-fn char* getScancodeName(Scancode scancode) @cname("SDL_GetScancodeName");
-fn Scancode getScancodeFromName(char* name) @cname("SDL_GetScancodeFromName");
-fn char* getKeyName(Keycode key) @cname("SDL_GetKeyName");
-fn Keycode getKeyFromName(char* name) @cname("SDL_GetKeyFromName");
+fn ZString getScancodeName(Scancode scancode) @cname("SDL_GetScancodeName");
+fn Scancode getScancodeFromName(ZString name) @cname("SDL_GetScancodeFromName");
+fn ZString getKeyName(Keycode key) @cname("SDL_GetKeyName");
+fn Keycode getKeyFromName(ZString name) @cname("SDL_GetKeyFromName");
 fn void* startTextInput() @cname("SDL_StartTextInput");
 fn bool isTextInputActive() @cname("SDL_IsTextInputActive");
 fn void* stopTextInput() @cname("SDL_StopTextInput");
@@ -2806,7 +2832,7 @@ fn int warpMouseGlobal(int x, int y) @cname("SDL_WarpMouseGlobal");
 fn int setRelativeMouseMode(bool enabled) @cname("SDL_SetRelativeMouseMode");
 fn int captureMouse(bool enabled) @cname("SDL_CaptureMouse");
 fn bool getRelativeMouseMode() @cname("SDL_GetRelativeMouseMode");
-fn Cursor* createCursor(char* data, char* mask, int w, int h, int hot_x, int hot_y) @cname("SDL_CreateCursor");
+fn Cursor* createCursor(ZString data, ZString mask, int w, int h, int hot_x, int hot_y) @cname("SDL_CreateCursor");
 fn Cursor* createColorCursor(Surface* surface, int hot_x, int hot_y) @cname("SDL_CreateColorCursor");
 fn Cursor* createSystemCursor(SystemCursor id) @cname("SDL_CreateSystemCursor");
 fn void* setCursor(Cursor* cursor) @cname("SDL_SetCursor");
@@ -2814,13 +2840,13 @@ fn Cursor* getCursor() @cname("SDL_GetCursor");
 fn Cursor* getDefaultCursor() @cname("SDL_GetDefaultCursor");
 fn void* freeCursor(Cursor* cursor) @cname("SDL_FreeCursor");
 fn int showCursor(int toggle) @cname("SDL_ShowCursor");
-fn void* guidToString(Guid guid, char* pszGUID, int cbGUID) @cname("SDL_GUIDToString");
-fn Guid guidFromString(char* pchGUID) @cname("SDL_GUIDFromString");
+fn void* guidToString(Guid guid, ZString pszGUID, int cbGUID) @cname("SDL_GUIDToString");
+fn Guid guidFromString(ZString pchGUID) @cname("SDL_GUIDFromString");
 fn void* lockJoysticks() @cname("SDL_LockJoysticks");
 fn void* unlockJoysticks() @cname("SDL_UnlockJoysticks");
 fn int numJoysticks() @cname("SDL_NumJoysticks");
-fn char* joystickNameForIndex(int device_index) @cname("SDL_JoystickNameForIndex");
-fn char* joystickPathForIndex(int device_index) @cname("SDL_JoystickPathForIndex");
+fn ZString joystickNameForIndex(int device_index) @cname("SDL_JoystickNameForIndex");
+fn ZString joystickPathForIndex(int device_index) @cname("SDL_JoystickPathForIndex");
 fn int joystickGetDevicePlayerIndex(int device_index) @cname("SDL_JoystickGetDevicePlayerIndex");
 fn JoystickGUID joystickGetDeviceGUID(int device_index) @cname("SDL_JoystickGetDeviceGUID");
 fn ushort joystickGetDeviceVendor(int device_index) @cname("SDL_JoystickGetDeviceVendor");
@@ -2838,8 +2864,8 @@ fn bool joystickIsVirtual(int device_index) @cname("SDL_JoystickIsVirtual");
 fn int joystickSetVirtualAxis(Joystick* joystick, int axis, int value) @cname("SDL_JoystickSetVirtualAxis");
 fn int joystickSetVirtualButton(Joystick* joystick, int button, char value) @cname("SDL_JoystickSetVirtualButton");
 fn int joystickSetVirtualHat(Joystick* joystick, int hat, char value) @cname("SDL_JoystickSetVirtualHat");
-fn char* joystickName(Joystick* joystick) @cname("SDL_JoystickName");
-fn char* joystickPath(Joystick* joystick) @cname("SDL_JoystickPath");
+fn ZString joystickName(Joystick* joystick) @cname("SDL_JoystickName");
+fn ZString joystickPath(Joystick* joystick) @cname("SDL_JoystickPath");
 fn int joystickGetPlayerIndex(Joystick* joystick) @cname("SDL_JoystickGetPlayerIndex");
 fn void* joystickSetPlayerIndex(Joystick* joystick, int player_index) @cname("SDL_JoystickSetPlayerIndex");
 fn JoystickGUID joystickGetGUID(Joystick* joystick) @cname("SDL_JoystickGetGUID");
@@ -2847,10 +2873,10 @@ fn ushort joystickGetVendor(Joystick* joystick) @cname("SDL_JoystickGetVendor");
 fn ushort joystickGetProduct(Joystick* joystick) @cname("SDL_JoystickGetProduct");
 fn ushort joystickGetProductVersion(Joystick* joystick) @cname("SDL_JoystickGetProductVersion");
 fn ushort joystickGetFirmwareVersion(Joystick* joystick) @cname("SDL_JoystickGetFirmwareVersion");
-fn char* joystickGetSerial(Joystick* joystick) @cname("SDL_JoystickGetSerial");
+fn ZString joystickGetSerial(Joystick* joystick) @cname("SDL_JoystickGetSerial");
 fn JoystickType joystickGetType(Joystick* joystick) @cname("SDL_JoystickGetType");
-fn void* joystickGetGUIDString(JoystickGUID guid, char* pszGUID, int cbGUID) @cname("SDL_JoystickGetGUIDString");
-fn JoystickGUID joystickGetGUIDFromString(char* pchGUID) @cname("SDL_JoystickGetGUIDFromString");
+fn void* joystickGetGUIDString(JoystickGUID guid, ZString pszGUID, int cbGUID) @cname("SDL_JoystickGetGUIDString");
+fn JoystickGUID joystickGetGUIDFromString(ZString pchGUID) @cname("SDL_JoystickGetGUIDFromString");
 fn void* getJoystickGUIDInfo(JoystickGUID guid, ushort* vendor, ushort* product, ushort* version, ushort* crc16) @cname("SDL_GetJoystickGUIDInfo");
 fn bool joystickGetAttached(Joystick* joystick) @cname("SDL_JoystickGetAttached");
 fn JoystickID joystickInstanceID(Joystick* joystick) @cname("SDL_JoystickInstanceID");
@@ -2877,13 +2903,13 @@ fn JoystickPowerLevel joystickCurrentPowerLevel(Joystick* joystick) @cname("SDL_
 fn void* lockSensors() @cname("SDL_LockSensors");
 fn void* unlockSensors() @cname("SDL_UnlockSensors");
 fn int numSensors() @cname("SDL_NumSensors");
-fn char* sensorGetDeviceName(int device_index) @cname("SDL_SensorGetDeviceName");
+fn ZString sensorGetDeviceName(int device_index) @cname("SDL_SensorGetDeviceName");
 fn SensorType sensorGetDeviceType(int device_index) @cname("SDL_SensorGetDeviceType");
 fn int sensorGetDeviceNonPortableType(int device_index) @cname("SDL_SensorGetDeviceNonPortableType");
 fn SensorID sensorGetDeviceInstanceID(int device_index) @cname("SDL_SensorGetDeviceInstanceID");
 fn Sensor* sensorOpen(int device_index) @cname("SDL_SensorOpen");
 fn Sensor* sensorFromInstanceID(SensorID instance_id) @cname("SDL_SensorFromInstanceID");
-fn char* sensorGetName(Sensor* sensor) @cname("SDL_SensorGetName");
+fn ZString sensorGetName(Sensor* sensor) @cname("SDL_SensorGetName");
 fn SensorType sensorGetType(Sensor* sensor) @cname("SDL_SensorGetType");
 fn int sensorGetNonPortableType(Sensor* sensor) @cname("SDL_SensorGetNonPortableType");
 fn SensorID sensorGetInstanceID(Sensor* sensor) @cname("SDL_SensorGetInstanceID");
@@ -2892,21 +2918,21 @@ fn int sensorGetDataWithTimestamp(Sensor* sensor, ulong* timestamp, float* data,
 fn void* sensorClose(Sensor* sensor) @cname("SDL_SensorClose");
 fn void* sensorUpdate() @cname("SDL_SensorUpdate");
 fn int gameControllerAddMappingsFromRW(RWops* rw, int freerw) @cname("SDL_GameControllerAddMappingsFromRW");
-fn int gameControllerAddMapping(char* mappingString) @cname("SDL_GameControllerAddMapping");
+fn int gameControllerAddMapping(ZString mappingString) @cname("SDL_GameControllerAddMapping");
 fn int gameControllerNumMappings() @cname("SDL_GameControllerNumMappings");
-fn char* gameControllerMappingForIndex(int mapping_index) @cname("SDL_GameControllerMappingForIndex");
-fn char* gameControllerMappingForGUID(JoystickGUID guid) @cname("SDL_GameControllerMappingForGUID");
-fn char* gameControllerMapping(GameController gamecontroller) @cname("SDL_GameControllerMapping");
+fn ZString gameControllerMappingForIndex(int mapping_index) @cname("SDL_GameControllerMappingForIndex");
+fn ZString gameControllerMappingForGUID(JoystickGUID guid) @cname("SDL_GameControllerMappingForGUID");
+fn ZString gameControllerMapping(GameController gamecontroller) @cname("SDL_GameControllerMapping");
 fn bool isGameController(int joystick_index) @cname("SDL_IsGameController");
-fn char* gameControllerNameForIndex(int joystick_index) @cname("SDL_GameControllerNameForIndex");
-fn char* gameControllerPathForIndex(int joystick_index) @cname("SDL_GameControllerPathForIndex");
+fn ZString gameControllerNameForIndex(int joystick_index) @cname("SDL_GameControllerNameForIndex");
+fn ZString gameControllerPathForIndex(int joystick_index) @cname("SDL_GameControllerPathForIndex");
 fn GameControllerType gameControllerTypeForIndex(int joystick_index) @cname("SDL_GameControllerTypeForIndex");
-fn char* gameControllerMappingForDeviceIndex(int joystick_index) @cname("SDL_GameControllerMappingForDeviceIndex");
+fn ZString gameControllerMappingForDeviceIndex(int joystick_index) @cname("SDL_GameControllerMappingForDeviceIndex");
 fn GameController* gameControllerOpen(int joystick_index) @cname("SDL_GameControllerOpen");
 fn GameController* gameControllerFromInstanceID(JoystickID joyid) @cname("SDL_GameControllerFromInstanceID");
 fn GameController* gameControllerFromPlayerIndex(int player_index) @cname("SDL_GameControllerFromPlayerIndex");
-fn char* gameControllerName(GameController gamecontroller) @cname("SDL_GameControllerName");
-fn char* gameControllerPath(GameController gamecontroller) @cname("SDL_GameControllerPath");
+fn ZString gameControllerName(GameController gamecontroller) @cname("SDL_GameControllerName");
+fn ZString gameControllerPath(GameController gamecontroller) @cname("SDL_GameControllerPath");
 fn GameControllerType gameControllerGetType(GameController gamecontroller) @cname("SDL_GameControllerGetType");
 fn int gameControllerGetPlayerIndex(GameController gamecontroller) @cname("SDL_GameControllerGetPlayerIndex");
 fn void* gameControllerSetPlayerIndex(GameController gamecontroller, int player_index) @cname("SDL_GameControllerSetPlayerIndex");
@@ -2914,24 +2940,24 @@ fn ushort gameControllerGetVendor(GameController gamecontroller) @cname("SDL_Gam
 fn ushort gameControllerGetProduct(GameController gamecontroller) @cname("SDL_GameControllerGetProduct");
 fn ushort gameControllerGetProductVersion(GameController gamecontroller) @cname("SDL_GameControllerGetProductVersion");
 fn ushort gameControllerGetFirmwareVersion(GameController gamecontroller) @cname("SDL_GameControllerGetFirmwareVersion");
-fn char* gameControllerGetSerial(GameController gamecontroller) @cname("SDL_GameControllerGetSerial");
+fn ZString gameControllerGetSerial(GameController gamecontroller) @cname("SDL_GameControllerGetSerial");
 fn bool gameControllerGetAttached(GameController gamecontroller) @cname("SDL_GameControllerGetAttached");
 fn Joystick* gameControllerGetJoystick(GameController gamecontroller) @cname("SDL_GameControllerGetJoystick");
 fn int gameControllerEventState(int state) @cname("SDL_GameControllerEventState");
 fn void* gameControllerUpdate() @cname("SDL_GameControllerUpdate");
-fn GameControllerAxis gameControllerGetAxisFromString(char* str) @cname("SDL_GameControllerGetAxisFromString");
-fn char* gameControllerGetStringForAxis(GameControllerAxis axis) @cname("SDL_GameControllerGetStringForAxis");
+fn GameControllerAxis gameControllerGetAxisFromString(ZString str) @cname("SDL_GameControllerGetAxisFromString");
+fn ZString gameControllerGetStringForAxis(GameControllerAxis axis) @cname("SDL_GameControllerGetStringForAxis");
 fn GameControllerButtonBind gameControllerGetBindForAxis(GameController gamecontroller, GameControllerAxis axis) @cname("SDL_GameControllerGetBindForAxis");
 fn bool gameControllerHasAxis(GameController gamecontroller, GameControllerAxis axis) @cname("SDL_GameControllerHasAxis");
 fn int gameControllerGetAxis(GameController gamecontroller, GameControllerAxis axis) @cname("SDL_GameControllerGetAxis");
-fn GameControllerButton gameControllerGetButtonFromString(char* str) @cname("SDL_GameControllerGetButtonFromString");
-fn char* gameControllerGetStringForButton(GameControllerButton button) @cname("SDL_GameControllerGetStringForButton");
+fn GameControllerButton gameControllerGetButtonFromString(ZString str) @cname("SDL_GameControllerGetButtonFromString");
+fn ZString gameControllerGetStringForButton(GameControllerButton button) @cname("SDL_GameControllerGetStringForButton");
 fn GameControllerButtonBind gameControllerGetBindForButton(GameController gamecontroller, GameControllerButton button) @cname("SDL_GameControllerGetBindForButton");
 fn bool gameControllerHasButton(GameController gamecontroller, GameControllerButton button) @cname("SDL_GameControllerHasButton");
 fn char gameControllerGetButton(GameController gamecontroller, GameControllerButton button) @cname("SDL_GameControllerGetButton");
 fn int gameControllerGetNumTouchpads(GameController gamecontroller) @cname("SDL_GameControllerGetNumTouchpads");
 fn int gameControllerGetNumTouchpadFingers(GameController gamecontroller, int touchpad) @cname("SDL_GameControllerGetNumTouchpadFingers");
-fn int gameControllerGetTouchpadFinger(GameController gamecontroller, int touchpad, int finger, char* state, float* x, float* y, float* pressure) @cname("SDL_GameControllerGetTouchpadFinger");
+fn int gameControllerGetTouchpadFinger(GameController gamecontroller, int touchpad, int finger, ZString state, float* x, float* y, float* pressure) @cname("SDL_GameControllerGetTouchpadFinger");
 fn bool gameControllerHasSensor(GameController gamecontroller, SensorType type) @cname("SDL_GameControllerHasSensor");
 fn int gameControllerSetSensorEnabled(GameController gamecontroller, SensorType type, bool enabled) @cname("SDL_GameControllerSetSensorEnabled");
 fn bool gameControllerIsSensorEnabled(GameController gamecontroller, SensorType type) @cname("SDL_GameControllerIsSensorEnabled");
@@ -2946,11 +2972,11 @@ fn bool gameControllerHasRumbleTriggers(GameController gamecontroller) @cname("S
 fn int gameControllerSetLED(GameController gamecontroller, char red, char green, char blue) @cname("SDL_GameControllerSetLED");
 fn int gameControllerSendEffect(GameController gamecontroller, void* data, int size) @cname("SDL_GameControllerSendEffect");
 fn void* gameControllerClose(GameController gamecontroller) @cname("SDL_GameControllerClose");
-fn char* gameControllerGetAppleSFSymbolsNameForButton(GameController gamecontroller, GameControllerButton button) @cname("SDL_GameControllerGetAppleSFSymbolsNameForButton");
-fn char* gameControllerGetAppleSFSymbolsNameForAxis(GameController gamecontroller, GameControllerAxis axis) @cname("SDL_GameControllerGetAppleSFSymbolsNameForAxis");
+fn ZString gameControllerGetAppleSFSymbolsNameForButton(GameController gamecontroller, GameControllerButton button) @cname("SDL_GameControllerGetAppleSFSymbolsNameForButton");
+fn ZString gameControllerGetAppleSFSymbolsNameForAxis(GameController gamecontroller, GameControllerAxis axis) @cname("SDL_GameControllerGetAppleSFSymbolsNameForAxis");
 fn int getNumTouchDevices() @cname("SDL_GetNumTouchDevices");
 fn TouchID getTouchDevice(int index) @cname("SDL_GetTouchDevice");
-fn char* getTouchName(int index) @cname("SDL_GetTouchName");
+fn ZString getTouchName(int index) @cname("SDL_GetTouchName");
 fn TouchDeviceType getTouchDeviceType(TouchID touchID) @cname("SDL_GetTouchDeviceType");
 fn int getNumTouchFingers(TouchID touchID) @cname("SDL_GetNumTouchFingers");
 fn Finger* getTouchFinger(TouchID touchID, int index) @cname("SDL_GetTouchFinger");
@@ -2975,10 +3001,10 @@ fn void* delEventWatch(EventFilter filter, void* userdata) @cname("SDL_DelEventW
 fn void* filterEvents(EventFilter filter, void* userdata) @cname("SDL_FilterEvents");
 fn char eventState(uint type, int state) @cname("SDL_EventState");
 fn uint registerEvents(int numevents) @cname("SDL_RegisterEvents");
-fn char* getBasePath() @cname("SDL_GetBasePath");
-fn char* getPrefPath(char* org, char* app) @cname("SDL_GetPrefPath");
+fn ZString getBasePath() @cname("SDL_GetBasePath");
+fn ZString getPrefPath(ZString org, ZString app) @cname("SDL_GetPrefPath");
 fn int numHaptics() @cname("SDL_NumHaptics");
-fn char* hapticName(int device_index) @cname("SDL_HapticName");
+fn ZString hapticName(int device_index) @cname("SDL_HapticName");
 fn Haptic* hapticOpen(int device_index) @cname("SDL_HapticOpen");
 fn int hapticOpened(int device_index) @cname("SDL_HapticOpened");
 fn int hapticIndex(Haptic* haptic) @cname("SDL_HapticIndex");
@@ -3012,51 +3038,51 @@ fn int hidExit() @cname("SDL_hid_exit");
 fn uint hidDeviceChangeCount() @cname("SDL_hid_device_change_count");
 fn Hid_Device_Info* hidEnumerate(ushort vendorID, ushort productID) @cname("SDL_hid_enumerate");
 fn void hidFreeEnumeration(Hid_Device_Info* devs) @cname("SDL_hid_free_enumeration");
-fn Hid_Device hidOpen(ushort vendorID, ushort productID, char* serialNumber) @cname("SDL_hid_open");
-fn Hid_Device hidOpenPath(char* path, int bExclusive) @cname("SDL_hid_open_path");
-fn int hidWrite(Hid_Device dev, char* data, usz length) @cname("SDL_hid_write");
-fn int hidReadTimeout(Hid_Device dev, char* data, usz length, int milliseconds) @cname("SDL_hid_read_timeout");
-fn int hidRead(Hid_Device dev, char* data, usz length) @cname("SDL_hid_read");
+fn Hid_Device hidOpen(ushort vendorID, ushort productID, ZString serialNumber) @cname("SDL_hid_open");
+fn Hid_Device hidOpenPath(ZString path, int bExclusive) @cname("SDL_hid_open_path");
+fn int hidWrite(Hid_Device dev, ZString data, usz length) @cname("SDL_hid_write");
+fn int hidReadTimeout(Hid_Device dev, ZString data, usz length, int milliseconds) @cname("SDL_hid_read_timeout");
+fn int hidRead(Hid_Device dev, ZString data, usz length) @cname("SDL_hid_read");
 fn int hidSetNonBlocking(Hid_Device dev, int nonblock) @cname("SDL_hid_set_nonblocking");
-fn int hidSendFeatureReport(Hid_Device dev, char* data, usz length) @cname("SDL_hid_send_feature_report");
-fn int hidGetFeatureReport(Hid_Device dev, char* data, usz length) @cname("SDL_hid_get_feature_report");
+fn int hidSendFeatureReport(Hid_Device dev, ZString data, usz length) @cname("SDL_hid_send_feature_report");
+fn int hidGetFeatureReport(Hid_Device dev, ZString data, usz length) @cname("SDL_hid_get_feature_report");
 fn void hidClose(Hid_Device dev) @cname("SDL_hid_close");
-fn int hidGetManufacturerString(Hid_Device dev, char* string, usz maxlen) @cname("SDL_hid_get_manufacturer_string");
-fn int hidGetProductString(Hid_Device dev, char* string, usz maxlen) @cname("SDL_hid_get_product_string");
-fn int hidGetSerialNumberString(Hid_Device dev, char* string, usz maxlen) @cname("SDL_hid_get_serial_number_string");
-fn int hidGetIndexedString(Hid_Device dev, int string_index, char* string, usz maxlen) @cname("SDL_hid_get_indexed_string");
+fn int hidGetManufacturerString(Hid_Device dev, ZString string, usz maxlen) @cname("SDL_hid_get_manufacturer_string");
+fn int hidGetProductString(Hid_Device dev, ZString string, usz maxlen) @cname("SDL_hid_get_product_string");
+fn int hidGetSerialNumberString(Hid_Device dev, ZString string, usz maxlen) @cname("SDL_hid_get_serial_number_string");
+fn int hidGetIndexedString(Hid_Device dev, int string_index, ZString string, usz maxlen) @cname("SDL_hid_get_indexed_string");
 fn void hidBleScan(bool active) @cname("SDL_hid_ble_scan");
-fn bool setHintWithPriority(char* name, char* value, HintPriority priority) @cname("SDL_SetHintWithPriority");
-fn bool setHint(char* name, char* value) @cname("SDL_SetHint");
-fn bool resetHint(char* name) @cname("SDL_ResetHint");
+fn bool setHintWithPriority(ZString name, ZString value, HintPriority priority) @cname("SDL_SetHintWithPriority");
+fn bool setHint(ZString name, ZString value) @cname("SDL_SetHint");
+fn bool resetHint(ZString name) @cname("SDL_ResetHint");
 fn void resetHints() @cname("SDL_ResetHints");
-fn char* getHint(char* name) @cname("SDL_GetHint");
-fn bool getHintBoolean(char* name, bool default_value) @cname("SDL_GetHintBoolean");
+fn ZString getHint(ZString name) @cname("SDL_GetHint");
+fn bool getHintBoolean(ZString name, bool default_value) @cname("SDL_GetHintBoolean");
 
-fn void* addHintCallback(char* name, HintCallback callback, void* userdata) @cname("SDL_AddHintCallback");
-fn void* delHintCallback(char* name, HintCallback callback, void* userdata) @cname("SDL_DelHintCallback");
+fn void* addHintCallback(ZString name, HintCallback callback, void* userdata) @cname("SDL_AddHintCallback");
+fn void* delHintCallback(ZString name, HintCallback callback, void* userdata) @cname("SDL_DelHintCallback");
 
 fn void clearHints() @cname("SDL_ClearHints");
-fn void* loadObject(char* sofile) @cname("SDL_LoadObject");
-fn void* loadFn(void* handle, char* name) @cname("SDL_Loadfn");
+fn void* loadObject(ZString sofile) @cname("SDL_LoadObject");
+fn void* loadFn(void* handle, ZString name) @cname("SDL_Loadfn");
 fn void* unloadObject(void* handle) @cname("SDL_UnloadObject");
 fn void* logSetAllPriority(LogPriority priority) @cname("SDL_LogSetAllPriority");
 fn void* logSetPriority(int category, LogPriority priority) @cname("SDL_LogSetPriority");
 fn LogPriority logGetPriority(int category) @cname("SDL_LogGetPriority");
 fn void* logResetPriorities() @cname("SDL_LogResetPriorities");
-fn void log(char* fmt, ...) @cname("SDL_Log");
-fn void logVerbose(LogCategory category, char* fmt, ...) @cname("SDL_LogVerbose");
-fn void logDebug(LogCategory category, char* fmt, ...) @cname("SDL_LogDebug");
-fn void logInfo(LogCategory category, char* fmt, ...) @cname("SDL_LogInfo");
-fn void logWarn(LogCategory category, char* fmt, ...) @cname("SDL_LogWarn");
-fn void logError(LogCategory category, char* fmt, ...) @cname("SDL_LogError");
-fn void logCritical(LogCategory category, char* fmt, ...) @cname("SDL_LogCritical");
-fn void logMessage(LogCategory category, LogPriority priority, char* fmt, ...) @cname("SDL_LogMessage");
+fn void log(ZString fmt, ...) @cname("SDL_Log");
+fn void logVerbose(LogCategory category, ZString fmt, ...) @cname("SDL_LogVerbose");
+fn void logDebug(LogCategory category, ZString fmt, ...) @cname("SDL_LogDebug");
+fn void logInfo(LogCategory category, ZString fmt, ...) @cname("SDL_LogInfo");
+fn void logWarn(LogCategory category, ZString fmt, ...) @cname("SDL_LogWarn");
+fn void logError(LogCategory category, ZString fmt, ...) @cname("SDL_LogError");
+fn void logCritical(LogCategory category, ZString fmt, ...) @cname("SDL_LogCritical");
+fn void logMessage(LogCategory category, LogPriority priority, ZString fmt, ...) @cname("SDL_LogMessage");
 fn void logGetOutputFunction(LogOutputFunction* callback, void* userdata) @cname("SDL_LogGetOutputFunction");
 fn void logSetOutputFunction(LogOutputFunction callback, void* userdata) @cname("SDL_LogSetOutputFunction");
 
 fn int showMessageBox(MessageBoxData messageboxdata, int buttonid) @cname("SDL_ShowMessageBox");
-fn int showSimpleMessageBox(uint flags, char* title, char* message, Window* window) @cname("SDL_ShowSimpleMessageBox");
+fn int showSimpleMessageBox(uint flags, ZString title, ZString message, Window* window) @cname("SDL_ShowSimpleMessageBox");
 fn MetalView metalCreateView(Window* window) @cname("SDL_Metal_CreateView");
 fn void* metalDestroyView(MetalView view) @cname("SDL_Metal_DestroyView");
 fn void* metalGetLayer(MetalView view) @cname("SDL_Metal_GetLayer");
@@ -3075,9 +3101,9 @@ fn Texture* createTexture(Renderer* renderer, uint format, int access, int w, in
 fn Texture* createTextureFromSurface(Renderer* renderer, Surface surface) @cname("SDL_CreateTextureFromSurface");
 fn int queryTexture(Texture* texture, uint* format, int* access, int* w, int* h) @cname("SDL_QueryTexture");
 fn int setTextureColorMod(Texture* texture, char r, char g, char b) @cname("SDL_SetTextureColorMod");
-fn int getTextureColorMod(Texture* texture, char* r, char* g, char* b) @cname("SDL_GetTextureColorMod");
+fn int getTextureColorMod(Texture* texture, ZString r, ZString g, ZString b) @cname("SDL_GetTextureColorMod");
 fn int setTextureAlphaMod(Texture* texture, char alpha) @cname("SDL_SetTextureAlphaMod");
-fn int getTextureAlphaMod(Texture* texture, char* alpha) @cname("SDL_GetTextureAlphaMod");
+fn int getTextureAlphaMod(Texture* texture, ZString alpha) @cname("SDL_GetTextureAlphaMod");
 fn int setTextureBlendMode(Texture* texture, BlendMode blendMode) @cname("SDL_SetTextureBlendMode");
 fn int getTextureBlendMode(Texture* texture, BlendMode* blendMode) @cname("SDL_GetTextureBlendMode");
 fn int setTextureScaleMode(Texture* texture, ScaleMode scaleMode) @cname("SDL_SetTextureScaleMode");
@@ -3085,8 +3111,8 @@ fn int getTextureScaleMode(Texture* texture, ScaleMode* scaleMode) @cname("SDL_G
 fn int setTextureUserData(Texture* texture, void* userdata) @cname("SDL_SetTextureUserData");
 fn void* getTextureUserData(Texture* texture) @cname("SDL_GetTextureUserData");
 fn int updateTexture(Texture* texture, Rect* rect, void* pixels, int pitch) @cname("SDL_UpdateTexture");
-fn int updateYUVTexture(Texture* texture, Rect* rect, char* yPlane, int yPitch, char* uPlane, int uPitch, char* vPlane, int vPitch) @cname("SDL_UpdateYUVTexture");
-fn int updateNVTexture(Texture* texture, Rect* rect, char* yPlane, int yPitch, char* uvPlane, int uvPitch) @cname("SDL_UpdateNVTexture");
+fn int updateYUVTexture(Texture* texture, Rect* rect, ZString yPlane, int yPitch, ZString uPlane, int uPitch, ZString vPlane, int vPitch) @cname("SDL_UpdateYUVTexture");
+fn int updateNVTexture(Texture* texture, Rect* rect, ZString yPlane, int yPitch, ZString uvPlane, int uvPitch) @cname("SDL_UpdateNVTexture");
 fn int lockTexture(Texture* texture, Rect* rect, void** pixels, int* pitch) @cname("SDL_LockTexture");
 fn int lockTextureToSurface(Texture* texture, Rect* rect, Surface* surface) @cname("SDL_LockTextureToSurface");
 fn void* unlockTexture(Texture* texture) @cname("SDL_UnlockTexture");
@@ -3107,7 +3133,7 @@ fn void* renderGetScale(Renderer* renderer, float* scaleX, float* scaleY) @cname
 fn void* renderWindowToLogical(Renderer* renderer, int windowX, int windowY, float* logicalX, float* logicalY) @cname("SDL_RenderWindowToLogical");
 fn void* renderLogicalToWindow(Renderer* renderer, float logicalX, float logicalY, int* windowX, int* windowY) @cname("SDL_RenderLogicalToWindow");
 fn int setRenderDrawColor(Renderer* renderer, char r, char g, char b, char a) @cname("SDL_SetRenderDrawColor");
-fn int getRenderDrawColor(Renderer* renderer, char* r, char* g, char* b, char* a) @cname("SDL_GetRenderDrawColor");
+fn int getRenderDrawColor(Renderer* renderer, ZString r, ZString g, ZString b, ZString a) @cname("SDL_GetRenderDrawColor");
 fn int setRenderDrawBlendMode(Renderer* renderer, BlendMode blendMode) @cname("SDL_SetRenderDrawBlendMode");
 fn int getRenderDrawBlendMode(Renderer* renderer, BlendMode* blendMode) @cname("SDL_GetRenderDrawBlendMode");
 fn int renderClear(Renderer* renderer) @cname("SDL_RenderClear");
@@ -3143,7 +3169,7 @@ fn int glUnbindTexture(Texture* texture) @cname("SDL_GL_UnbindTexture");
 fn void* renderGetMetalLayer(Renderer* renderer) @cname("SDL_RenderGetMetalLayer");
 fn void* renderGetMetalCommandEncoder(Renderer* renderer) @cname("SDL_RenderGetMetalCommandEncoder");
 fn int renderSetVSync(Renderer* renderer, int vsync) @cname("SDL_RenderSetVSync");
-fn Window* createShapedWindow(char* title, uint x, uint y, uint w, uint h, uint flags) @cname("SDL_CreateShapedWindow");
+fn Window* createShapedWindow(ZString title, uint x, uint y, uint w, uint h, uint flags) @cname("SDL_CreateShapedWindow");
 fn bool isShapedWindow(Window* window) @cname("SDL_IsShapedWindow");
 fn int setWindowShape(Window* window, Surface* shape, WindowShapeMode* shape_mode) @cname("SDL_SetWindowShape");
 fn int setShapedWindowMode(Window* window, WindowShapeMode* shape_mode) @cname("SDL_GetShapedWindowMode");
@@ -3164,10 +3190,10 @@ fn void* delay(uint ms) @cname("SDL_Delay");
 fn TimerID addTimer(uint interval, TimerCallback callback, void* param) @cname("SDL_AddTimer");
 fn bool removeTimer(TimerID id) @cname("SDL_RemoveTimer");
 fn void* getVersion(Version* ver) @cname("SDL_GetVersion");
-fn char* getRevision() @cname("SDL_GetRevision");
+fn ZString getRevision() @cname("SDL_GetRevision");
 fn int getRevisionNumber() @cname("SDL_GetRevisionNumber");
 fn Locale* getPreferredLocales() @cname("SDL_GetPreferredLocales");
-fn int openURL(char* url) @cname("SDL_OpenURL");
+fn int openURL(ZString url) @cname("SDL_OpenURL");
 fn int init(uint flags) @cname("SDL_Init");
 fn int initSubSystem(uint flags) @cname("SDL_InitSubSystem");
 fn void* quitSubSystem(uint flags) @cname("SDL_QuitSubSystem");
