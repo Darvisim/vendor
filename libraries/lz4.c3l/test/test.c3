@@ -16,7 +16,7 @@ fn void test_compress_and_decompres() @test {
 
     int maxCompressedSize = lz4::compress_bound(originalSize); 
 
-    char* compressedData = (char*) malloc(maxCompressedSize);
+    ZString compressedData = (ZString) malloc(maxCompressedSize);
     defer free(compressedData);
     if (compressedData == null)
     {
