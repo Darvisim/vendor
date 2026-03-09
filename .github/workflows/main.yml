@@ -11,12 +11,9 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: &checkout actions/checkout@v4
-        
-      - name: Prepare
-        run: brew install ruby
 
       - name: Package
-        run: ruby package.rb
+        run: bash package.sh
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
