@@ -16,7 +16,7 @@ struct SdlCursorFrameInfo
 
 
 // Enums
-constdef SdlMouseButtonFlags : uint
+constdef SdlMouseButtonFlags : uint @constinit
 {
 	LEFT = 1,
 	MIDDLE,
@@ -24,11 +24,11 @@ constdef SdlMouseButtonFlags : uint
 	X1,
 	X2,
 
-	LMASK  = (SdlMouseButtonFlags)1 << (LEFT-1),
-	MMASK  = (SdlMouseButtonFlags)1 << (MIDDLE-1),
-	RMASK  = (SdlMouseButtonFlags)1 << (RIGHT-1),
-	X1MASK = (SdlMouseButtonFlags)1 << (X1-1),
-	X2MASK = (SdlMouseButtonFlags)1 << (X2-1),
+	LMASK  = 1 << (LEFT-1),
+	MMASK  = 1 << (MIDDLE-1),
+	RMASK  = 1 << (RIGHT-1),
+	X1MASK = 1 << (X1-1),
+	X2MASK = 1 << (X2-1),
 }
 
 enum SdlMouseWheelDirection
