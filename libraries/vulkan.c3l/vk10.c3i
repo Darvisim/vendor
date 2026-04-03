@@ -2230,7 +2230,11 @@ struct VkPhysicalDeviceMemoryProperties
     VkMemoryHeap[ VK_MAX_MEMORY_HEAPS ] memoryHeaps;
 }
 
+
+
 const VK_VERSION_1_0 = 1;
+
+
 
 fn VkResult allocateCommandBuffers (VkDevice device, VkCommandBufferAllocateInfo * pAllocateInfo, VkCommandBuffer * pCommandBuffers) @cname("vkAllocateCommandBuffers");
 fn VkResult allocateDescriptorSets (VkDevice device, VkDescriptorSetAllocateInfo * pAllocateInfo, VkDescriptorSet * pDescriptorSets) @cname("vkAllocateDescriptorSets");
