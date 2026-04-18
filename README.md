@@ -31,6 +31,7 @@ will download the corresponding library into the `lib/` folder and add it into t
 
 If not using a project the same command will instead download the library into
 the current directory where it be used with `--libdir <folder>` and `--lib <libname>`.
+- libuv https://github.com/libuv/libuv
 
 ## Guide for writing bindings
 
