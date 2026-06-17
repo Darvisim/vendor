@@ -211,6 +211,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
+      - name: Clear Outdated CMake Cache
+        run: rm -rf ktx/ build/ .build/ cmake-build/ CMakeFiles/ CMakeCache.txt
       - name: Build ktx
         uses: ./.github/actions/build-static-lib
         with:
