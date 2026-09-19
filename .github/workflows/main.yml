@@ -619,10 +619,10 @@ jobs:
             LIB_NAME="microui.lib"
           elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
             TARGET_DIR="macos-aarch64"
-            LIB_NAME="microui.a"
+            LIB_NAME="libmicroui.a"
           else
             TARGET_DIR="linux-x64"
-            LIB_NAME="microui.a"
+            LIB_NAME="libmicroui.a"
           fi
 
           TARGET_BASE="upload_stage/libraries/microui.c3l"
