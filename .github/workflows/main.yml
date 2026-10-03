@@ -608,7 +608,7 @@ jobs:
           tag: libpcap-1.11.0
           c3l: libpcap.c3l
           # setting -DPCAP_TYPE=null for windows disables capturing of packets, but allows reading of pcap and pcapng files
-          cmake_flags: $(if [["${{ runner.os }}" == "Windows" ]]; then echo "-DPCAP_TYPE=null"; fi)
+          cmake_flags: ${{ runner.os == 'Windows' && '-DPCAP_TYPE=null' || '' }}
           os: ${{ matrix.os }}
   
 
