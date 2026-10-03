@@ -600,6 +600,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
+      - name: Install Flex and Bison
+        run: choco install winflexbison3 --yes
       - name: Build pcap
         uses: ./.github/actions/build-static-lib
         with:
