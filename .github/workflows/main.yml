@@ -600,7 +600,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
+      # on windows runner, flex or lex or win_lex is not available, so install them
       - name: Install Flex and Bison
+        if: ${{ runner.os == 'Windows' }}
         run: choco install winflexbison3 --yes
       - name: Build pcap
         uses: ./.github/actions/build-static-lib
