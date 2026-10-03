@@ -607,7 +607,8 @@ jobs:
           repo: https://github.com/the-tcpdump-group/libpcap.git
           tag: libpcap-1.11.0
           c3l: libpcap.c3l
-          # cmake_flags: "-DTRACY_ENABLE=ON -DTRACY_STATIC=ON"
+          # setting -DPCAP_TYPE=null for windows disables capturing of packets, but allows reading of pcap and pcapng files
+          cmake_flags: $(if [["${{ runner.os }}" == "Windows" ]]; then echo "-DPCAP_TYPE=null"; fi)
           os: ${{ matrix.os }}
   
 
