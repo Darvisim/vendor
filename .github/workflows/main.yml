@@ -605,7 +605,7 @@ jobs:
         with:
           name: pcap
           repo: https://github.com/the-tcpdump-group/libpcap.git
-          tag: libcap-1.11.0
+          tag: libcap-1.10
           c3l: libpcap.c3l
           # cmake_flags: "-DTRACY_ENABLE=ON -DTRACY_STATIC=ON"
           os: ${{ matrix.os }}
