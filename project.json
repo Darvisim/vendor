@@ -32,8 +32,7 @@
 				"clang",
 				"tigr",
 				"webgpu",
-				"spng",
-				"microui"
+				"spng"
 			],
 			"link-args": ["-Wl,--allow-multiple-definition"]
 		}
