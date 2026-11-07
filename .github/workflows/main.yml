@@ -568,7 +568,7 @@ jobs:
             gcc -c -O2 -fPIC -pthread mdb.c midl.c
             ar rcs "$LIB_NAME" mdb.o midl.o
           fi
-          cp "$LIB_NAME" "$GITHUB_WORKSPACE/$TARGET_BASE/$TARGET_DIR/"
+          cp "$LIB_NAME" "$TARGET_BASE/$TARGET_DIR/"
 
       - name: Upload lmdb Artifact
         uses: actions/upload-artifact@v6
@@ -600,7 +600,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
-      
       - name: Set up MSVC
         if: runner.os == 'Windows'
         uses: TheMrMilchmann/setup-msvc-dev@v4
@@ -625,10 +624,13 @@ jobs:
             TARGET_DIR="linux-x64"
             LIB_NAME="libmicroui.a"
           fi
+
           TARGET_BASE="upload_stage/libraries/microui.c3l"
           mkdir -p "$TARGET_BASE/$TARGET_DIR"
+
           git clone --depth 1 https://github.com/awschult002/microui.git -b master build_microui
           cd build_microui/src
+
           if [ "${{ runner.os }}" == "Windows" ]; then
             export MSYS2_ARG_CONV_EXCL="*"
             cl -c -O2 microui.c
@@ -637,8 +639,8 @@ jobs:
             gcc -c -O2 -fPIC -pthread microui.c
             ar rcs "$LIB_NAME" microui.o
           fi
-          cp "$LIB_NAME" "$GITHUB_WORKSPACE/$TARGET_BASE/$TARGET_DIR/"
-          
+          cp "$LIB_NAME" "$TARGET_BASE/$TARGET_DIR/"
+
       - name: Upload microui Artifact
         uses: actions/upload-artifact@v6
         with:
