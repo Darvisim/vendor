@@ -568,7 +568,7 @@ jobs:
             gcc -c -O2 -fPIC -pthread mdb.c midl.c
             ar rcs "$LIB_NAME" mdb.o midl.o
           fi
-          cp "$LIB_NAME" "$TARGET_BASE/$TARGET_DIR/"
+          cp "$LIB_NAME" "$GITHUB_WORKSPACE/$TARGET_BASE/$TARGET_DIR/"
 
       - name: Upload lmdb Artifact
         uses: actions/upload-artifact@v6
@@ -639,7 +639,7 @@ jobs:
             gcc -c -O2 -fPIC -pthread microui.c
             ar rcs "$LIB_NAME" microui.o
           fi
-          cp "$LIB_NAME" "$TARGET_BASE/$TARGET_DIR/"
+          cp "$LIB_NAME" "$GITHUB_WORKSPACE/$TARGET_BASE/$TARGET_DIR/"
 
       - name: Upload microui Artifact
         uses: actions/upload-artifact@v6
