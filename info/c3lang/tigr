@@ -1,0 +1,15 @@
+{
+  "library": "c3lang/tigr",
+  "description": "",
+  "latest": "1.0.0",
+  "updated": "2026-11-07T04:02:27.568880+00:00",
+  "tags": [],
+  "versions": {
+    "1.0.0": {
+      "url": "https://github.com/c3lang/vendor/releases/download/tigr-v1.0.0/tigr.c3l",
+      "checksum": "sha256:b2d78a5835e6a84cb114d830c8d42a54665c2dd8945624665a841137dbb842dc",
+      "size": 90354,
+      "published": "2026-11-07T04:02:27.568880+00:00"
+    }
+  }
+}

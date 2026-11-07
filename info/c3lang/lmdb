@@ -1,0 +1,15 @@
+{
+  "library": "c3lang/lmdb",
+  "description": "",
+  "latest": "1.0.0",
+  "updated": "2026-11-07T04:02:27.568880+00:00",
+  "tags": [],
+  "versions": {
+    "1.0.0": {
+      "url": "https://github.com/c3lang/vendor/releases/download/lmdb-v1.0.0/lmdb.c3l",
+      "checksum": "sha256:6404023d93486362c3e3bbf1feb5353c844c8ad23df9d481bf131df1dcea2953",
+      "size": 218825,
+      "published": "2026-11-07T04:02:27.568880+00:00"
+    }
+  }
+}

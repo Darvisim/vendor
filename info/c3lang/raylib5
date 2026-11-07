@@ -1,0 +1,15 @@
+{
+  "library": "c3lang/raylib5",
+  "description": "",
+  "latest": "1.0.0",
+  "updated": "2026-11-07T04:02:27.568880+00:00",
+  "tags": [],
+  "versions": {
+    "1.0.0": {
+      "url": "https://github.com/c3lang/vendor/releases/download/raylib5-v1.0.0/raylib5.c3l",
+      "checksum": "sha256:10a59075ed57f25c97028e2992192bb5adad5b5e8f4e6fb29c25a954d3cd237d",
+      "size": 4122792,
+      "published": "2026-11-07T04:02:27.568880+00:00"
+    }
+  }
+}

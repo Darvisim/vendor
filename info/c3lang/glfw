@@ -1,0 +1,15 @@
+{
+  "library": "c3lang/glfw",
+  "description": "",
+  "latest": "1.0.0",
+  "updated": "2026-11-07T04:02:27.568880+00:00",
+  "tags": [],
+  "versions": {
+    "1.0.0": {
+      "url": "https://github.com/c3lang/vendor/releases/download/glfw-v1.0.0/glfw.c3l",
+      "checksum": "sha256:1946a36a181d29c2ce509bb627c9e63deb8dd837579733073811389ed52dc4d9",
+      "size": 577499,
+      "published": "2026-11-07T04:02:27.568880+00:00"
+    }
+  }
+}

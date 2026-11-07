@@ -1,0 +1,15 @@
+{
+  "library": "c3lang/lz4",
+  "description": "",
+  "latest": "1.0.0",
+  "updated": "2026-11-07T04:02:27.568880+00:00",
+  "tags": [],
+  "versions": {
+    "1.0.0": {
+      "url": "https://github.com/c3lang/vendor/releases/download/lz4-v1.0.0/lz4.c3l",
+      "checksum": "sha256:4058a5d3d774b2265257f6c44e26e9b356771a243615915563e5c8c2cb9977de",
+      "size": 528927,
+      "published": "2026-11-07T04:02:27.568880+00:00"
+    }
+  }
+}

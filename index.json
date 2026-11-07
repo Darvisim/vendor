@@ -1,0 +1,274 @@
+{
+  "libraries": [
+    {
+      "library": "c3lang/box2d",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/clang",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/curl",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/glfw",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/glfw34",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/ktx",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/lmdb",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/lz4",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/microui",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/mysql8",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/opengl",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/pq",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/raylib5",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/raylib55",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/raylib6",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/sdl2",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/sdl3",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/sdl3_image",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/sdl3_ttf",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/spng",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/sqlite3",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/tigr",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/tinyfiledialogs",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/tracy",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/tree_sitter",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/vulkan",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "library": "c3lang/webgpu",
+      "description": "",
+      "latest": "1.0.0",
+      "updated": "2026-11-07T04:02:27.568880+00:00",
+      "tags": [],
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  ]
+}

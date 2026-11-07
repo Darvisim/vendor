@@ -1,0 +1,15 @@
+{
+  "library": "c3lang/tinyfiledialogs",
+  "description": "",
+  "latest": "1.0.0",
+  "updated": "2026-11-07T04:02:27.568880+00:00",
+  "tags": [],
+  "versions": {
+    "1.0.0": {
+      "url": "https://github.com/c3lang/vendor/releases/download/tinyfiledialogs-v1.0.0/tinyfiledialogs.c3l",
+      "checksum": "sha256:ee6d8defb25bde157c7d64e1c9e8d8c37ef341f3f0acdbf007750e300959d4d7",
+      "size": 156520,
+      "published": "2026-11-07T04:02:27.568880+00:00"
+    }
+  }
+}

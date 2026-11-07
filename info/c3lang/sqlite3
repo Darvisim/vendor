@@ -1,0 +1,15 @@
+{
+  "library": "c3lang/sqlite3",
+  "description": "",
+  "latest": "1.0.0",
+  "updated": "2026-11-07T04:02:27.568880+00:00",
+  "tags": [],
+  "versions": {
+    "1.0.0": {
+      "url": "https://github.com/c3lang/vendor/releases/download/sqlite3-v1.0.0/sqlite3.c3l",
+      "checksum": "sha256:a69aa65c718427a163cafeaca92a680570dd5fb60fe21157857f50431bcd3b39",
+      "size": 2730924,
+      "published": "2026-11-07T04:02:27.568880+00:00"
+    }
+  }
+}

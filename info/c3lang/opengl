@@ -1,0 +1,15 @@
+{
+  "library": "c3lang/opengl",
+  "description": "",
+  "latest": "1.0.0",
+  "updated": "2026-11-07T04:02:27.568880+00:00",
+  "tags": [],
+  "versions": {
+    "1.0.0": {
+      "url": "https://github.com/c3lang/vendor/releases/download/opengl-v1.0.0/opengl.c3l",
+      "checksum": "sha256:77591aff32ddaef7c420f92849b2b5fdd4d04d518c856b6c488eca0cfbb2234a",
+      "size": 107936,
+      "published": "2026-11-07T04:02:27.568880+00:00"
+    }
+  }
+}

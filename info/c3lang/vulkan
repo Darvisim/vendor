@@ -1,0 +1,15 @@
+{
+  "library": "c3lang/vulkan",
+  "description": "",
+  "latest": "1.0.0",
+  "updated": "2026-11-07T04:02:27.568880+00:00",
+  "tags": [],
+  "versions": {
+    "1.0.0": {
+      "url": "https://github.com/c3lang/vendor/releases/download/vulkan-v1.0.0/vulkan.c3l",
+      "checksum": "sha256:74642e28f25627fa03e27de3c7bcdeccb282119a51ffb0b17e593f01cbc86a8f",
+      "size": 83835,
+      "published": "2026-11-07T04:02:27.568880+00:00"
+    }
+  }
+}

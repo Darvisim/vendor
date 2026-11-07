@@ -1,0 +1,15 @@
+{
+  "library": "c3lang/sdl3_ttf",
+  "description": "",
+  "latest": "1.0.0",
+  "updated": "2026-11-07T04:02:27.568880+00:00",
+  "tags": [],
+  "versions": {
+    "1.0.0": {
+      "url": "https://github.com/c3lang/vendor/releases/download/sdl3_ttf-v1.0.0/sdl3_ttf.c3l",
+      "checksum": "sha256:7eaca0bfacbb862b89efca22e93ad8cd9fe4fe8c8a38bda64acde76b8783a18e",
+      "size": 18955470,
+      "published": "2026-11-07T04:02:27.568880+00:00"
+    }
+  }
+}

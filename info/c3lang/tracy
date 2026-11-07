@@ -1,0 +1,15 @@
+{
+  "library": "c3lang/tracy",
+  "description": "",
+  "latest": "1.0.0",
+  "updated": "2026-11-07T04:02:27.568880+00:00",
+  "tags": [],
+  "versions": {
+    "1.0.0": {
+      "url": "https://github.com/c3lang/vendor/releases/download/tracy-v1.0.0/tracy.c3l",
+      "checksum": "sha256:43dc8fa376d62ca9717a30e09f771d576c0daacfc6a735c1b4207ae7d10b8a52",
+      "size": 658800,
+      "published": "2026-11-07T04:02:27.568880+00:00"
+    }
+  }
+}
